@@ -3,7 +3,6 @@ package protocol
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"net"
 	"net/http"
 	"radicalvpnd/logger"
@@ -95,10 +94,6 @@ func (p *Protocol) LoadRoutes() {
 		}
 
 		servers = service.PingServers(servers)
-
-		for _, server := range servers {
-			fmt.Println(server.ExternaIp)
-		}
 
 		c.JSON(http.StatusOK, servers)
 	})
