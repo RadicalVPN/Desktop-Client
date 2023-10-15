@@ -45,7 +45,7 @@ func (p *Protocol) Start() {
 
 	addr := "127.0.0.1:8095"
 	log.Info("Daemon Protocol listening on ", addr)
-	p.engine.Run()
+	p.engine.Run(addr)
 }
 
 func (p *Protocol) LoadRoutes() {

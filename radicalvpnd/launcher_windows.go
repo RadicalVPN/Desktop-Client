@@ -8,7 +8,7 @@ import (
 	"golang.org/x/sys/windows"
 )
 
-func isAdmin() bool {
+func IsAdmin() bool {
 	var sid *windows.SID
 
 	//https://docs.microsoft.com/en-us/windows/desktop/api/securitybaseapi/nf-securitybaseapi-checktokenmembership
@@ -20,7 +20,7 @@ func isAdmin() bool {
 		0, 0, 0, 0, 0, 0,
 		&sid)
 	if err != nil {
-		log.Error(fmt.Sprintf("SID Error: %s", err.Error()))
+		log.Error(fmt.Sprintf("windows sid err: %s", err.Error()))
 		return false
 	}
 
@@ -28,11 +28,9 @@ func isAdmin() bool {
 
 	member, err := token.IsMember(sid)
 	if err != nil {
-		log.Error(fmt.Sprintf("Token Membership Error: %s", err.Error()))
+		log.Error(fmt.Sprintf("token member error: %s", err.Error()))
 		return false
 	}
-
-	log.Info(fmt.Sprintf("IsAdmin=%v IsElevated=%v", member, token.IsElevated()))
 
 	return member
 }

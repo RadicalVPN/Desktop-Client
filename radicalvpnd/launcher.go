@@ -28,7 +28,7 @@ func Launch() {
 	}()
 
 	//check if the daemon is started as admin/root
-	if isAdmin() == false {
+	if !IsAdmin() {
 		log.Warning(strings.Repeat("-", 48))
 		log.Warning("! NO ADMIN USER !")
 		log.Warning("RadicalVPN Daemon must be started as admin/root!")

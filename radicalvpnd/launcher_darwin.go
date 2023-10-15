@@ -6,6 +6,6 @@ import (
 	"os"
 )
 
-func isAdmin() bool {
+func IsAdmin() bool {
 	return os.Geteuid() == 0
 }
