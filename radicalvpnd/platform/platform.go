@@ -8,7 +8,8 @@ import (
 )
 
 var (
-	serviceFile string
+	serviceFile  string
+	settingsFile string
 )
 
 func init() {
@@ -19,6 +20,11 @@ func Init() {
 
 	//create service file
 	if err := mkdir(filepath.Dir(serviceFile), os.ModePerm); err != nil {
+		fmt.Println(err)
+	}
+
+	//create settings file
+	if err := mkdir(filepath.Dir(settingsFile), os.ModePerm); err != nil {
 		fmt.Println(err)
 	}
 }
@@ -35,4 +41,8 @@ func mkdir(path string, mode fs.FileMode) error {
 
 func GetServiceFIle() string {
 	return serviceFile
+}
+
+func GetSettingsFile() string {
+	return settingsFile
 }

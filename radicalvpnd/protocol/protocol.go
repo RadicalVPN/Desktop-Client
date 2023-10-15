@@ -61,6 +61,12 @@ func (p *Protocol) LoadRoutes() {
 			"message": "pong",
 		})
 	})
+
+	r.GET("/server", func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{
+			"message": "pong",
+		})
+	})
 }
 
 func (p *Protocol) LoadMiddlewaares() {
