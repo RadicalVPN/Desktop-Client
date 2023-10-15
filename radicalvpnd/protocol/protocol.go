@@ -3,9 +3,11 @@ package protocol
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"net"
 	"net/http"
 	"radicalvpnd/logger"
+	service "radicalvpnd/services"
 	"radicalvpnd/settings"
 	"radicalvpnd/webapi"
 
@@ -57,6 +59,12 @@ func (p *Protocol) Start(startedPortChannel chan<- string) {
 	http.Serve(listener, p.engine)
 }
 
+func getSessionCookie() string {
+	sett := settings.NewSettings()
+	sett.LoadSettings()
+	return "RADICAL_SESSION_ID=" + sett.Session.Secret + ";"
+}
+
 func (p *Protocol) LoadRoutes() {
 	r := p.engine
 
@@ -67,10 +75,32 @@ func (p *Protocol) LoadRoutes() {
 	})
 
 	r.GET("/server", func(c *gin.Context) {
+		req, err := http.NewRequest("GET", "https://radicalvpn.com/api/1.0/server", nil)
+		if err != nil {
+			c.AbortWithStatus(http.StatusInternalServerError)
+		}
+		req.Header.Set("Cookie", getSessionCookie())
 
-		c.JSON(http.StatusOK, gin.H{
-			"message": "pong",
-		})
+		resp, err := http.DefaultClient.Do(req)
+
+		if err != nil {
+			c.AbortWithStatus(http.StatusInternalServerError)
+		}
+
+		servers := []webapi.Server{}
+
+		defer resp.Body.Close()
+		if err := json.NewDecoder(resp.Body).Decode(&servers); err != nil {
+			c.AbortWithStatus(http.StatusInternalServerError)
+		}
+
+		servers = service.PingServers(servers)
+
+		for _, server := range servers {
+			fmt.Println(server.ExternaIp)
+		}
+
+		c.JSON(http.StatusOK, servers)
 	})
 
 	r.POST("/login", func(c *gin.Context) {
@@ -86,7 +116,7 @@ func (p *Protocol) LoadRoutes() {
 
 		resp, err := http.Post("https://radicalvpn.com/api/1.0/auth", "application/json", requestBody)
 		if err != nil {
-			c.Status(http.StatusInternalServerError)
+			c.AbortWithStatus(http.StatusInternalServerError)
 		}
 
 		if resp.StatusCode != http.StatusOK {
