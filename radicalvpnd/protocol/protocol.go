@@ -1,6 +1,7 @@
 package protocol
 
 import (
+	"net"
 	"net/http"
 	"radicalvpnd/logger"
 
@@ -37,15 +38,19 @@ func (p *Protocol) AuthMiddleware() gin.HandlerFunc {
 	}
 }
 
-func (p *Protocol) Start() {
+func (p *Protocol) Start(startedPortChannel chan<- string) {
 	log.Info("Starting Daemon Protocol..")
 
 	p.LoadMiddlewaares()
 	p.LoadRoutes()
 
-	addr := "127.0.0.1:8095"
-	log.Info("Daemon Protocol listening on ", addr)
-	p.engine.Run(addr)
+	listener, _ := net.Listen("tcp", ":0")
+	_, port, _ := net.SplitHostPort(listener.Addr().String())
+
+	startedPortChannel <- port
+
+	log.Info("Daemon Protocol listening on 127.0.0.1:", port)
+	http.Serve(listener, p.engine)
 }
 
 func (p *Protocol) LoadRoutes() {

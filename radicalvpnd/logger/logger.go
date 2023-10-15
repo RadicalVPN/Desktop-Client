@@ -91,25 +91,25 @@ func (l *Logger) Error(v ...interface{}) {
 
 func _info(name string, v ...interface{}) {
 	mes, timeStr, _, _ := getLogPrefixes(fmt.Sprint(v...), 0)
-	fmt.Println(timeStr, name, mes)
+	fmt.Println(timeStr, name, "INFO", mes)
 }
 
 func _debug(name string, v ...interface{}) {
 	mes, timeStr, runtimeInfo, _ := getLogPrefixes(fmt.Sprint(v...), 0)
-	fmt.Println(timeStr, name, "DEBUG", runtimeInfo, mes)
+	fmt.Println(timeStr, name, "DEBU", runtimeInfo, mes)
 }
 
 func _warning(name string, v ...interface{}) {
 	mes, timeStr, runtimeInfo, _ := getLogPrefixes(fmt.Sprint(v...), 0)
-	fmt.Println(timeStr, name, "WARNING", runtimeInfo, mes)
+	fmt.Println(timeStr, name, "WARN", runtimeInfo, mes)
 }
 
 func _trace(name string, v ...interface{}) {
 	mes, timeStr, runtimeInfo, methodInfo := getLogPrefixes(fmt.Sprint(v...), 0)
-	fmt.Println(timeStr, name, "TRACE", runtimeInfo+methodInfo, mes)
+	fmt.Println(timeStr, name, "TRAC", runtimeInfo+methodInfo, mes)
 }
 
 func _error(name string, callerStackOffset int, v ...interface{}) {
 	mes, timeStr, runtimeInfo, methodInfo := getLogPrefixes(fmt.Sprint(v...), callerStackOffset)
-	fmt.Println(timeStr, name, "ERROR", runtimeInfo+methodInfo, mes)
+	fmt.Println(timeStr, name, "ERRO", runtimeInfo+methodInfo, mes)
 }

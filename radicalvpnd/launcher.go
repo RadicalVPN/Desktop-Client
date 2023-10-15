@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"radicalvpnd/logger"
+	"radicalvpnd/platform"
 	"radicalvpnd/protocol"
 	"radicalvpnd/util"
 	"runtime"
@@ -27,6 +28,9 @@ func Launch() {
 		log.Info("RadicalVPN Daemon stopped.")
 	}()
 
+	log.Info("Initializing platform specific variables..")
+	platform.Init()
+
 	//check if the daemon is started as admin/root
 	if !IsAdmin() {
 		log.Warning(strings.Repeat("-", 48))
@@ -40,7 +44,26 @@ func Launch() {
 
 	log.Debug("Secret: " + secret)
 
-	protocol := protocol.NewProtocol(secret)
-	protocol.Start()
+	portChannel := make(chan string, 1)
+	go func() {
+		//this will block until we got a port back from the protocol
+		port := <-portChannel
 
+		log.Info("Found listening port in port channel: ", port)
+
+		//write port to service file
+		file, err := os.Create(platform.GetServiceFIle())
+		if err != nil {
+			log.Error("Failed to open service file: ", err)
+			os.Exit(1)
+		}
+
+		defer file.Close()
+
+		log.Info("Writing port and secret to service file..")
+		file.WriteString(fmt.Sprintf("%s|%s", port, secret))
+	}()
+
+	protocol := protocol.NewProtocol(secret)
+	protocol.Start(portChannel)
 }
