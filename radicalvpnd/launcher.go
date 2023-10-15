@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"os"
 	"radicalvpnd/logger"
+	"radicalvpnd/protocol"
+	"radicalvpnd/util"
 	"runtime"
 	"strconv"
 	"strings"
@@ -33,4 +35,12 @@ func Launch() {
 		log.Warning(strings.Repeat("-", 48))
 		os.Exit(1)
 	}
+
+	secret := util.RandomString(32)
+
+	log.Debug("Secret: " + secret)
+
+	protocol := protocol.NewProtocol(secret)
+	protocol.Start()
+
 }
