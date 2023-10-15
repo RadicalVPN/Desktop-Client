@@ -3,17 +3,14 @@ package settings
 import (
 	"encoding/json"
 	"fmt"
+	"os"
 	"radicalvpnd/platform"
 	"radicalvpnd/util"
 	"sync"
 )
 
-type Session struct {
-	Session string
-}
-
 type Settings struct {
-	Session Session
+	Session Session `json:"session"`
 }
 
 var mutx sync.RWMutex
@@ -33,6 +30,24 @@ func (s *Settings) SaveSettings() error {
 
 	//save the file with read/write perms for admin only
 	if err := util.WriteFile(platform.GetSettingsFile(), data, 0600); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (s *Settings) LoadSettings() error {
+	mutx.RLock()
+	defer mutx.RUnlock()
+
+	data, err := os.ReadFile(platform.GetSettingsFile())
+
+	if err != nil {
+		return fmt.Errorf("unable to read settings: %w", err)
+	}
+
+	err = json.Unmarshal(data, s)
+	if err != nil {
 		return err
 	}
 

@@ -1,9 +1,13 @@
 package protocol
 
 import (
+	"bytes"
+	"encoding/json"
 	"net"
 	"net/http"
 	"radicalvpnd/logger"
+	"radicalvpnd/settings"
+	"radicalvpnd/webapi"
 
 	"github.com/gin-gonic/gin"
 )
@@ -63,9 +67,38 @@ func (p *Protocol) LoadRoutes() {
 	})
 
 	r.GET("/server", func(c *gin.Context) {
+
 		c.JSON(http.StatusOK, gin.H{
 			"message": "pong",
 		})
+	})
+
+	r.POST("/login", func(c *gin.Context) {
+		internalBody := webapi.Signin{}
+		internalBody.RememberMe = true
+
+		if err := c.ShouldBindJSON(&internalBody); err != nil {
+			c.AbortWithStatus(http.StatusBadRequest)
+		}
+
+		body, _ := json.Marshal(internalBody)
+		requestBody := bytes.NewBuffer(body)
+
+		resp, err := http.Post("https://radicalvpn.com/api/1.0/auth", "application/json", requestBody)
+		if err != nil {
+			c.Status(http.StatusInternalServerError)
+		}
+
+		if resp.StatusCode != http.StatusOK {
+			c.AbortWithStatus(http.StatusUnauthorized)
+		} else {
+			sessionCookie := resp.Cookies()[0].Value
+
+			sett := settings.NewSettings()
+			sett.SetSession(sessionCookie)
+
+			c.Status(http.StatusOK)
+		}
 	})
 }
 
