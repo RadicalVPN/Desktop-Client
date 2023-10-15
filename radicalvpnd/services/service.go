@@ -7,5 +7,5 @@ import (
 var log *logger.Logger
 
 func init() {
-	log = logger.NewLogger("launch")
+	log = logger.NewLogger("service")
 }
