@@ -29,7 +29,7 @@ func pingServer(s webapi.Server) webapi.Server {
 
 	pinger.SetPrivileged(true)
 	pinger.Count = 1
-	pinger.Timeout = time.Millisecond * 10
+	pinger.Timeout = time.Millisecond * 400
 	pinger.Run()
 
 	stats := pinger.Statistics()
