@@ -73,6 +73,29 @@ func (p *Protocol) LoadRoutes() {
 		})
 	})
 
+	r.GET("/vpns", func(c *gin.Context) {
+		req, err := http.NewRequest("GET", "https://radicalvpn.com/api/1.0/vpn", nil)
+		if err != nil {
+			c.AbortWithStatus(http.StatusInternalServerError)
+		}
+		req.Header.Set("Cookie", getSessionCookie())
+
+		resp, err := http.DefaultClient.Do(req)
+
+		if err != nil {
+			c.AbortWithStatus(http.StatusInternalServerError)
+		}
+
+		vpns := []webapi.Vpn{}
+
+		defer resp.Body.Close()
+		if err := json.NewDecoder(resp.Body).Decode(&vpns); err != nil {
+			c.AbortWithStatus(http.StatusInternalServerError)
+		}
+
+		c.JSON(http.StatusOK, vpns)
+	})
+
 	r.GET("/server", func(c *gin.Context) {
 		req, err := http.NewRequest("GET", "https://radicalvpn.com/api/1.0/server", nil)
 		if err != nil {

@@ -17,3 +17,31 @@ type Server struct {
 	Online    bool   `json:"online"`
 	Latency   int    `json:"latency"`
 }
+
+type VpnTransfer struct {
+	Rx int `json:"rx"`
+	Tx int `json:"tx"`
+}
+
+type CurrentVpnTransfer struct {
+	Rx int `json:"rx"`
+	Tx int `json:"tx"`
+}
+
+type VpnStatus struct {
+	AllowedIps          []string           `json:"allowedIps"`
+	LatestHandshakeAt   string             `json:"latestHandshakeAt"`
+	Transfer            VpnTransfer        `json:"transfer"`
+	Current             CurrentVpnTransfer `json:"current"`
+	PersistentKeepalive string             `json:"persistentKeepalive"`
+}
+
+type Vpn struct {
+	Id        string    `json:"id"`
+	Active    bool      `json:"active"`
+	Alias     string    `json:"alias"`
+	CreatedAt string    `json:"createdAt"`
+	UpdatedAt string    `json:"updatedAt"`
+	Node      string    `json:"node"`
+	Status    VpnStatus `json:"status"`
+}

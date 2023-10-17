@@ -1,0 +1,11 @@
+//go:build windows
+
+package wireguard
+
+func (wg *Wireguard) Start() error {
+	return nil
+}
+
+func (wg *Wireguard) Stop() error {
+	return nil
+}
