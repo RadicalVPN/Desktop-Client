@@ -34,11 +34,11 @@ func pingServer(s webapi.Server) webapi.Server {
 
 	stats := pinger.Statistics()
 	if stats.AvgRtt > 0 {
-		ttl := int(stats.AvgRtt / time.Millisecond)
+		latency := int(stats.AvgRtt / time.Millisecond)
 
-		log.Info("Ping", s.Hostname, ": ", ttl, "ms")
+		log.Info("Ping", s.Hostname, ": ", latency, "ms")
 
-		s.Latency = ttl
+		s.Latency = latency
 	}
 
 	return s
