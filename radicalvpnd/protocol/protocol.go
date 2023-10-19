@@ -73,6 +73,13 @@ func (p *Protocol) LoadRoutes() {
 		})
 	})
 
+	r.POST("/local/connect", func(c *gin.Context) {
+		testservice := service.NewService()
+		testservice.Connect("")
+
+		c.Status(http.StatusOK)
+	})
+
 	r.GET("/vpns", func(c *gin.Context) {
 		req, err := http.NewRequest("GET", "https://radicalvpn.com/api/1.0/vpn", nil)
 		if err != nil {

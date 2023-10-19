@@ -8,9 +8,10 @@ import (
 )
 
 var (
-	serviceFile   string
-	settingsFile  string
-	wireguardPath string
+	serviceFile         string
+	settingsFile        string
+	wireguardPath       string
+	wireguardConfigPath string
 )
 
 func init() {
@@ -50,4 +51,8 @@ func GetSettingsFile() string {
 
 func GetWireguardPath() string {
 	return wireguardPath
+}
+
+func GetWireguardConfPath() string {
+	return wireguardConfigPath
 }
