@@ -40,7 +40,13 @@ func Launch() {
 		os.Exit(1)
 	}
 
-	secret := util.RandomString(32)
+	var secret string
+	envSecret, envSecretPresent := os.LookupEnv("RADICALVPND_SECRET")
+	if envSecretPresent {
+		secret = envSecret
+	} else {
+		secret = util.RandomString(32)
+	}
 
 	log.Debug("Secret: " + secret)
 

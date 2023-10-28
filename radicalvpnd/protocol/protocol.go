@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"net"
 	"net/http"
+	"os"
 	"radicalvpnd/logger"
 	service "radicalvpnd/services"
 	"radicalvpnd/settings"
@@ -49,7 +50,15 @@ func (p *Protocol) Start(startedPortChannel chan<- string) {
 	p.LoadMiddlewaares()
 	p.LoadRoutes()
 
-	listener, _ := net.Listen("tcp", ":0")
+	var listeningPort string
+	envSecret, envSecretPresent := os.LookupEnv("RADICALVPND_PORT")
+	if envSecretPresent {
+		listeningPort = ":" + envSecret
+	} else {
+		listeningPort = ":0"
+	}
+
+	listener, _ := net.Listen("tcp", listeningPort)
 	_, port, _ := net.SplitHostPort(listener.Addr().String())
 
 	startedPortChannel <- port
