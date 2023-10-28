@@ -53,3 +53,9 @@ func (s *Settings) LoadSettings() error {
 
 	return nil
 }
+
+func GetSessionCookie() string {
+	sett := NewSettings()
+	sett.LoadSettings()
+	return "RADICAL_SESSION_ID=" + sett.Session.Secret + ";"
+}

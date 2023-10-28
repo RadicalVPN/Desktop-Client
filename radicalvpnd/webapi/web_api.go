@@ -45,3 +45,7 @@ type Vpn struct {
 	Node      string    `json:"node"`
 	Status    VpnStatus `json:"status"`
 }
+
+type DynamicVpnCreation struct {
+	Node string `json:"node"`
+}

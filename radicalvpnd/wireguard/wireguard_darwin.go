@@ -9,7 +9,6 @@ import (
 )
 
 func (wg *Wireguard) start(config string) error {
-	fmt.Println(platform.GetWireguardQuickPath())
 	out, err := cli.Exec(platform.GetWireguardQuickPath(), "up", platform.GetWireguardConfPath())
 
 	if err != nil {

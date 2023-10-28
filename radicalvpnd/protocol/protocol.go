@@ -10,6 +10,7 @@ import (
 	service "radicalvpnd/services"
 	"radicalvpnd/settings"
 	"radicalvpnd/webapi"
+	"radicalvpnd/wireguard"
 
 	"github.com/gin-gonic/gin"
 )
@@ -67,12 +68,6 @@ func (p *Protocol) Start(startedPortChannel chan<- string) {
 	http.Serve(listener, p.engine)
 }
 
-func getSessionCookie() string {
-	sett := settings.NewSettings()
-	sett.LoadSettings()
-	return "RADICAL_SESSION_ID=" + sett.Session.Secret + ";"
-}
-
 func (p *Protocol) LoadRoutes() {
 	r := p.engine
 
@@ -83,8 +78,9 @@ func (p *Protocol) LoadRoutes() {
 	})
 
 	r.POST("/local/connect", func(c *gin.Context) {
-		testservice := service.NewService()
-		testservice.Connect("")
+		wg := wireguard.NewWireguard()
+
+		wg.Connect("as")
 
 		c.Status(http.StatusOK)
 	})
@@ -94,7 +90,7 @@ func (p *Protocol) LoadRoutes() {
 		if err != nil {
 			c.AbortWithStatus(http.StatusInternalServerError)
 		}
-		req.Header.Set("Cookie", getSessionCookie())
+		req.Header.Set("Cookie", settings.GetSessionCookie())
 
 		resp, err := http.DefaultClient.Do(req)
 
