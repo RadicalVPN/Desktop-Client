@@ -1,17 +1,24 @@
 package cli
 
-import "os/exec"
+import (
+	"bytes"
+	"os/exec"
+)
 
-func Exec(binary string, args ...string) error {
+func Exec(binary string, args ...string) (string, error) {
 	cmd := exec.Command(binary, args...)
+	var outBuffer bytes.Buffer
+
+	cmd.Stdout = &outBuffer
+	cmd.Stderr = &outBuffer
 
 	if err := cmd.Start(); err != nil {
-		return err
+		return "", err
 	}
 
 	if err := cmd.Wait(); err != nil {
-		return err
+		return "", err
 	}
 
-	return nil
+	return outBuffer.String(), nil
 }

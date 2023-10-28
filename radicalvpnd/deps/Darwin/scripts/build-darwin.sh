@@ -25,6 +25,9 @@ cd ..
 
 echo "[*] Cloning wireguard-tools.."
 git clone https://git.zx2c4.com/wireguard-tools/
+
+echo "[*] Building wireguard-tools.."
+
 cd wireguard-tools/src
 make
 

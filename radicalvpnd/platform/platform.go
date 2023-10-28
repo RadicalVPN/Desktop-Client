@@ -11,6 +11,7 @@ var (
 	serviceFile         string
 	settingsFile        string
 	wireguardPath       string
+	wireguardQuickPath  string
 	wireguardConfigPath string
 )
 
@@ -55,4 +56,8 @@ func GetWireguardPath() string {
 
 func GetWireguardConfPath() string {
 	return wireguardConfigPath
+}
+
+func GetWireguardQuickPath() string {
+	return wireguardQuickPath
 }
