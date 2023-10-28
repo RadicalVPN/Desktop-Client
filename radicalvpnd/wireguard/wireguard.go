@@ -5,10 +5,10 @@ import (
 	"encoding/json"
 	"io"
 	"net/http"
-	"os"
 	"radicalvpnd/logger"
 	"radicalvpnd/platform"
 	"radicalvpnd/settings"
+	"radicalvpnd/util"
 	"radicalvpnd/webapi"
 )
 
@@ -62,7 +62,7 @@ func (wg *Wireguard) Connect(config string) error {
 		return err
 	}
 
-	os.WriteFile(platform.GetWireguardConfPath(), conf, 0600)
+	util.WriteFile(platform.GetWireguardConfPath(), conf, 0600)
 
 	log.Info("Connecting to wireguard..")
 	wg.start(config)
