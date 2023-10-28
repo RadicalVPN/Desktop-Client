@@ -3,3 +3,6 @@ radicalvpnd.exe
 
 deps/Windows/.deps
 deps/Windows/WireGuard
+
+deps/Darwin/.deps
+deps/Darwin/WireGuard
