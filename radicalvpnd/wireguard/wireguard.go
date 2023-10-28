@@ -12,10 +12,13 @@ import (
 	"radicalvpnd/settings"
 	"radicalvpnd/util"
 	"radicalvpnd/webapi"
+	"sync"
 )
 
 type Wireguard struct {
 }
+
+var mutex sync.RWMutex
 
 func NewWireguard() *Wireguard {
 	return &Wireguard{}
@@ -63,6 +66,9 @@ func (wg *Wireguard) downloadConfiguration(node string) ([]byte, error) {
 }
 
 func (wg *Wireguard) Connect() error {
+	mutex.Lock()
+	defer mutex.Unlock()
+
 	conf, err := wg.downloadConfiguration("asd")
 	if err != nil {
 		return err

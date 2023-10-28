@@ -132,6 +132,10 @@ func (p *Protocol) LoadRoutes() {
 		c.JSON(http.StatusOK, servers)
 	})
 
+	r.GET("/me", func(c *gin.Context) {
+
+	})
+
 	r.POST("/login", func(c *gin.Context) {
 		internalBody := webapi.Signin{}
 		internalBody.RememberMe = true
