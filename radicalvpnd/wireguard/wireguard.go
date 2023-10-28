@@ -69,3 +69,10 @@ func (wg *Wireguard) Connect() error {
 
 	return nil
 }
+
+func (wg *Wireguard) Disconnect() error {
+	log.Info("Disconnecting from wireguard..")
+	wg.stop()
+
+	return nil
+}

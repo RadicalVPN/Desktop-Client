@@ -85,6 +85,14 @@ func (p *Protocol) LoadRoutes() {
 		c.Status(http.StatusOK)
 	})
 
+	r.POST("/local/disconnect", func(c *gin.Context) {
+		wg := wireguard.NewWireguard()
+
+		wg.Disconnect()
+
+		c.Status(http.StatusOK)
+	})
+
 	r.GET("/server", func(c *gin.Context) {
 		req, err := http.NewRequest("GET", "https://radicalvpn.com/api/1.0/server", nil)
 		if err != nil {

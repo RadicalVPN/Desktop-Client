@@ -15,7 +15,19 @@ func (wg *Wireguard) start() error {
 		fmt.Println("err", err)
 	}
 
-	fmt.Println("out", out)
+	fmt.Println(out)
+
+	return nil
+}
+
+func (wg *Wireguard) stop() error {
+	out, err := cli.Exec(platform.GetWireguardQuickPath(), "down", platform.GetWireguardConfPath())
+
+	if err != nil {
+		fmt.Println("err", err)
+	}
+
+	fmt.Println(out)
 
 	return nil
 }
