@@ -8,7 +8,7 @@ import (
 	"radicalvpnd/platform"
 )
 
-func (wg *Wireguard) start(config string) error {
+func (wg *Wireguard) start() error {
 	out, err := cli.Exec(platform.GetWireguardQuickPath(), "up", platform.GetWireguardConfPath())
 
 	if err != nil {

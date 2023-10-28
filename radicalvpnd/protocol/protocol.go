@@ -80,7 +80,7 @@ func (p *Protocol) LoadRoutes() {
 	r.POST("/local/connect", func(c *gin.Context) {
 		wg := wireguard.NewWireguard()
 
-		wg.Connect("as")
+		wg.Connect()
 
 		c.Status(http.StatusOK)
 	})

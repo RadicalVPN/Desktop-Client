@@ -56,7 +56,7 @@ func (wg *Wireguard) downloadConfiguration(node string) ([]byte, error) {
 	return body, nil
 }
 
-func (wg *Wireguard) Connect(config string) error {
+func (wg *Wireguard) Connect() error {
 	conf, err := wg.downloadConfiguration("asd")
 	if err != nil {
 		return err
@@ -65,7 +65,7 @@ func (wg *Wireguard) Connect(config string) error {
 	util.WriteFile(platform.GetWireguardConfPath(), conf, 0600)
 
 	log.Info("Connecting to wireguard..")
-	wg.start(config)
+	wg.start()
 
 	return nil
 }
