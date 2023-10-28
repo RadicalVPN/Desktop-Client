@@ -77,10 +77,24 @@ func (p *Protocol) LoadRoutes() {
 		})
 	})
 
+	r.GET("/local/connected", func(c *gin.Context) {
+		wg := wireguard.NewWireguard()
+
+		c.JSON(http.StatusOK, gin.H{
+			"connected": wg.IsConnected(),
+		})
+	})
+
 	r.POST("/local/connect", func(c *gin.Context) {
 		wg := wireguard.NewWireguard()
 
-		wg.Connect()
+		err := wg.Connect()
+
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"error": err.Error(),
+			})
+		}
 
 		c.Status(http.StatusOK)
 	})

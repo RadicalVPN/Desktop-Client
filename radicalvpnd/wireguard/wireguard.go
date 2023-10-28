@@ -3,8 +3,10 @@ package wireguard
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"io"
 	"net/http"
+	"radicalvpnd/cli"
 	"radicalvpnd/logger"
 	"radicalvpnd/platform"
 	"radicalvpnd/settings"
@@ -53,6 +55,10 @@ func (wg *Wireguard) downloadConfiguration(node string) ([]byte, error) {
 		return nil, err
 	}
 
+	if resp.StatusCode != 200 {
+		return nil, errors.New(string(body))
+	}
+
 	return body, nil
 }
 
@@ -75,4 +81,9 @@ func (wg *Wireguard) Disconnect() error {
 	wg.stop()
 
 	return nil
+}
+
+func (wg *Wireguard) IsConnected() bool {
+	res, _ := cli.Exec(platform.GetWireguardPath(), "show")
+	return res != ""
 }
