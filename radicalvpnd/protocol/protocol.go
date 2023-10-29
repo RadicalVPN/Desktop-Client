@@ -3,6 +3,7 @@ package protocol
 import (
 	"bytes"
 	"encoding/json"
+	"io"
 	"net"
 	"net/http"
 	"os"
@@ -31,6 +32,17 @@ func NewProtocol(secret string) *Protocol {
 	r := gin.Default()
 
 	return &Protocol{secret: secret, engine: r}
+}
+
+func (p *Protocol) ensureAuth() bool {
+	sett := settings.NewSettings()
+	sett.LoadSettings()
+
+	if sett.Session.Secret == "" {
+		return false
+	}
+
+	return true
 }
 
 func (p *Protocol) AuthMiddleware() gin.HandlerFunc {
@@ -78,6 +90,11 @@ func (p *Protocol) LoadRoutes() {
 	})
 
 	r.GET("/local/connected", func(c *gin.Context) {
+		if !p.ensureAuth() {
+			c.AbortWithStatus(http.StatusUnauthorized)
+			return
+		}
+
 		wg := wireguard.NewWireguard()
 
 		c.JSON(http.StatusOK, gin.H{
@@ -86,6 +103,11 @@ func (p *Protocol) LoadRoutes() {
 	})
 
 	r.POST("/local/connect", func(c *gin.Context) {
+		if !p.ensureAuth() {
+			c.AbortWithStatus(http.StatusUnauthorized)
+			return
+		}
+
 		wg := wireguard.NewWireguard()
 
 		err := wg.Connect()
@@ -100,6 +122,11 @@ func (p *Protocol) LoadRoutes() {
 	})
 
 	r.POST("/local/disconnect", func(c *gin.Context) {
+		if !p.ensureAuth() {
+			c.AbortWithStatus(http.StatusUnauthorized)
+			return
+		}
+
 		wg := wireguard.NewWireguard()
 
 		wg.Disconnect()
@@ -108,6 +135,11 @@ func (p *Protocol) LoadRoutes() {
 	})
 
 	r.GET("/server", func(c *gin.Context) {
+		if !p.ensureAuth() {
+			c.AbortWithStatus(http.StatusUnauthorized)
+			return
+		}
+
 		req, err := http.NewRequest("GET", "https://radicalvpn.com/api/1.0/server", nil)
 		if err != nil {
 			c.AbortWithStatus(http.StatusInternalServerError)
@@ -132,8 +164,40 @@ func (p *Protocol) LoadRoutes() {
 		c.JSON(http.StatusOK, servers)
 	})
 
-	r.GET("/me", func(c *gin.Context) {
+	r.GET("/", func(c *gin.Context) {
+		if !p.ensureAuth() {
+			c.AbortWithStatus(http.StatusUnauthorized)
+			return
+		}
 
+		req, err := http.NewRequest("GET", "https://radicalvpn.com/api/1.0/auth", nil)
+		if err != nil {
+			c.AbortWithStatus(http.StatusInternalServerError)
+			return
+		}
+		req.Header.Set("Cookie", settings.GetSessionCookie())
+
+		resp, err := http.DefaultClient.Do(req)
+
+		if err != nil {
+			c.AbortWithStatus(http.StatusInternalServerError)
+			return
+		}
+
+		defer resp.Body.Close()
+
+		//parse body
+		body, err := io.ReadAll(resp.Body)
+		if err != nil {
+			c.AbortWithStatus(http.StatusInternalServerError)
+			return
+		}
+
+		if resp.StatusCode != http.StatusOK {
+			c.AbortWithStatus(http.StatusUnauthorized)
+		} else {
+			c.Data(http.StatusOK, "application/json; charset=utf-8", body)
+		}
 	})
 
 	r.POST("/login", func(c *gin.Context) {
