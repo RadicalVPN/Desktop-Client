@@ -36,4 +36,21 @@ export class DaemonHelper {
       return false
     }
   }
+
+  public async getServerList() {
+    const credentials = this.getCredentials()
+
+    try {
+      const resp = await axios.get(`http://localhost:${credentials.port}/server`, {
+        headers: {
+          'x-radical-daemon-secret': credentials.secret,
+        },
+        validateStatus: () => true,
+      })
+
+      return resp.data
+    } catch {
+      return []
+    }
+  }
 }

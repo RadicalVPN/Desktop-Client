@@ -7,6 +7,7 @@ import Page404Layout from '../layouts/Page404Layout.vue'
 import RouteViewComponent from '../layouts/RouterBypass.vue'
 import UIRoute from '../pages/admin/ui/route'
 import { DaemonHelper } from '../helper/daemon'
+import { useGlobalStore } from '../stores/global-store'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -18,7 +19,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/admin',
     component: AppLayout,
     beforeEnter: async (to, from, next) => {
-      ;(await new DaemonHelper().isAuthed()) ? next() : next('/auth/login')
+      const store = useGlobalStore()
+      const daemonHelper = new DaemonHelper()
+
+      store.serverList = await daemonHelper.getServerList()
+      ;(await daemonHelper.isAuthed()) ? next() : next('/auth/login')
     },
     children: [
       {

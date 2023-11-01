@@ -14,7 +14,7 @@
 
         <va-input class="pb-4" placeholder="Server Name" />
         <div
-          v-for="(option, id) in serverList"
+          v-for="(option, id) in store.serverList"
           :key="id"
           class="server__item flex flex-1 flex-wrap items-center pt-1 pb-1 mt-2 mb-2"
           @click="console.log(option.city)"
@@ -25,7 +25,7 @@
           </span>
 
           <div class="ml-auto text-sm flex items-center">
-            <a class="ml-4">{{ option.delay + ' ms' }}</a>
+            <a class="ml-4">{{ option.latency + ' ms' }}</a>
           </div>
 
           <va-divider />
@@ -39,29 +39,13 @@
   import { ref } from 'vue'
   import LineMap from '../../../components/maps/LineMap.vue'
   import { lineMapData } from '../../../data/maps/lineMapData'
+  import { useGlobalStore } from '../../../stores/global-store'
 
   const cities = ref(lineMapData.cities)
   const mainCity = ref('Vilnius')
   const homeCity = ref('Vilnius')
-
+  const store = useGlobalStore()
   const isConnected = ref(false)
-  const serverList = ref([
-    {
-      country: 'gb',
-      city: 'Test',
-      delay: 120,
-    },
-    {
-      country: 'gb',
-      city: 'Test',
-      delay: 150,
-    },
-    {
-      country: 'de',
-      city: 'Test 2asdasd',
-      delay: 50,
-    },
-  ])
 </script>
 
 <style lang="scss" scoped>
