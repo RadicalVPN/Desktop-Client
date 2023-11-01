@@ -31,12 +31,10 @@
 </template>
 
 <script setup lang="ts">
-  import { computed, ref } from 'vue'
+  import { computed, onMounted, ref } from 'vue'
   import { useRouter } from 'vue-router'
   import { useI18n } from 'vue-i18n'
   import axios from 'axios'
-  import { readFileSync } from 'fs'
-
   import { DaemonHelper } from '../../../helper/daemon'
 
   const { t } = useI18n()
@@ -48,6 +46,12 @@
   const router = useRouter()
 
   const formReady = computed(() => !emailErrors.value.length && !passwordErrors.value.length)
+
+  onMounted(async () => {
+    if (await new DaemonHelper().isAuthed()) {
+      router.push({ name: 'dashboard' })
+    }
+  })
 
   async function onsubmit() {
     if (!formReady.value) return

@@ -1,3 +1,4 @@
+import axios from 'axios'
 import { readFileSync } from 'node:fs'
 
 export class DaemonHelper {
@@ -16,6 +17,23 @@ export class DaemonHelper {
     return {
       port: parseInt(credentials[0]),
       secret: credentials[1],
+    }
+  }
+
+  public async isAuthed() {
+    const credentials = this.getCredentials()
+
+    try {
+      const resp = await axios.get(`http://localhost:${credentials.port}/`, {
+        headers: {
+          'x-radical-daemon-secret': credentials.secret,
+        },
+        validateStatus: () => true,
+      })
+
+      return resp.status === 200
+    } catch {
+      return false
     }
   }
 }

@@ -6,6 +6,7 @@ import Page404Layout from '../layouts/Page404Layout.vue'
 
 import RouteViewComponent from '../layouts/RouterBypass.vue'
 import UIRoute from '../pages/admin/ui/route'
+import { DaemonHelper } from '../helper/daemon'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -16,6 +17,9 @@ const routes: Array<RouteRecordRaw> = [
     name: 'admin',
     path: '/admin',
     component: AppLayout,
+    beforeEnter: async (to, from, next) => {
+      ;(await new DaemonHelper().isAuthed()) ? next() : next('/auth/login')
+    },
     children: [
       {
         name: 'dashboard',
