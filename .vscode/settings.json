@@ -1,4 +1,4 @@
 {
   "editor.formatOnSave": true,
-  "editor.defaultFormatter": "golang.go"
+  "editor.defaultFormatter": "esbenp.prettier-vscode"
 }

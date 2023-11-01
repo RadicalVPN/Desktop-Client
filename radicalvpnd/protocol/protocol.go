@@ -47,9 +47,11 @@ func (p *Protocol) ensureAuth() bool {
 
 func (p *Protocol) AuthMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		secret := c.Request.Header.Get("X-RadicalDaemon-Secret")
+		secret := c.Request.Header.Get("x-radical-daemon-secret")
 
-		if secret != p.secret {
+		c.Header("Access-Control-Allow-Origin", "*")
+
+		if secret != p.secret && c.Request.Method != "OPTIONS" {
 			c.AbortWithStatus(http.StatusUnauthorized)
 		}
 
@@ -82,6 +84,10 @@ func (p *Protocol) Start(startedPortChannel chan<- string) {
 
 func (p *Protocol) LoadRoutes() {
 	r := p.engine
+
+	r.OPTIONS("/local/connect", func(c *gin.Context) {
+		c.Status(http.StatusOK)
+	})
 
 	r.GET("/ping", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
@@ -217,7 +223,15 @@ func (p *Protocol) LoadRoutes() {
 		}
 
 		if resp.StatusCode != http.StatusOK {
-			c.AbortWithStatus(http.StatusUnauthorized)
+			//parse body
+			body, err := io.ReadAll(resp.Body)
+			defer resp.Body.Close()
+			if err != nil {
+				c.AbortWithStatus(http.StatusInternalServerError)
+				return
+			}
+
+			c.Data(http.StatusUnauthorized, "application/json; charset=utf-8", body)
 		} else {
 			sessionCookie := resp.Cookies()[0].Value
 
