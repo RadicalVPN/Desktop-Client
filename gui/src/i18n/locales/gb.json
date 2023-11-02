@@ -579,5 +579,11 @@
     "overflow": "Tabs Overflow",
     "hidden": "Tabs with Hidden slider",
     "grow": "Tabs Grow"
+  },
+  "vpn": {
+    "connectionLimit": {
+      "title": "Connection Limit",
+      "description": "You have reached the connection limit. We allow up to 5 parallel connections"
+    }
   }
 }

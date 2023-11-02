@@ -54,7 +54,7 @@ export class DaemonHelper {
     }
   }
 
-  public async connectToServer(nodeId: string): Promise<boolean> {
+  public async connectToServer(nodeId: string) {
     const credentials = this.getCredentials()
 
     try {
@@ -71,9 +71,15 @@ export class DaemonHelper {
         },
       )
 
-      return resp.status === 200
+      return {
+        status: resp.status === 200,
+        data: resp.data,
+      }
     } catch {
-      return false
+      return {
+        status: false,
+        data: {},
+      }
     }
   }
 

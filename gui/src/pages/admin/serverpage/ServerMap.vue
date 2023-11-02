@@ -51,6 +51,8 @@
   import { useGlobalStore } from '../../../stores/global-store'
   import { targetSVG } from '../../../data/maps/lineMapData'
   import { DaemonHelper } from '../../../helper/daemon'
+  import { useModal } from 'vuestic-ui'
+  import { useI18n } from 'vue-i18n'
 
   async function connect() {
     isConnectionStateSwitching.value = true
@@ -70,11 +72,22 @@
 
     const res = await new DaemonHelper().connectToServer(server.id)
 
-    if (res) {
+    if (res.status === true) {
       isConnected.value = true
-      isConnectionStateSwitching.value = false
-      mainCity.value = 'N/A'
     }
+
+    if (res.status === false && res.data.error === 'vpn connection limit') {
+      await confirm({
+        title: t('vpn.connectionLimit.title'),
+        message: t('vpn.connectionLimit.description'),
+
+        hideDefaultActions: true,
+        closeButton: true,
+        blur: true,
+      })
+    }
+
+    isConnectionStateSwitching.value = false
 
     console.log('connecting..')
   }
@@ -116,6 +129,8 @@
     })),
   )
   const isConnected = ref(false)
+  const { confirm } = useModal()
+  const { t } = useI18n()
 
   onMounted(async () => {
     await syncConnectionState()
