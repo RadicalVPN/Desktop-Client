@@ -12,6 +12,7 @@ import (
 	"radicalvpnd/settings"
 	"radicalvpnd/webapi"
 	"radicalvpnd/wireguard"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -80,6 +81,21 @@ func (p *Protocol) Start(startedPortChannel chan<- string) {
 
 	log.Info("Daemon Protocol listening on 127.0.0.1:", port)
 	http.Serve(listener, p.engine)
+}
+
+func (p *Protocol) getHttpClient() *http.Client {
+	return &http.Client{
+		Transport: &http.Transport{
+			DialContext: (&net.Dialer{
+				Timeout:   5 * time.Second,
+			}).DialContext,
+			TLSHandshakeTimeout:   5 * time.Second,
+			ResponseHeaderTimeout: 5 * time.Second,
+			ExpectContinueTimeout: 1 * time.Second,
+			DisableKeepAlives: true,
+			MaxIdleConnsPerHost: -1,
+		},
+	}
 }
 
 func (p *Protocol) LoadRoutes() {
@@ -156,7 +172,7 @@ func (p *Protocol) LoadRoutes() {
 		}
 		req.Header.Set("Cookie", settings.GetSessionCookie())
 
-		resp, err := http.DefaultClient.Do(req)
+		resp, err := p.getHttpClient().Do(req)
 
 		if err != nil {
 			c.AbortWithStatus(http.StatusInternalServerError)
@@ -187,7 +203,7 @@ func (p *Protocol) LoadRoutes() {
 		}
 		req.Header.Set("Cookie", settings.GetSessionCookie())
 
-		resp, err := http.DefaultClient.Do(req)
+		resp, err := p.getHttpClient().Do(req)
 
 		if err != nil {
 			c.AbortWithStatus(http.StatusInternalServerError)
