@@ -76,4 +76,48 @@ export class DaemonHelper {
       return false
     }
   }
+
+  public async disconnectFromServer() {
+    const credentials = this.getCredentials()
+
+    try {
+      const resp = await axios.post(
+        `http://localhost:${credentials.port}/local/disconnect`,
+        {},
+        {
+          headers: {
+            'x-radical-daemon-secret': credentials.secret,
+          },
+          validateStatus: () => true,
+        },
+      )
+
+      return resp.status === 200
+    } catch {
+      return false
+    }
+  }
+
+  /**
+   * Get the connection state of the daemon
+   * true = vpn is connected
+   * false = vpn is disconnected
+   * @returns {Promise<boolean>}
+   */
+  public async getConnectionState(): Promise<boolean> {
+    const credentials = this.getCredentials()
+
+    try {
+      const resp = await axios.get(`http://localhost:${credentials.port}/local/connected`, {
+        headers: {
+          'x-radical-daemon-secret': credentials.secret,
+        },
+        validateStatus: () => true,
+      })
+
+      return resp.data.connected || false
+    } catch {
+      return false
+    }
+  }
 }

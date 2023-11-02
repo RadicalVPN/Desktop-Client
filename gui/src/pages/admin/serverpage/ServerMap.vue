@@ -15,7 +15,9 @@
           <p class="pb-4">Selected Server: {{ mainCity }}</p>
 
           <va-button v-if="!isConnected" :loading="isConnectionStateSwitching" @click="connect()">Connect</va-button>
-          <va-button v-if="isConnected" :loading="isConnectionStateSwitching">Disconnect</va-button>
+          <va-button v-if="isConnected" :loading="isConnectionStateSwitching" @click="disconnect()"
+            >Disconnect</va-button
+          >
         </div>
 
         <va-divider class="pt-4 pb-4" />
@@ -44,7 +46,7 @@
 </template>
 
 <script setup lang="ts">
-  import { ref } from 'vue'
+  import { onMounted, ref } from 'vue'
   import LineMap from '../../../components/maps/LineMap.vue'
   import { useGlobalStore } from '../../../stores/global-store'
   import { targetSVG } from '../../../data/maps/lineMapData'
@@ -71,9 +73,33 @@
     if (res) {
       isConnected.value = true
       isConnectionStateSwitching.value = false
+      mainCity.value = 'N/A'
     }
 
     console.log('connecting..')
+  }
+
+  async function disconnect() {
+    isConnectionStateSwitching.value = true
+
+    const res = await new DaemonHelper().disconnectFromServer()
+
+    if (res) {
+      isConnected.value = false
+    }
+
+    isConnectionStateSwitching.value = false
+  }
+
+  async function syncConnectionState() {
+    const res = await new DaemonHelper().getConnectionState()
+
+    if (res) {
+      isConnected.value = true
+      mainCity.value = 'Unknown'
+    } else {
+      isConnected.value = false
+    }
   }
 
   const store = useGlobalStore()
@@ -89,8 +115,11 @@
       svgPath: targetSVG,
     })),
   )
-
   const isConnected = ref(false)
+
+  onMounted(async () => {
+    await syncConnectionState()
+  })
 </script>
 
 <style lang="scss" scoped>
