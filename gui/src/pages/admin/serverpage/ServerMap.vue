@@ -6,13 +6,16 @@
       <va-card-content>
         <div class="flex items-center pb-6">
           <va-icon :color="isConnected ? 'success' : 'danger'" :name="isConnected ? 'fa-lock' : 'fa-lock-open'" />
-          <p class="pl-2 text--secondary" :style="{ color: isConnected ? 'success' : 'danger' }">Not Connected</p>
+          <p class="pl-2 text--secondary font-bold" :style="{ color: isConnected ? 'success' : 'danger' }">
+            {{ isConnected ? 'Connected' : 'Disconnected' }}
+          </p>
         </div>
 
         <div v-if="mainCity != 'N/A'">
-          <p>Selected Country: {{ mainCity }}</p>
+          <p class="pb-4">Selected Server: {{ mainCity }}</p>
 
-          <va-button>Connect</va-button>
+          <va-button v-if="!isConnected" :loading="isConnectionStateSwitching" @click="connect()">Connect</va-button>
+          <va-button v-if="isConnected" :loading="isConnectionStateSwitching">Disconnect</va-button>
         </div>
 
         <va-divider class="pt-4 pb-4" />
@@ -45,9 +48,37 @@
   import LineMap from '../../../components/maps/LineMap.vue'
   import { useGlobalStore } from '../../../stores/global-store'
   import { targetSVG } from '../../../data/maps/lineMapData'
+  import { DaemonHelper } from '../../../helper/daemon'
+
+  async function connect() {
+    isConnectionStateSwitching.value = true
+
+    //parse the the server from the selection
+    const split = mainCity.value.split(' - ')
+    const countryName = split[0]
+    const cityName = split[1]
+
+    //get the server from the store
+    const server = store.serverList.find((server) => server.city === cityName && server.country_name === countryName)
+
+    if (!server) {
+      console.error('server not found')
+      return
+    }
+
+    const res = await new DaemonHelper().connectToServer(server.id)
+
+    if (res) {
+      isConnected.value = true
+      isConnectionStateSwitching.value = false
+    }
+
+    console.log('connecting..')
+  }
 
   const store = useGlobalStore()
   const mainCity = ref('N/A')
+  const isConnectionStateSwitching = ref(false)
   const cities = ref(
     store.serverList.map((server) => ({
       color: 'info',

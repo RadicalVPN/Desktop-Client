@@ -53,4 +53,27 @@ export class DaemonHelper {
       return []
     }
   }
+
+  public async connectToServer(nodeId: string): Promise<boolean> {
+    const credentials = this.getCredentials()
+
+    try {
+      const resp = await axios.post(
+        `http://localhost:${credentials.port}/local/connect`,
+        {
+          node: nodeId,
+        },
+        {
+          headers: {
+            'x-radical-daemon-secret': credentials.secret,
+          },
+          validateStatus: () => true,
+        },
+      )
+
+      return resp.status === 200
+    } catch {
+      return false
+    }
+  }
 }

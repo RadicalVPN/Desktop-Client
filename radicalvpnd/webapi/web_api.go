@@ -6,11 +6,18 @@ type Signin struct {
 	RememberMe bool   `json:"rememberMe"`
 }
 
+type VpnConnect struct {
+	Node string `json:"node"`
+}
+
 type Server struct {
 	Id        string `json:"id"`
 	Hostname  string `json:"hostname"`
 	Country   string `json:"country"`
+	CountryName  string `json:"country_name"`
 	City      string `json:"city"`
+	Latitude string `json:"latitude"`
+	Longitude string `json:"longitude"`
 	Internalp string `json:"internal_ip"`
 	ExternaIp string `json:"external_ip"`
 	PublicKey string `json:"public_key"`

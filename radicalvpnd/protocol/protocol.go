@@ -114,9 +114,13 @@ func (p *Protocol) LoadRoutes() {
 			return
 		}
 
-		wg := wireguard.NewWireguard()
+		internalBody := webapi.VpnConnect{}
+		if err := c.ShouldBindJSON(&internalBody); err != nil {
+			c.AbortWithStatus(http.StatusBadRequest)
+		}
 
-		err := wg.Connect()
+		wg := wireguard.NewWireguard()
+		err := wg.Connect(internalBody.Node)
 
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{

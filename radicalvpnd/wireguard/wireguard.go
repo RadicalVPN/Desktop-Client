@@ -33,7 +33,7 @@ func init() {
 
 func (wg *Wireguard) downloadConfiguration(node string) ([]byte, error) {
 	dynamicvpn := webapi.DynamicVpnCreation{
-		Node: "0102c185-9df6-4dbf-8580-272a68f67c69",
+		Node: node,
 	}
 	payload, _ := json.Marshal(dynamicvpn)
 
@@ -65,11 +65,11 @@ func (wg *Wireguard) downloadConfiguration(node string) ([]byte, error) {
 	return body, nil
 }
 
-func (wg *Wireguard) Connect() error {
+func (wg *Wireguard) Connect(node string) error {
 	mutex.Lock()
 	defer mutex.Unlock()
 
-	conf, err := wg.downloadConfiguration("asd")
+	conf, err := wg.downloadConfiguration(node)
 	if err != nil {
 		return err
 	}

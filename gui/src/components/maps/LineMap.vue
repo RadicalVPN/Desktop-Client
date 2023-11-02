@@ -105,7 +105,6 @@
     const bulletTemplate = am5.Template.new({}) as am5.Template<am5.Graphics>
     bulletTemplate.events.on('click', (ev) => {
       mainCity.value = (ev as any).target._dataItem.dataContext.title
-      console.log((ev as any).target._dataItem.dataContext.title)
     })
 
     pointSeries.bullets.push((root, series, dataItem) => {
