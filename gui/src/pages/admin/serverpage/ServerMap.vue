@@ -1,5 +1,5 @@
 <template>
-  <line-map v-model="mainCity" :map-data="cities" :home-city="homeCity" />
+  <line-map v-model="mainCity" :map-data="cities" />
 
   <div class="absolute top-1/4 ml-4 transform -translate-y-1/4 w-50 h-80 pt-6">
     <va-card>
@@ -8,7 +8,12 @@
           <va-icon :color="isConnected ? 'success' : 'danger'" :name="isConnected ? 'fa-lock' : 'fa-lock-open'" />
           <p class="pl-2 text--secondary" :style="{ color: isConnected ? 'success' : 'danger' }">Not Connected</p>
         </div>
-        <va-button>Connect</va-button>
+
+        <div v-if="mainCity != 'N/A'">
+          <p>Selected Country: {{ mainCity }}</p>
+
+          <va-button>Connect</va-button>
+        </div>
 
         <va-divider class="pt-4 pb-4" />
 
@@ -38,13 +43,22 @@
 <script setup lang="ts">
   import { ref } from 'vue'
   import LineMap from '../../../components/maps/LineMap.vue'
-  import { lineMapData } from '../../../data/maps/lineMapData'
   import { useGlobalStore } from '../../../stores/global-store'
+  import { targetSVG } from '../../../data/maps/lineMapData'
 
-  const cities = ref(lineMapData.cities)
-  const mainCity = ref('Vilnius')
-  const homeCity = ref('Vilnius')
   const store = useGlobalStore()
+  const mainCity = ref('N/A')
+  const cities = ref(
+    store.serverList.map((server) => ({
+      color: 'info',
+      title: `${server.country_name} - ${server.city}`,
+      country: server.country,
+      latitude: parseInt(server.latitude),
+      longitude: parseInt(server.longitude),
+      svgPath: targetSVG,
+    })),
+  )
+
   const isConnected = ref(false)
 </script>
 
