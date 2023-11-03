@@ -292,6 +292,7 @@
   },
   "menu": {
     "auth": "Auth",
+    "settings": "Settings",
     "rating": "Rating",
     "buttons": "Buttons",
     "charts": "Charts",
