@@ -290,6 +290,12 @@
     "simplified_chinese": "Simplified Chinese",
     "persian": "Persian"
   },
+
+  "settings": {
+    "personalization": "Personalization",
+    "theme": "Theme"
+  },
+
   "menu": {
     "auth": "Auth",
     "settings": "Settings",

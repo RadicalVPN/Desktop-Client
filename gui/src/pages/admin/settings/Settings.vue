@@ -1,5 +1,7 @@
 <template>
-  <p>hello world</p>
+  <settings-personalization />
 </template>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+  import SettingsPersonalization from './SettingsPersonalization.vue'
+</script>

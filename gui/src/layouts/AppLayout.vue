@@ -12,7 +12,10 @@
           :animated="!isMobile"
         />
       </div>
-      <div class="app-layout__page">
+      <div v-if="currentRouteName == 'dashboard'" class="app-layout__page">
+        <router-view />
+      </div>
+      <div v-else class="p-2 md:px-6 md:py-9">
         <router-view />
       </div>
     </div>
@@ -22,11 +25,12 @@
 <script setup lang="ts">
   import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
   import { storeToRefs } from 'pinia'
-  import { onBeforeRouteUpdate } from 'vue-router'
+  import { onBeforeRouteUpdate, useRoute } from 'vue-router'
   import { useGlobalStore } from '../stores/global-store'
   import Sidebar from '../components/sidebar/Sidebar.vue'
 
   const GlobalStore = useGlobalStore()
+  const route = useRoute()
 
   const mobileBreakPointPX = 640
   const tabletBreakPointPX = 768
@@ -37,8 +41,11 @@
   const isMobile = ref(false)
   const isTablet = ref(false)
   const { isSidebarMinimized } = storeToRefs(GlobalStore)
+  const currentRouteName = computed(() => route.name)
   const checkIsTablet = () => window.innerWidth <= tabletBreakPointPX
   const checkIsMobile = () => window.innerWidth <= mobileBreakPointPX
+
+  console.log(currentRouteName.value)
 
   const onResize = () => {
     isSidebarMinimized.value = checkIsTablet()
