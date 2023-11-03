@@ -45,8 +45,6 @@
   const checkIsTablet = () => window.innerWidth <= tabletBreakPointPX
   const checkIsMobile = () => window.innerWidth <= mobileBreakPointPX
 
-  console.log(currentRouteName.value)
-
   const onResize = () => {
     isSidebarMinimized.value = checkIsTablet()
 

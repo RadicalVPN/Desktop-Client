@@ -3,13 +3,13 @@
     <va-card-title style="font-size: 0.875rem">{{ t('settings.personalization') }}</va-card-title>
 
     <va-card-content>
-      <va-select v-model="selectedTheme" :options="themeOptions" class="mb-8" :label="t('menu.theme')"></va-select>
+      <va-select v-model="store.theme" :options="themeOptions" class="mb-8" :label="t('menu.theme')"></va-select>
     </va-card-content>
   </va-card>
 </template>
 
 <script lang="ts" setup>
-  import { ref, watchEffect } from 'vue'
+  import { watchEffect } from 'vue'
   import { useI18n } from 'vue-i18n'
   import { useColors } from 'vuestic-ui'
   import { useGlobalStore } from '../../../stores/global-store'
@@ -18,11 +18,10 @@
   const { applyPreset } = useColors()
   const store = useGlobalStore()
 
-  const selectedTheme = ref(localStorage.getItem('theme') || 'Light')
-  const themeOptions = ['Light', 'Dark']
+  const themeOptions = ['light', 'dark']
 
   watchEffect(() => {
-    setTheme(selectedTheme.value)
+    setTheme(store.theme)
   })
 
   function setTheme(theme: string) {

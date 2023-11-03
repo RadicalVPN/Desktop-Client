@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import { useColors } from 'vuestic-ui'
 
 export interface Server {
   id: string
@@ -17,10 +18,15 @@ export interface Server {
 
 export const useGlobalStore = defineStore('global', {
   state: () => {
+    const { applyPreset } = useColors()
+
+    const theme = localStorage.getItem('theme') || 'light'
+    applyPreset(theme)
+
     return {
       isSidebarMinimized: false,
       userName: 'Vasili S',
-      theme: 'light',
+      theme: theme,
       serverList: [] as Server[],
     }
   },
