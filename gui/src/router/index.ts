@@ -2,8 +2,6 @@ import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 
 import AuthLayout from '../layouts/AuthLayout.vue'
 import AppLayout from '../layouts/AppLayout.vue'
-import Page404Layout from '../layouts/Page404Layout.vue'
-
 import UIRoute from '../pages/admin/ui/route'
 import { DaemonHelper } from '../helper/daemon'
 import { Server, useGlobalStore } from '../stores/global-store'
@@ -60,32 +58,6 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: '',
         redirect: { name: 'login' },
-      },
-    ],
-  },
-  {
-    path: '/404',
-    component: Page404Layout,
-    children: [
-      {
-        name: 'not-found-advanced',
-        path: 'not-found-advanced',
-        component: () => import('../pages/404-pages/VaPageNotFoundSearch.vue'),
-      },
-      {
-        name: 'not-found-simple',
-        path: 'not-found-simple',
-        component: () => import('../pages/404-pages/VaPageNotFoundSimple.vue'),
-      },
-      {
-        name: 'not-found-custom',
-        path: 'not-found-custom',
-        component: () => import('../pages/404-pages/VaPageNotFoundCustom.vue'),
-      },
-      {
-        name: 'not-found-large-text',
-        path: '/pages/not-found-large-text',
-        component: () => import('../pages/404-pages/VaPageNotFoundLargeText.vue'),
       },
     ],
   },
