@@ -8,7 +8,7 @@
     :offset="[1, 0]"
   >
     <template #anchor>
-      <va-sidebar-item :active="isItemChildsActive(route)" :to="route.children ? undefined : { name: route.name }">
+      <va-sidebar-item :active="isRouteActive(route)" :to="route.children ? undefined : { name: route.name }">
         <va-sidebar-item-content>
           <va-icon :name="route.meta.icon" class="va-sidebar-item__icon" />
           <va-icon
@@ -19,6 +19,7 @@
         </va-sidebar-item-content>
       </va-sidebar-item>
     </template>
+
     <div class="sidebar-item__children">
       <template v-for="(child, index) in route.children" :key="index">
         <va-sidebar-item :active="isRouteActive(child)" :to="{ name: child.name }">
@@ -51,29 +52,8 @@
 
   const dropdownsValue = ref([])
 
-  // function isGroup(item: INavigationRoute) {
-  //   return !!item.children
-  // }
-
   function isRouteActive(item: INavigationRoute) {
     return item.name === useRoute().name
-  }
-
-  function isItemChildsActive(item: INavigationRoute): boolean {
-    if (!item.children) {
-      return false
-    }
-
-    const isCurrentItemActive = isRouteActive(item)
-
-    let isChildActive = false
-    if (item.children) {
-      isChildActive = !!item.children.find((child) =>
-        child.children ? isItemChildsActive(child) : isRouteActive(child),
-      )
-    }
-
-    return isCurrentItemActive || isChildActive
   }
 </script>
 

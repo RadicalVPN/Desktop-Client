@@ -1,14 +1,12 @@
 <template>
   <va-sidebar :width="width" :minimized="minimized" :minimized-width="minimizedWidth" :animated="animated">
     <menu-minimized v-if="minimized" :items="items" />
-    <menu-accordion v-else :items="items" />
   </va-sidebar>
 </template>
 
 <script setup lang="ts">
   import { ref } from 'vue'
   import NavigationRoutes from './NavigationRoutes'
-  import MenuAccordion from './menu/MenuAccordion.vue'
   import MenuMinimized from './menu/MenuMinimized.vue'
 
   withDefaults(
