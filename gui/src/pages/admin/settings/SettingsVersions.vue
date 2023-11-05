@@ -2,7 +2,7 @@
   <va-card class="horizontal-bars">
     <va-card-title style="font-size: 0.875rem">{{ t('settings.versions') }}</va-card-title>
 
-    <va-card-content class="my-3 grid grid-cols-12 gap-6">
+    <va-card-content class="grid grid-cols-12">
       <div class="col-span-10">
         <div class="mb-4">
           <p class="text-sm font-semibold">{{ t('settings.frontendVersion') }}</p>
