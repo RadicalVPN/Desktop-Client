@@ -3,7 +3,7 @@
     <va-card-title style="font-size: 0.875rem">{{ t('settings.personalization') }}</va-card-title>
 
     <va-card-content>
-      <va-select v-model="store.theme" :options="themeOptions" class="mb-8" :label="t('menu.theme')"></va-select>
+      <va-select v-model="store.theme" :options="themeOptions" class="mb-8" :label="t('settings.theme')" />
     </va-card-content>
   </va-card>
 </template>
