@@ -2,44 +2,32 @@
  * @see https://www.electron.build/configuration/configuration
  */
 {
-  "$schema": "https://raw.githubusercontent.com/electron-userland/electron-builder/master/packages/app-builder-lib/scheme.json",
-  "appId": "com.radicalvpn.desktop",
-  "asar": true,
-  "productName": "RadicalVPN Desktop",
-  "directories": {
-    "output": "release/${version}"
+  $schema: 'https://raw.githubusercontent.com/electron-userland/electron-builder/master/packages/app-builder-lib/scheme.json',
+  appId: 'com.radicalvpn.desktop',
+  asar: true,
+  productName: 'RadicalVPN',
+  files: ['dist', 'dist-electron'],
+  mac: {
+    // do not build DMG. We do not need it
+    target: 'dir',
+
+    extendInfo: {
+      SUPublicDSAKeyFile: 'dsa_pub.pem',
+    },
   },
-  "files": [
-    "dist",
-    "dist-electron"
-  ],
-  "mac": {
-    "target": [
-      "dmg"
-    ],
-    "artifactName": "${productName}-Mac-${version}-Installer.${ext}"
-  },
-  "win": {
-    "target": [
+  win: {
+    target: 'dir',
+
+    extraResources: [
       {
-        "target": "nsis",
-        "arch": [
-          "x64"
-        ]
-      }
+        from: 'public/tray/windows',
+        to: 'tray/windows',
+        filter: ['**/*'],
+      },
     ],
-    "artifactName": "${productName}-Windows-${version}-Setup.${ext}"
   },
-  "nsis": {
-    "oneClick": false,
-    "perMachine": false,
-    "allowToChangeInstallationDirectory": true,
-    "deleteAppDataOnUninstall": false
+  linux: {
+    target: ['dir'],
+    category: 'Network',
   },
-  "linux": {
-    "target": [
-      "AppImage"
-    ],
-    "artifactName": "${productName}-Linux-${version}.${ext}"
-  }
 }
