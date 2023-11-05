@@ -76,15 +76,6 @@ export default defineConfig(({ command }) => {
         include: resolve(dirname(fileURLToPath(import.meta.url)), './src/i18n/locales/**'),
       }),
     ],
-    server:
-      process.env.VSCODE_DEBUG &&
-      (() => {
-        const url = new URL(pkg.debug.env.VITE_DEV_SERVER_URL)
-        return {
-          host: url.hostname,
-          port: +url.port,
-        }
-      })(),
     clearScreen: false,
     build: {
       modulePreload: {

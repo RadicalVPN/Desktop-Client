@@ -1,6 +1,6 @@
 import { createI18n } from 'vue-i18n'
 
-const fileNameToLocaleModuleDict = import.meta.globEager('./locales/*.json')
+const fileNameToLocaleModuleDict = import.meta.globEager<any>('./locales/*.json')
 
 const messages: { [P: string]: Record<string, string> } = {}
 Object.entries(fileNameToLocaleModuleDict)
