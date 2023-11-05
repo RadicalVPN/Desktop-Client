@@ -46,15 +46,19 @@ async function createWindow() {
     icon: join(process.env.VITE_PUBLIC, 'favicon.ico'),
     webPreferences: {
       preload,
-      // Warning: Enable nodeIntegration and disable contextIsolation is not secure in production
-      // Consider using contextBridge.exposeInMainWorld
-      // Read more on https://www.electronjs.org/docs/latest/tutorial/context-isolation
       nodeIntegration: true,
       contextIsolation: false,
 
       //TODO: FIX THIS IN PRODUCTION
       webSecurity: false,
     },
+
+    center: true,
+    resizable: false,
+    fullscreenable: false,
+    maximizable: false,
+    height: 650,
+    width: 1100,
   })
 
   if (process.env.VITE_DEV_SERVER_URL) {
