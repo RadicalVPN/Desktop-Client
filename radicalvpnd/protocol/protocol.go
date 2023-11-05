@@ -10,6 +10,7 @@ import (
 	"radicalvpnd/logger"
 	service "radicalvpnd/services"
 	"radicalvpnd/settings"
+	"radicalvpnd/version"
 	"radicalvpnd/webapi"
 	"radicalvpnd/wireguard"
 	"time"
@@ -110,6 +111,13 @@ func (p *Protocol) LoadRoutes() {
 			"message": "pong",
 		})
 	})
+
+	r.GET("/version", func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{
+			"version": version.VERSION,
+		})
+	})
+
 
 	r.GET("/local/connected", func(c *gin.Context) {
 		if !p.ensureAuth() {

@@ -293,7 +293,10 @@
 
   "settings": {
     "personalization": "Personalization",
-    "theme": "Theme"
+    "theme": "Theme",
+    "versions": "Version information",
+    "frontendVersion": "Frontend Version",
+    "daemonVersion": "Daemon Version"
   },
 
   "menu": {

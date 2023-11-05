@@ -126,4 +126,22 @@ export class DaemonHelper {
       return false
     }
   }
+
+  public async getDaemonVersion(): Promise<string> {
+    const credentials = this.getCredentials()
+
+    try {
+      const resp = await axios.get(`http://localhost:${credentials.port}/version`, {
+        headers: {
+          'x-radical-daemon-secret': credentials.secret,
+        },
+        validateStatus: () => true,
+      })
+
+      return resp.data.version || 'Unknown'
+    } catch (e) {
+      console.error(e)
+      return 'Unknown'
+    }
+  }
 }
