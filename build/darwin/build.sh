@@ -37,16 +37,14 @@ read -p "Press enter to continue"
 echo "[+] Build Daemon.."
 cd ${DAEMON_PATH}
 go build .
-cd ..
 
-# echo "[+] Build Daemon Dependencies.."
-# cd deps/Darwin/scripts
-# ./build-darwin.sh
+echo "[+] Build Daemon Dependencies.."
+cd deps/Darwin/scripts
+./build-darwin.sh
 
-# echo "[+] Build Electron Frontend.."
-# cd ../../../../gui
-# npm run build
-
+echo "[+] Build Electron Frontend.."
+cd ../../../../gui
+npm run build
 
 echo ======================================================
 echo =================== Preparing DMG ====================
@@ -156,7 +154,7 @@ hdiutil detach ${IMAGE_DEVICE}
 echo "[+] coverting tmp DMG Image to Final DMG Image ..."
 hdiutil convert ${PATH_TMP_DMG_FILE} -format UDZO -imagekey zlib-level=9 -o "${PATH_DMG_FILE}"
 
-echo "[+] Deleting tmp DMG Image ..."
+echo "[+] Deleting tmp DMG Image gi..."
 rm -f ${PATH_TMP_DMG_FILE}
 
 open ${PATH_COMPILED_FOLDER}
