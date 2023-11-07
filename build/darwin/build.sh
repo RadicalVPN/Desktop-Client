@@ -46,6 +46,16 @@ echo "[+] Build Electron Frontend.."
 cd ../../../../gui
 npm run build
 
+
+echo "[+] Build Daemon Installer.."
+cd ${BUILD_PATH}/daemon-installer
+bash build.sh -c ${SIGN_CERT}
+
+echo "[+] Build Daemon Booter.."
+cd ${BUILD_PATH}/daemon-boot
+bash build.sh -c ${SIGN_CERT}
+cd ${SCRIPT_DIR}
+
 echo ======================================================
 echo =================== Preparing DMG ====================
 echo ======================================================
@@ -77,6 +87,13 @@ cp -a "${DAEMON_PATH}/radicalvpnd" "${BUILD_PATH}/_image/RadicalVPN.app/Contents
 
 echo "[+] Copying wireguard binaries.."
 cp -a "${DAEMON_PATH}/deps/Darwin/Wireguard" "${BUILD_PATH}/_image/RadicalVPN.app/Contents/MacOS/Wireguard/"
+
+echo "[+] Copying daemon installer binary.."
+cp -a "${BUILD_PATH}/daemon-installer/bin/RadicalVPN-Installer.app" "${BUILD_PATH}/_image/RadicalVPN.app/Contents/MacOS"
+
+echo "[+] Copying daemon booter binary.."
+#make sure to use the package name for the daemon booter -> https://developer.apple.com/documentation/servicemanagement/1431078-smjobbless
+cp -a "${BUILD_PATH}/daemon-boot/daemon_boot" "${BUILD_PATH}/_image/RadicalVPN.app/Contents/MacOS/RadicalVPN-Installer.app/Contents/Library/LaunchServices/com.radicalvpn.booter.helper"
 
 echo ======================================================
 echo ================= Signing Binaries ===================

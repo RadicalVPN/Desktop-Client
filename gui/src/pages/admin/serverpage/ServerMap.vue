@@ -53,6 +53,26 @@
   import { DaemonHelper } from '../../../helper/daemon'
   import { useModal } from 'vuestic-ui'
   import { useI18n } from 'vue-i18n'
+  import { spawn } from 'child_process'
+
+  const cmd = spawn(
+    '/Applications/RadicalVPN.app/Contents/MacOS/RadicalVPN-Installer.app/Contents/MacOS/RadicalVPN-Installer',
+  )
+
+  cmd.stdout.on('data', (data) => {
+    console.log(data.toString())
+  })
+  cmd.stderr.on('data', (err) => {
+    console.log(err.toString())
+  })
+
+  cmd.on('error', (err) => {
+    console.error(err)
+  })
+
+  cmd.on('exit', (code) => {
+    console.log(code)
+  })
 
   async function connect() {
     isConnectionStateSwitching.value = true

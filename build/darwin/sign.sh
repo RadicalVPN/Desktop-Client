@@ -15,11 +15,14 @@ cd "${SCRIPT_DIR}/build/darwin"
 ThirdPartyBinaries=(
 "_image/RadicalVPN.app/Contents/MacOS/Wireguard/wg"
 "_image/RadicalVPN.app/Contents/MacOS/Wireguard/wireguard-go"
+"_image/RadicalVPN.app/Contents/MacOS/RadicalVPN-Installer.app/Contents/Library/LaunchServices/com.radicalvpn.booter.helper"
 )
 
 Binaries=(
 "_image/RadicalVPN.app/Contents/MacOS/RadicalVPN"
 "_image/RadicalVPN.app/Contents/MacOS/RadicalVPN Daemon"
+"_image/RadicalVPN.app/Contents/MacOS/RadicalVPN-Installer.app/Contents/MacOS/RadicalVPN-Installer"
+"_image/RadicalVPN.app/Contents/MacOS/RadicalVPN-Installer.app"
 "_image/RadicalVPN.app"
 )
 

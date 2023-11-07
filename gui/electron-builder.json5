@@ -14,6 +14,9 @@
     extendInfo: {
       SUPublicDSAKeyFile: 'dsa_pub.pem',
     },
+
+    // disable code signing, we do this manually
+    identity: null,
   },
   win: {
     target: 'dir',
