@@ -15,7 +15,9 @@ func (wg *Wireguard) start() error {
 		fmt.Println("err", err)
 	}
 
-	fmt.Println(out)
+	if out != "" {
+		fmt.Println("out", out)
+	}
 
 	return nil
 }

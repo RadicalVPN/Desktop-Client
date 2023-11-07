@@ -4,7 +4,7 @@
 #include <ServiceManagement/ServiceManagement.h>
 #include <Security/Security.h>
 
-#define RADICAL_PACKAGE_NAME "com.radicalvpn.booter"
+#define RADICAL_PACKAGE_NAME "com.radicalvpn.booter.helper"
 
 void log_error_ref(CFErrorRef err) {
 	if (err == NULL)

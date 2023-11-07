@@ -44,6 +44,7 @@ cd deps/Darwin/scripts
 
 echo "[+] Build Electron Frontend.."
 cd ../../../../gui
+npm i
 npm run build
 
 

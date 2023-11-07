@@ -14,7 +14,7 @@
 	<string>0.0.1</string>
 	<key>SMAuthorizedClients</key>
 	<array>
-		<string>identifier com.radicalvpn.installer and certificate leaf[subject.OU] = N5ZQ77HYJ6</string>
+		<string>identifier com.radicalvpn.installer and certificate leaf[subject.OU] = ZU86H2N4P8</string>
 	</array>
 </dict>
 </plist>
