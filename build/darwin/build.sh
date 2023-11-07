@@ -89,6 +89,10 @@ cp -a "${DAEMON_PATH}/radicalvpnd" "${BUILD_PATH}/_image/RadicalVPN.app/Contents
 echo "[+] Copying wireguard binaries.."
 cp -a "${DAEMON_PATH}/deps/Darwin/Wireguard" "${BUILD_PATH}/_image/RadicalVPN.app/Contents/MacOS/Wireguard/"
 
+echo "[+] Copying Bash binaries.."
+mkdir "${BUILD_PATH}/_image/RadicalVPN.app/Contents/MacOS/Bash"
+cp -a "${DAEMON_PATH}/deps/Darwin/Bash/bash" "${BUILD_PATH}/_image/RadicalVPN.app/Contents/MacOS/Bash/bash"
+
 echo "[+] Copying daemon installer binary.."
 cp -a "${BUILD_PATH}/daemon-installer/bin/RadicalVPN-Installer.app" "${BUILD_PATH}/_image/RadicalVPN.app/Contents/MacOS"
 
