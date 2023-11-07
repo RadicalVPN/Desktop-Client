@@ -1,4 +1,4 @@
 darwin/_image
 _compiled
-daemon-installer/bin
-daemon-boot/daemon_boot
+darwin/daemon-installer/bin
+darwin/daemon-boot/daemon_boot
