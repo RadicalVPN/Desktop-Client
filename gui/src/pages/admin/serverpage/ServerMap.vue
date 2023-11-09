@@ -27,7 +27,6 @@
           v-for="(option, id) in store.serverList"
           :key="id"
           class="server__item flex flex-1 flex-wrap items-center pt-1 pb-1 mt-2 mb-2"
-          @click="console.log(option.city)"
         >
           <va-icon :name="`flag-icon-${option.country} small`" />
           <span class="dropdown-item__text pl-4">
@@ -53,26 +52,6 @@
   import { DaemonHelper } from '../../../helper/daemon'
   import { useModal } from 'vuestic-ui'
   import { useI18n } from 'vue-i18n'
-  import { spawn } from 'child_process'
-
-  const cmd = spawn(
-    '/Applications/RadicalVPN.app/Contents/MacOS/RadicalVPN-Installer.app/Contents/MacOS/RadicalVPN-Installer',
-  )
-
-  cmd.stdout.on('data', (data) => {
-    console.log(data.toString())
-  })
-  cmd.stderr.on('data', (err) => {
-    console.log(err.toString())
-  })
-
-  cmd.on('error', (err) => {
-    console.error(err)
-  })
-
-  cmd.on('exit', (code) => {
-    console.log(code)
-  })
 
   async function connect() {
     isConnectionStateSwitching.value = true

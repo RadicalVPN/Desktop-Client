@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { readFileSync } from 'node:fs'
+import { spawn } from 'node:child_process'
 
 export class DaemonHelper {
   public getCredentials() {
@@ -143,5 +144,54 @@ export class DaemonHelper {
       console.error(e)
       return 'Unknown'
     }
+  }
+
+  public async isDaemonInstallRequired(): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      const cmd = spawn(
+        '/Applications/RadicalVPN.app/Contents/MacOS/RadicalVPN-Installer.app/Contents/MacOS/RadicalVPN-Installer',
+        ['--install-required'],
+      )
+
+      cmd.stdout.on('data', (data) => {
+        console.log('data', data.toString())
+      })
+      cmd.stderr.on('data', (err) => {
+        reject(err)
+      })
+
+      cmd.on('error', (err) => {
+        reject(err)
+      })
+
+      cmd.on('exit', (code) => {
+        resolve(code === 0)
+      })
+    })
+  }
+
+  public async installDaemon(): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      const cmd = spawn(
+        '/Applications/RadicalVPN.app/Contents/MacOS/RadicalVPN-Installer.app/Contents/MacOS/RadicalVPN-Installer',
+        ['--install'],
+      )
+
+      cmd.stdout.on('data', (data) => {
+        console.log('data', data.toString())
+      })
+
+      cmd.stderr.on('data', (err) => {
+        reject(err)
+      })
+
+      cmd.on('error', (err) => {
+        reject(err)
+      })
+
+      cmd.on('exit', (code) => {
+        resolve(code === 0)
+      })
+    })
   }
 }

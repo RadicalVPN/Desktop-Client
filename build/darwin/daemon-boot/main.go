@@ -16,6 +16,4 @@ func main() {
 	if err := cmd.Run(); err != nil {
 		log.Fatal(err)
 	}
-
-	println("Hello, World!")
 }

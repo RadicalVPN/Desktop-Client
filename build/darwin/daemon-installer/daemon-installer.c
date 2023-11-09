@@ -162,6 +162,7 @@ int main(int argc, char **argv) {
     printf("Invalid usage.\n");
     printf("Arguments:\n");
     printf("    --install\n");
+    printf("    --install-required\n");
 
     return 1;
 }

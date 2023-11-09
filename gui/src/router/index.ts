@@ -3,6 +3,7 @@ import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import AuthLayout from '../layouts/AuthLayout.vue'
 import AppLayout from '../layouts/AppLayout.vue'
 import UIRoute from '../pages/admin/ui/route'
+import DaemonLayout from '../pages/daemon/DaemonInstall.vue'
 import { DaemonHelper } from '../helper/daemon'
 import { Server, useGlobalStore } from '../stores/global-store'
 
@@ -20,7 +21,14 @@ const routes: Array<RouteRecordRaw> = [
       const daemonHelper = new DaemonHelper()
 
       store.serverList = (await daemonHelper.getServerList()).filter((server: Server) => server.online)
-      ;(await daemonHelper.isAuthed()) ? next() : next('/auth/login')
+
+      if (!store.isDaemonConfirmed) {
+        next('/daemon')
+      }
+
+      next()
+
+      // ;(await daemonHelper.isAuthed()) ? next() : next('/auth/login')
     },
     children: [
       {
@@ -35,6 +43,10 @@ const routes: Array<RouteRecordRaw> = [
       },
       UIRoute,
     ],
+  },
+  {
+    path: '/daemon',
+    component: DaemonLayout,
   },
   {
     path: '/auth',

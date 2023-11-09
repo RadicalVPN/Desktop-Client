@@ -28,6 +28,7 @@ export const useGlobalStore = defineStore('global', {
       userName: 'Vasili S',
       theme: theme,
       serverList: [] as Server[],
+      isDaemonConfirmed: false,
     }
   },
 
