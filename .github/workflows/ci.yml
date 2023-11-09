@@ -57,4 +57,5 @@ jobs:
         env:
           TEAM_ID: ${{ secrets.APPLE_DEVELOPER_TEAM_ID }}
         run: |
+          chmod +x ./build/darwin/build.sh
           ./build/darwin/build.sh -c $TEAM_ID
