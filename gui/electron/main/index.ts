@@ -1,4 +1,4 @@
-import { app, BrowserWindow, shell, ipcMain, dialog } from 'electron'
+import { app, BrowserWindow, shell, ipcMain, dialog, Menu } from 'electron'
 import { release } from 'node:os'
 import { join } from 'node:path'
 
@@ -64,8 +64,6 @@ async function createWindow() {
   if (process.env.VITE_DEV_SERVER_URL) {
     // electron-vite-vue#298
     win.loadURL(url)
-    // Open devTool if the app is not packaged
-    win.webContents.openDevTools()
   } else {
     win.loadFile(indexHtml)
   }
@@ -123,3 +121,74 @@ ipcMain.handle('open-win', (_, arg) => {
     childWindow.loadFile(indexHtml, { hash: arg })
   }
 })
+
+const isMac = process.platform === 'darwin'
+
+const template = [
+  // { role: 'appMenu' }
+  ...(isMac
+    ? [
+        {
+          label: app.name,
+          submenu: [
+            { role: 'about' },
+            { type: 'separator' },
+            { role: 'hide' },
+            { role: 'hideothers' },
+            { role: 'unhide' },
+            { type: 'separator' },
+            { role: 'quit' },
+          ],
+        },
+      ]
+    : []),
+  // { role: 'fileMenu' }
+  {
+    label: 'File',
+    submenu: [isMac ? { role: 'close' } : { role: 'quit' }],
+  },
+  // { role: 'windowMenu' }
+  {
+    label: 'Window',
+    submenu: [
+      { role: 'minimize' },
+      { role: 'zoom' },
+      ...(isMac
+        ? [{ type: 'separator' }, { role: 'front' }, { type: 'separator' }, { role: 'window' }]
+        : [{ role: 'close' }]),
+    ],
+  },
+  {
+    role: 'help',
+    submenu: [
+      {
+        label: 'Learn More',
+        click: async () => {
+          const { shell } = require('electron')
+          await shell.openExternal('https://radicalvpn.com')
+        },
+      },
+    ],
+  },
+]
+
+if (process.env.NODE_ENV === 'development') {
+  template.push({
+    label: 'DEV (DEVELOER MENU)',
+    submenu: [
+      {
+        // @ts-ignore
+        label: 'Open development tools',
+        async click() {
+          if (win !== null) {
+            win.webContents.openDevTools()
+          }
+        },
+      },
+    ],
+  })
+}
+
+// @ts-ignore
+const menu = Menu.buildFromTemplate(template)
+Menu.setApplicationMenu(menu)
