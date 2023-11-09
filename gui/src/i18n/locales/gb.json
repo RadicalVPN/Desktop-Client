@@ -296,7 +296,8 @@
     "theme": "Theme",
     "versions": "Version information",
     "frontendVersion": "Frontend Version",
-    "daemonVersion": "Daemon Version"
+    "daemonVersion": "Daemon Version",
+    "animatedMap": "Animated Map"
   },
 
   "menu": {

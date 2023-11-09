@@ -4,6 +4,12 @@
 
     <va-card-content>
       <va-select v-model="store.theme" :options="themeOptions" class="mb-8" :label="t('settings.theme')" />
+      <va-switch
+        v-model="store.animatedMap"
+        size="small"
+        :label="t('settings.animatedMap')"
+        @click="store.setMapAnimation()"
+      />
     </va-card-content>
   </va-card>
 </template>

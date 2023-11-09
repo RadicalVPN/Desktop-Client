@@ -23,6 +23,9 @@ export const useGlobalStore = defineStore('global', {
     const theme = localStorage.getItem('theme') || 'light'
     applyPreset(theme)
 
+    const localMapSettings = localStorage.getItem('animatedMap')
+    const animatedMap = localMapSettings ? JSON.parse(localMapSettings) : true
+
     return {
       isSidebarMinimized: false,
       userName: 'Vasili S',
@@ -30,6 +33,7 @@ export const useGlobalStore = defineStore('global', {
       serverList: [] as Server[],
       isDaemonConfirmed: false,
       vpnConnected: false,
+      animatedMap: animatedMap,
     }
   },
 
@@ -37,7 +41,9 @@ export const useGlobalStore = defineStore('global', {
     toggleSidebar() {
       this.isSidebarMinimized = !this.isSidebarMinimized
     },
-
+    setMapAnimation() {
+      localStorage.setItem('animatedMap', JSON.stringify(this.animatedMap))
+    },
     changeUserName(userName: string) {
       this.userName = userName
     },
