@@ -27,5 +27,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20.x
-          cache: npm
-          cache-dependency-path: gui/package-lock.json'
+
+      - name: Install build dependencies
+        run: brew install autoconf automake libtool
