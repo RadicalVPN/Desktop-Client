@@ -1,7 +1,8 @@
 {
-  "name": "vuestic-admin",
-  "private": true,
+  "name": "radicalvpn-desktop",
+  "description": "Radical VPN Desktop Client",
   "version": "0.0.1",
+  "author": "RadicalVPN",
   "main": "dist-electron/main/index.js",
   "scripts": {
     "dev": "vite",

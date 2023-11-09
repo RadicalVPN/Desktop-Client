@@ -6,3 +6,4 @@ deps/Windows/WireGuard
 
 deps/Darwin/.deps
 deps/Darwin/WireGuard
+deps/Darwin/Bash
