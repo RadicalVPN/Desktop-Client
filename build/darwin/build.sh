@@ -32,8 +32,6 @@ fi
 
 echo "[+] Build RadicalVPN Desktop for Darwin (MacOS).."
 
-read -p "Press enter to continue"
-
 echo "[+] Build Daemon.."
 cd ${DAEMON_PATH}
 go build .
@@ -176,7 +174,7 @@ hdiutil detach ${IMAGE_DEVICE}
 echo "[+] coverting tmp DMG Image to Final DMG Image ..."
 hdiutil convert ${PATH_TMP_DMG_FILE} -format UDZO -imagekey zlib-level=9 -o "${PATH_DMG_FILE}"
 
-echo "[+] Deleting tmp DMG Image gi..."
+echo "[+] Deleting tmp DMG Image..."
 rm -f ${PATH_TMP_DMG_FILE}
 
 open ${PATH_COMPILED_FOLDER}
