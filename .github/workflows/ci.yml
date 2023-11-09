@@ -1,23 +1,31 @@
 name: RadicalVPN Desktop Build
 
-on: [push, pull_request]
+on: 
+  - push
+  - pull_request
 
 jobs:
-	macos:
-		runs-on: macos-latest
-    
-    jobs:
-    	- name: Checkout
-    	uses: actions/checkout@v4
+  windows:
+    runs-on: windows-latest
+    steps:
+      - name: TODO
+        run: |
+          echo "TODO"
+          echo "TODO"
+  macos:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
-		- name: "Setup Go 1.20"
-		  uses: actions/setup-go@v4
-      with:
-        go-version: '1.20
-		  
-		- name: Setuo Node.JS
-      uses: actions/setup-node@v4
-      with:
-        node-version: 20.x #lts/*
-        cache: npm
-        cache-dependency-path: gui/package-lock.json'
+      - name: Setup Go 1.20
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.20'
+
+      - name: Setuo Node.JS
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+          cache: npm
+          cache-dependency-path: gui/package-lock.json'
