@@ -9,6 +9,7 @@
   import am5geodata_worldHigh from '@amcharts/amcharts5-geodata/worldHigh'
   import am5themes_Animated from '@amcharts/amcharts5/themes/Animated'
   import { useColors } from 'vuestic-ui'
+  import { useGlobalStore } from '../../stores/global-store'
 
   import { useMapData, CityItem, getGeoBounds, compareStrings } from '../../data/maps/lineMapData'
 
@@ -31,6 +32,7 @@
   }>()
 
   const { colors } = useColors()
+  const store = useGlobalStore()
   const mapRef = ref()
   const mapRoot = shallowRef()
   const mapChart = shallowRef()
@@ -75,6 +77,13 @@
       }),
     )
 
+    //click on background in map
+    chart.chartContainer.get('background')?.events.on('click', () => {
+      if (!store.vpnConnected) {
+        mainCity.value = 'N/A' as any
+      }
+    })
+
     const zoomControl = chart.set('zoomControl', am5map.ZoomControl.new(root, {}))
 
     // polygon series
@@ -89,6 +98,21 @@
       fill: am5.color(colors.secondary),
       fillOpacity: 0.4,
       strokeWidth: 0.5,
+      toggleKey: 'active',
+      interactive: true,
+    })
+
+    let previousPolygon: am5map.MapPolygon | undefined
+    polygonSeries.mapPolygons.template.on('active', function (active, target) {
+      if (previousPolygon && previousPolygon != target) {
+        previousPolygon.set('active', false)
+      }
+      if (target?.get('active') && target.dataItem) {
+        polygonSeries.zoomToDataItem(target.dataItem as any)
+      } else {
+        chart.goHome()
+      }
+      previousPolygon = target
     })
 
     polygonSeries.events.on('datavalidated', zoomToGeoBounds)

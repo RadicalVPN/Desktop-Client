@@ -5,18 +5,28 @@
     <va-card>
       <va-card-content>
         <div class="flex items-center pb-6">
-          <va-icon :color="isConnected ? 'success' : 'danger'" :name="isConnected ? 'fa-lock' : 'fa-lock-open'" />
-          <p class="pl-2 text--secondary font-bold" :style="{ color: isConnected ? 'success' : 'danger' }">
-            {{ isConnected ? 'Connected' : 'Disconnected' }}
+          <va-icon
+            :color="store.vpnConnected ? 'success' : 'danger'"
+            :name="store.vpnConnected ? 'fa-lock' : 'fa-lock-open'"
+          />
+          <p class="pl-2 text--secondary font-bold" :style="{ color: store.vpnConnected ? 'success' : 'danger' }">
+            {{ store.vpnConnected ? 'Connected' : 'Disconnected' }}
           </p>
         </div>
 
         <div v-if="mainCity != 'N/A'">
           <p class="pb-4">Selected Server: {{ mainCity }}</p>
 
-          <va-button v-if="!isConnected" :loading="isConnectionStateSwitching" @click="connect()">Connect</va-button>
-          <va-button v-if="isConnected" :loading="isConnectionStateSwitching" @click="disconnect()"
+          <va-button v-if="!store.vpnConnected" :loading="isConnectionStateSwitching" @click="connect()"
+            >Connect</va-button
+          >
+          <va-button v-if="store.vpnConnected" :loading="isConnectionStateSwitching" @click="disconnect()"
             >Disconnect</va-button
+          >
+        </div>
+        <div v-else>
+          <va-button v-if="!store.vpnConnected" :loading="isConnectionStateSwitching" @click="fastConnect()"
+            >Fast connect (Fastest Server)</va-button
           >
         </div>
 
@@ -53,6 +63,15 @@
   import { useModal } from 'vuestic-ui'
   import { useI18n } from 'vue-i18n'
 
+  async function fastConnect() {
+    isConnectionStateSwitching.value = true
+
+    const fastestServer = store.serverList.sort((a, b) => a.latency - b.latency)[0]
+    mainCity.value = `${fastestServer.country_name} - ${fastestServer.city}`
+
+    await connect()
+  }
+
   async function connect() {
     isConnectionStateSwitching.value = true
 
@@ -72,7 +91,7 @@
     const res = await new DaemonHelper().connectToServer(server.id)
 
     if (res.status === true) {
-      isConnected.value = true
+      store.vpnConnected = true
     }
 
     if (res.status === false && res.data.error === 'vpn connection limit') {
@@ -87,8 +106,6 @@
     }
 
     isConnectionStateSwitching.value = false
-
-    console.log('connecting..')
   }
 
   async function disconnect() {
@@ -97,7 +114,7 @@
     const res = await new DaemonHelper().disconnectFromServer()
 
     if (res) {
-      isConnected.value = false
+      store.vpnConnected = false
     }
 
     isConnectionStateSwitching.value = false
@@ -107,10 +124,10 @@
     const res = await new DaemonHelper().getConnectionState()
 
     if (res) {
-      isConnected.value = true
+      store.vpnConnected = true
       mainCity.value = 'Unknown'
     } else {
-      isConnected.value = false
+      store.vpnConnected = false
     }
   }
 
@@ -127,7 +144,7 @@
       svgPath: targetSVG,
     })),
   )
-  const isConnected = ref(false)
+
   const { confirm } = useModal()
   const { t } = useI18n()
 

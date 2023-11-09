@@ -29,6 +29,7 @@ export const useGlobalStore = defineStore('global', {
       theme: theme,
       serverList: [] as Server[],
       isDaemonConfirmed: false,
+      vpnConnected: false,
     }
   },
 
