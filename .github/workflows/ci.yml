@@ -1,9 +1,12 @@
 name: RadicalVPN Desktop Build
 
-on: 
-  - push
-  - pull_request
-
+on:
+  pull_request:
+    branches:
+      - master
+  push:
+    branches:
+      - master
 jobs:
   windows:
     runs-on: windows-latest
