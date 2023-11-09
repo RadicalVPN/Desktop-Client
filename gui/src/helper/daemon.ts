@@ -194,4 +194,21 @@ export class DaemonHelper {
       })
     })
   }
+
+  public async daemonIsStarted(): Promise<boolean> {
+    const credentials = this.getCredentials()
+
+    try {
+      const resp = await axios.get(`http://localhost:${credentials.port}/ping`, {
+        headers: {
+          'x-radical-daemon-secret': credentials.secret,
+        },
+        validateStatus: () => true,
+      })
+
+      return resp.status === 200
+    } catch (e) {
+      return false
+    }
+  }
 }

@@ -15,14 +15,16 @@
 
             <p v-if="isConnectingToDaemon">Connecting to RadicalVPN daemon...</p>
 
-            <p class="text-center font-bold text-xl" v-if="daemonInstalledFailed">
-              ❗️❗️ The daemon was not installed. ❗️❗️
-            </p>
+            <p v-if="daemonInstalledFailed" class="text-xl">❗️❗️ The daemon was not installed. ❗️❗️</p>
             <br />
             <p v-if="daemonInstalledFailed">
               You may restart the client and try again. Or contact our customer support.<br /><br />
             </p>
-            <a class="content-center font-bold underline" href="mailto:support@radicalvpn.com">
+            <a
+              v-if="daemonInstalledFailed"
+              class="content-center font-bold underline"
+              href="mailto:support@radicalvpn.com"
+            >
               support@radicalvpn.com
             </a>
           </div>
@@ -47,9 +49,9 @@
   const isConnectingToDaemon = ref(false)
   const daemonInstalledFailed = ref(false)
 
-  function redirectLogin() {
+  function redirectConnect() {
     store.isDaemonConfirmed = true
-    router.push('/auth/login')
+    router.push('/daemon-ping')
   }
 
   async function load() {
@@ -63,7 +65,7 @@
     if (installRequired.value === true) {
       try {
         if (await daemonHelper.installDaemon()) {
-          redirectLogin()
+          redirectConnect()
         } else {
           installRequired.value = false
           daemonInstalledFailed.value = true
@@ -73,7 +75,7 @@
         daemonInstalledFailed.value = true
       }
     } else {
-      redirectLogin()
+      redirectConnect()
     }
 
     return

@@ -3,14 +3,15 @@ import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import AuthLayout from '../layouts/AuthLayout.vue'
 import AppLayout from '../layouts/AppLayout.vue'
 import UIRoute from '../pages/admin/ui/route'
-import DaemonLayout from '../pages/daemon/DaemonInstall.vue'
+import DaemonLayout from '../pages/daemon/ConnectDaemon.vue'
+import DaemonInstall from '../pages/daemon/DaemonInstall.vue'
 import { DaemonHelper } from '../helper/daemon'
 import { Server, useGlobalStore } from '../stores/global-store'
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/:catchAll(.*)',
-    redirect: { name: 'login' },
+    redirect: { name: 'daemon' },
   },
   {
     name: 'admin',
@@ -20,7 +21,13 @@ const routes: Array<RouteRecordRaw> = [
       const store = useGlobalStore()
       const daemonHelper = new DaemonHelper()
 
-      store.serverList = (await daemonHelper.getServerList()).filter((server: Server) => server.online)
+      try {
+        store.serverList = (await daemonHelper.getServerList()).filter((server: Server) => server.online)
+      } catch (e) {
+        console.log('something failed')
+      }
+
+      console.log(store.isDaemonConfirmed)
 
       if (!store.isDaemonConfirmed) {
         next('/daemon')
@@ -45,8 +52,14 @@ const routes: Array<RouteRecordRaw> = [
     ],
   },
   {
+    name: 'daemon',
     path: '/daemon',
     component: DaemonLayout,
+  },
+  {
+    name: 'daemon-ping',
+    path: '/daemon-ping',
+    component: DaemonInstall,
   },
   {
     path: '/auth',
