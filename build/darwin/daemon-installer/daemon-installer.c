@@ -114,12 +114,12 @@ int get_installed_bundle_path(char* ret_buf, int buf_size) {
         ret = 4;
     }
 
-    if (key!=NULL)
+    if (key != NULL)
     {
         CFRelease(key);
     }
 
-    if (retDict!=NULL)
+    if (retDict != NULL)
     {
         CFRelease(retDict);
     }
