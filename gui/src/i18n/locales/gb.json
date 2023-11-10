@@ -432,13 +432,6 @@
     "messageUs": "Web development inquiries:",
     "repository": "GitHub Repo"
   },
-  "notifications": {
-    "all": "See all notifications",
-    "mark_as_read": "Mark as read",
-    "sentMessage": "sent you a message",
-    "uploadedZip": "uploaded a new Zip file with {type}",
-    "startedTopic": "started a new topic"
-  },
   "timelines": {
     "horizontalSimple": "Horizontal Simple",
     "horizontalCards": "Horizontal Cards",
@@ -595,6 +588,12 @@
     "connectionLimit": {
       "title": "Connection Limit",
       "description": "You have reached the connection limit. We accept only 5 parallel connections"
+    }
+  },
+  "notifications": {
+    "vpn": {
+      "connect": "Connect to VPN: ",
+      "disconnect": "Disconnect from VPN"
     }
   }
 }
