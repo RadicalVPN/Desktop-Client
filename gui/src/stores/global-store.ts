@@ -26,6 +26,9 @@ export const useGlobalStore = defineStore('global', {
     const localMapSettings = localStorage.getItem('animatedMap')
     const animatedMap = localMapSettings ? JSON.parse(localMapSettings) : true
 
+    const localNotificationsSettings = localStorage.getItem('disableNotifications')
+    const disableNotifications = localNotificationsSettings ? JSON.parse(localNotificationsSettings) : false
+
     return {
       isSidebarMinimized: false,
       userName: 'Vasili S',
@@ -34,6 +37,7 @@ export const useGlobalStore = defineStore('global', {
       isDaemonConfirmed: false,
       vpnConnected: false,
       animatedMap: animatedMap,
+      disableNotifications: disableNotifications,
     }
   },
 
@@ -43,6 +47,9 @@ export const useGlobalStore = defineStore('global', {
     },
     setMapAnimation() {
       localStorage.setItem('animatedMap', JSON.stringify(this.animatedMap))
+    },
+    setNotifications() {
+      localStorage.setItem('disableNotifications', JSON.stringify(this.disableNotifications))
     },
     changeUserName(userName: string) {
       this.userName = userName

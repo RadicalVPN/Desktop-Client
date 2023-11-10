@@ -103,11 +103,14 @@
         closeButton: true,
         blur: true,
       })
+    } else {
+      if (!store.disableNotifications) {
+        new Notification('RadicalVPN', {
+          body: `${t('notifications.vpn.connect')} ${mainCity.value}`,
+        })
+      }
     }
 
-    new Notification('RadicalVPN', {
-      body: `${t('notifications.vpn.connect')} ${mainCity.value}`,
-    })
     isConnectionStateSwitching.value = false
   }
 
@@ -117,9 +120,11 @@
     const res = await new DaemonHelper().disconnectFromServer()
 
     if (res) {
-      new Notification('RadicalVPN', {
-        body: `${t('notifications.vpn.disconnect')}`,
-      })
+      if (!store.disableNotifications) {
+        new Notification('RadicalVPN', {
+          body: `${t('notifications.vpn.disconnect')}`,
+        })
+      }
       store.vpnConnected = false
     }
 

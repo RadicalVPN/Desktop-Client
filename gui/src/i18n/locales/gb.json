@@ -297,7 +297,8 @@
     "versions": "Version information",
     "frontendVersion": "Frontend Version",
     "daemonVersion": "Daemon Version",
-    "animatedMap": "Animated Map"
+    "animatedMap": "Animated Map",
+    "disableNotifications": "Disable Notifications"
   },
 
   "menu": {

@@ -4,12 +4,23 @@
 
     <va-card-content>
       <va-select v-model="store.theme" :options="themeOptions" class="mb-8" :label="t('settings.theme')" />
+
       <va-switch
         v-model="store.animatedMap"
         size="small"
         :label="t('settings.animatedMap')"
+        class="pb-8"
         @click="store.setMapAnimation()"
       />
+
+      <div>
+        <va-switch
+          v-model="store.disableNotifications"
+          size="small"
+          :label="t('settings.disableNotifications')"
+          @click="store.setNotifications()"
+        />
+      </div>
     </va-card-content>
   </va-card>
 </template>
