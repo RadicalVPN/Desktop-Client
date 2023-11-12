@@ -304,6 +304,7 @@
   "menu": {
     "auth": "Auth",
     "settings": "Settings",
+    "privacyFirewall": "Privacy Firewall",
     "rating": "Rating",
     "buttons": "Buttons",
     "charts": "Charts",
@@ -596,5 +597,11 @@
       "connect": "Connect to VPN: ",
       "disconnect": "Disconnect from VPN"
     }
+  },
+  "privacyFirewall": {
+    "basic": "Basic",
+    "recommended": "Recommended",
+    "comprehensive": "Comprehensive",
+    "agressive": "Agressive"
   }
 }
