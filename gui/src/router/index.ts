@@ -44,6 +44,11 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('../pages/admin/serverpage/ServerMap.vue'),
       },
       {
+        name: 'privacy-firewall',
+        path: 'privacy-firewall',
+        component: () => import('../pages/admin/privacyfirewall/PrivacyFirewall.vue'),
+      },
+      {
         name: 'settings',
         path: 'settings',
         component: () => import('../pages/admin/settings/Settings.vue'),

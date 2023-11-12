@@ -55,7 +55,7 @@ export class DaemonHelper {
     }
   }
 
-  public async connectToServer(nodeId: string) {
+  public async connectToServer(nodeId: string, privacyFirewall: string) {
     const credentials = this.getCredentials()
 
     try {
@@ -63,6 +63,7 @@ export class DaemonHelper {
         `http://localhost:${credentials.port}/local/connect`,
         {
           node: nodeId,
+          privacyFirewall,
         },
         {
           headers: {

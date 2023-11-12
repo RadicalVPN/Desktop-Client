@@ -19,6 +19,13 @@ export default {
       },
     },
     {
+      name: 'privacy-firewall',
+      displayName: 'menu.privacyFirewall',
+      meta: {
+        icon: 'vuestic-iconset-tables',
+      },
+    },
+    {
       name: 'settings',
       displayName: 'menu.settings',
       meta: {

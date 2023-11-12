@@ -88,7 +88,7 @@
       return
     }
 
-    const res = await new DaemonHelper().connectToServer(server.id)
+    const res = await new DaemonHelper().connectToServer(server.id, store.privacyFirewallLevel)
 
     if (res.status === true) {
       store.vpnConnected = true

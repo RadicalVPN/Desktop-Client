@@ -38,6 +38,7 @@ export const useGlobalStore = defineStore('global', {
       vpnConnected: false,
       animatedMap: animatedMap,
       disableNotifications: disableNotifications,
+      privacyFirewallLevel: 'basic',
     }
   },
 

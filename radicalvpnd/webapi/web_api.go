@@ -8,6 +8,7 @@ type Signin struct {
 
 type VpnConnect struct {
 	Node string `json:"node"`
+	PrivacyFirewall string `json:"privacyFirewall"`
 }
 
 type Server struct {
@@ -55,4 +56,5 @@ type Vpn struct {
 
 type DynamicVpnCreation struct {
 	Node string `json:"node"`
+	PrivacyFirewall string `json:"privacyFirewall"`
 }

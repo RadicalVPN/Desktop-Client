@@ -1,4 +1,6 @@
 <template>
+  <h1 style="color: var(--va-text-primary)" class="text-xl mb-6">Settings</h1>
+
   <settings-personalization class="mb-8" />
   <settings-versions />
 </template>
