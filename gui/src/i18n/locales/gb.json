@@ -599,9 +599,28 @@
     }
   },
   "privacyFirewall": {
-    "basic": "Basic",
-    "recommended": "Recommended",
-    "comprehensive": "Comprehensive",
-    "agressive": "Agressive"
-  }
+    "title": "Privacy Firewall",
+    "info": {
+      "title": "What is Privacy Firewall?",
+      "description": {
+        "1": "RadicalVPN's Privacy Firewall is capable of defending your private data against any tracker and ad provider.",
+        "2": "Your DNS requests are routed through our DNS filter and malicious requests are blocked.",
+        "3": "Our caching infrastructure makes your DNS requests even faster!"
+      }
+    },
+    "settings": {
+      "title": "Privacy Firewall Settings",
+      "dropDownLabel": "Privacy Firewall Level"
+    },
+    "level": {
+      "basic": "Basic",
+      "recommended": "Recommended",
+      "comprehensive": "Comprehensive",
+      "aggresive": "Aggressive"
+    }
+  },
+  "errors": {
+    "privacyFirewallAggresive": "You have selected aggressive mode. This mode will most likely have a negative impact on your internet experience. Only use this mode if you know exactly what you are doing."
+  },
+  "new": "New"
 }
