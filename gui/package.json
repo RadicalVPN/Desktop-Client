@@ -30,7 +30,7 @@
     "@amcharts/amcharts5": "^5.5.6",
     "@amcharts/amcharts5-geodata": "^5.1.1",
     "@fortawesome/fontawesome-free": "^6.4.2",
-    "axios": "^0.27.2",
+    "axios": "^1.6.1",
     "chart.js": "^3.8.0",
     "epic-spinners": "^2.0.0",
     "flag-icons": "^6.15.0",
