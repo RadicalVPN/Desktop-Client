@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { useColors } from 'vuestic-ui'
 import { useStorage } from '@vueuse/core'
+import { useI18n } from 'vue-i18n'
 
 export interface Server {
   id: string
@@ -20,9 +21,16 @@ export interface Server {
 export const useGlobalStore = defineStore('global', {
   state: () => {
     const { applyPreset } = useColors()
+    const { locale } = useI18n()
 
     const theme = localStorage.getItem('theme') || 'light'
     applyPreset(theme)
+
+    //load i18n on start
+    const i18n = localStorage.getItem('language')
+    if (i18n) {
+      locale.value = i18n
+    }
 
     return {
       isSidebarMinimized: false,
@@ -34,6 +42,7 @@ export const useGlobalStore = defineStore('global', {
       animatedMap: useStorage('animatedMap', true),
       disableNotifications: useStorage('disableNotifications', false),
       privacyFirewallLevel: useStorage('privacyFirewall', 'basic'),
+      language: useStorage('language', 'gb'),
     }
   },
 

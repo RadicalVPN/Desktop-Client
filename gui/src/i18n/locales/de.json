@@ -1,0 +1,66 @@
+{
+  "auth": {
+    "agree": "I agree to",
+    "createAccount": "Create account",
+    "createNewAccount": "Create New Account",
+    "email": "Email",
+    "login": "Login",
+    "password": "Password",
+    "recover_password": "Recover password",
+    "sign_up": "Sign Up",
+    "keep_logged_in": "Keep me logged in",
+    "termsOfUse": "Terms of Use.",
+    "reset_password": "Reset password"
+  },
+  "language": {
+    "english": "Englisch",
+    "german": "Deutsch"
+  },
+  "settings": {
+    "personalization": "Personalisierung",
+    "theme": "Theme",
+    "versions": "Versionsinformationen",
+    "frontendVersion": "Frontend Version",
+    "daemonVersion": "Daemon Version",
+    "animatedMap": "Animierte Karte",
+    "disableNotifications": "Mitteilungen deaktivieren",
+    "language": "Sprache"
+  },
+  "vpn": {
+    "connectionLimit": {
+      "title": "Verbindungslimit erreicht",
+      "description": "Du hast das Verbindungslimit erreicht. Wir akzeptieren bis zu 5 parallele Verbindungen"
+    }
+  },
+  "notifications": {
+    "vpn": {
+      "connect": "Verbunden mit VPN: ",
+      "disconnect": "Verbindung zum VPN getrennt."
+    }
+  },
+  "privacyFirewall": {
+    "title": "Datenschutz Firewall",
+    "info": {
+      "title": "Was ist eine Datenschutz Firewall?",
+      "description": {
+        "1": "Die Privacy Firewall von RadicalVPN ist in der Lage, deine privaten Daten gegen alle Tracker und Werbeanbieter zu verteidigen.",
+        "2": "Deine DNS-Anfragen werden durch unseren DNS-Filter geleitet und bösartige Anfragen werden blockiert.",
+        "3": "Unsere Caching-Infrastruktur macht Ihre DNS-Anfragen noch schneller als vorher!"
+      }
+    },
+    "settings": {
+      "title": "Datenschutz Firewall Einstellungen",
+      "dropDownLabel": "Datenschutz Firewall Level"
+    },
+    "level": {
+      "basic": "Grundlegend",
+      "recommended": "Empfohlen",
+      "comprehensive": "Umfassend",
+      "aggresive": "Aggressiv"
+    }
+  },
+  "errors": {
+    "privacyFirewallAggresive": "Du hast den aggressiven Modus gewählt. Dieser Modus wird sich höchstwahrscheinlich negativ auf dein Internet-Erlebnis auswirken. Verwende diesen Modus nur, wenn Du genau weißt, was du tust."
+  },
+  "new": "Neu"
+}

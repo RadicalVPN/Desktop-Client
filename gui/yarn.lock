@@ -5154,10 +5154,10 @@ vue-tsc@^1.8.22:
     "@vue/server-renderer" "3.3.8"
     "@vue/shared" "3.3.8"
 
-vuestic-ui@^1.8.4:
-  version "1.8.4"
-  resolved "https://registry.npmjs.org/vuestic-ui/-/vuestic-ui-1.8.4.tgz"
-  integrity sha512-AH0RFsnvBR/lOsgTfowkzt9TRnYo7C2XcXAZt8ILP0LWU0atciMJdMZ4e89TcNj0L/SOoijb+1lPx9e62mJTBg==
+vuestic-ui@^1.7.3:
+  version "1.7.3"
+  resolved "https://registry.npmjs.org/vuestic-ui/-/vuestic-ui-1.7.3.tgz"
+  integrity sha512-on3L9Z0wADQuTmIJk1BZeuOuuttgSmI5tqWWaBdneFh7wK7AJaTyN2aCnkIU7g1iazyG4DyLw022Bor9gL7/+A==
   dependencies:
     "@floating-ui/vue" "^1.0.1"
     "@types/lodash" "^4.14.161"
