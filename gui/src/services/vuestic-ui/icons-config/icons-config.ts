@@ -23,7 +23,7 @@ export default createIconsConfig({
       resolve: ({ code, size }) => ({ class: `fi fi-${code} fi-size-${size}`, tag: 'span' }),
     },
     {
-      name: /(brandico|entypo|fa|fontelico|glyphicon|iconicstroke|maki|openwebicons)-(.*)/,
+      name: /(fa)-(.*)/,
       resolveFromRegex: (font, code) => ({ class: `${font} ${font}-${code}` }),
     },
     {

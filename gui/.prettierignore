@@ -11,8 +11,11 @@
 !*.json
 !*.md
 
+dist-electron/**
+
 # But still ignore the dist folder
 dist/**
 
 # Check subdirectories too
 !*/
+
