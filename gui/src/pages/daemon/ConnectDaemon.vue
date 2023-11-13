@@ -43,19 +43,15 @@
   import { setTimeout } from 'timers/promises'
   import { DaemonHelper } from '../../helper/daemon'
   import { useRouter } from 'vue-router'
-  import { useGlobalStore } from '../../stores/global-store'
-  import { setMapStoreSuffix } from 'pinia'
 
   const daemonHelper = new DaemonHelper()
   const router = useRouter()
-  const store = useGlobalStore()
 
   const attempts = ref(0)
   const connectionFailed = ref(false)
   const backOff = ref(0)
 
   function redirectLogin() {
-    store.isDaemonConfirmed = true
     router.push('/auth/login')
   }
 

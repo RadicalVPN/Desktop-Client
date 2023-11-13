@@ -3,7 +3,7 @@ import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import AuthLayout from '../layouts/AuthLayout.vue'
 import AppLayout from '../layouts/AppLayout.vue'
 import UIRoute from '../pages/admin/ui/route'
-import DaemonLayout from '../pages/daemon/ConnectDaemon.vue'
+import DaemonConnect from '../pages/daemon/ConnectDaemon.vue'
 import DaemonInstall from '../pages/daemon/DaemonInstall.vue'
 import { DaemonHelper } from '../helper/daemon'
 import { Server, useGlobalStore } from '../stores/global-store'
@@ -11,7 +11,7 @@ import { Server, useGlobalStore } from '../stores/global-store'
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/:catchAll(.*)',
-    redirect: { name: 'daemon' },
+    redirect: { name: 'daemon-install' },
   },
   {
     name: 'admin',
@@ -27,10 +27,9 @@ const routes: Array<RouteRecordRaw> = [
         console.log('something failed')
       }
 
-      console.log(store.isDaemonConfirmed)
-
       if (!store.isDaemonConfirmed) {
-        next('/daemon')
+        next('/daemon-install')
+        return
       }
 
       next()
@@ -59,11 +58,11 @@ const routes: Array<RouteRecordRaw> = [
   {
     name: 'daemon',
     path: '/daemon',
-    component: DaemonLayout,
+    component: DaemonConnect,
   },
   {
-    name: 'daemon-ping',
-    path: '/daemon-ping',
+    name: 'daemon-install',
+    path: '/daemon-install',
     component: DaemonInstall,
   },
   {

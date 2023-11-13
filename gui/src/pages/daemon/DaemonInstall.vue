@@ -13,8 +13,6 @@
               your Mac's lead, and you'll be all set to conquer the virtual world!
             </p>
 
-            <p v-if="isConnectingToDaemon">Connecting to RadicalVPN daemon...</p>
-
             <p v-if="daemonInstalledFailed" class="text-xl">❗️❗️ The daemon was not installed. ❗️❗️</p>
             <br />
             <p v-if="daemonInstalledFailed">
@@ -46,12 +44,11 @@
   const store = useGlobalStore()
 
   const installRequired = ref(false)
-  const isConnectingToDaemon = ref(false)
   const daemonInstalledFailed = ref(false)
 
   function redirectConnect() {
     store.isDaemonConfirmed = true
-    router.push('/daemon-ping')
+    router.push('/daemon')
   }
 
   async function load() {
