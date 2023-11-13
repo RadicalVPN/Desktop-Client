@@ -10,24 +10,24 @@
             :name="store.vpnConnected ? 'fa-lock' : 'fa-lock-open'"
           />
           <p class="pl-2 text--secondary font-bold" :style="{ color: store.vpnConnected ? 'success' : 'danger' }">
-            {{ store.vpnConnected ? 'Connected' : 'Disconnected' }}
+            {{ t(store.vpnConnected ? 'vpn.connected' : 'vpn.disconnected') }}
           </p>
         </div>
 
         <div v-if="mainCity != 'N/A'">
-          <p class="pb-4">Selected Server: {{ mainCity }}</p>
+          <p class="pb-4">{{ t('vpn.selectedServer') + mainCity }}</p>
 
-          <va-button v-if="!store.vpnConnected" :loading="isConnectionStateSwitching" @click="connect()"
-            >Connect</va-button
-          >
-          <va-button v-if="store.vpnConnected" :loading="isConnectionStateSwitching" @click="disconnect()"
-            >Disconnect</va-button
-          >
+          <va-button v-if="!store.vpnConnected" :loading="isConnectionStateSwitching" @click="connect()">{{
+            t('vpn.connect')
+          }}</va-button>
+          <va-button v-if="store.vpnConnected" :loading="isConnectionStateSwitching" @click="disconnect()">{{
+            t('vpn.disconnect')
+          }}</va-button>
         </div>
         <div v-else>
-          <va-button v-if="!store.vpnConnected" :loading="isConnectionStateSwitching" @click="fastConnect()"
-            >Fast connect (Fastest Server)</va-button
-          >
+          <va-button v-if="!store.vpnConnected" :loading="isConnectionStateSwitching" @click="fastConnect()">{{
+            t('vpn.fastConnect')
+          }}</va-button>
         </div>
 
         <va-divider class="pt-4 pb-4" />

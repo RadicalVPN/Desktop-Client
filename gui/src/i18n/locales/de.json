@@ -17,6 +17,7 @@
     "german": "Deutsch"
   },
   "settings": {
+    "settings": "Einstellungen",
     "personalization": "Personalisierung",
     "theme": "Theme",
     "versions": "Versionsinformationen",
@@ -27,6 +28,12 @@
     "language": "Sprache"
   },
   "vpn": {
+    "connect": "Verbinden",
+    "disconnect": "Verbindung trennen",
+    "connected": "Verbunden",
+    "disconnected": "Nicht verbunden",
+    "selectedServer": "Ausgewählter Server: ",
+    "fastConnect": "Schnell verbinden",
     "connectionLimit": {
       "title": "Verbindungslimit erreicht",
       "description": "Du hast das Verbindungslimit erreicht. Wir akzeptieren bis zu 5 parallele Verbindungen"

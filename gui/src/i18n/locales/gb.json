@@ -17,6 +17,7 @@
     "german": "German"
   },
   "settings": {
+    "settings": "Settings",
     "personalization": "Personalization",
     "theme": "Theme",
     "versions": "Version information",
@@ -27,6 +28,12 @@
     "language": "Language"
   },
   "vpn": {
+    "connect": "Connect",
+    "disconnect": "Disconnect",
+    "connected": "Connected",
+    "disconnected": "Disconnected",
+    "selectedServer": "Selected Server: ",
+    "fastConnect": "Fast connect (Fastest Server)",
     "connectionLimit": {
       "title": "Connection Limit",
       "description": "You have reached the connection limit. We accept only 5 parallel connections"
@@ -61,6 +68,5 @@
   },
   "errors": {
     "privacyFirewallAggresive": "You have selected aggressive mode. This mode will most likely have a negative impact on your internet experience. Only use this mode if you know exactly what you are doing."
-  },
-  "new": "New"
+  }
 }
