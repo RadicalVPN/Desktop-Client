@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import { useColors } from 'vuestic-ui'
 import { useStorage } from '@vueuse/core'
 import { useI18n } from 'vue-i18n'
+import languages from '../i18n/languages'
 
 export interface Server {
   id: string
@@ -27,8 +28,22 @@ export const useGlobalStore = defineStore('global', {
     applyPreset(theme)
 
     //load i18n on start
-    const i18n = localStorage.getItem('language')
+    let i18n = localStorage.getItem('language')
     if (i18n) {
+      if (i18n === '_system') {
+        const sysLang = navigator.language
+
+        //valid locale?
+        const isValidLocale = languages.some((language) => language.text === sysLang)
+
+        if (isValidLocale) {
+          i18n = sysLang
+        } else {
+          console.warn('no translation for system language', sysLang)
+          i18n = 'gb'
+        }
+      }
+
       locale.value = i18n
     }
 

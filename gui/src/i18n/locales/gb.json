@@ -13,6 +13,7 @@
     "reset_password": "Reset password"
   },
   "language": {
+    "system": "System-Language",
     "english": "English",
     "german": "German"
   },

@@ -24,26 +24,21 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed, watchEffect } from 'vue'
+  import { watchEffect } from 'vue'
   import { useI18n } from 'vue-i18n'
   import { useColors } from 'vuestic-ui'
   import { useGlobalStore } from '../../../stores/global-store'
+  import rawLanguages from '../../../i18n/languages'
 
   const { t, locale } = useI18n()
   const { applyPreset } = useColors()
   const store = useGlobalStore()
 
   const themeOptions = ['light', 'dark']
-  const languages = [
-    {
-      text: 'gb',
-      textBy: t('language.english'),
-    },
-    {
-      text: 'de',
-      textBy: t('language.german'),
-    },
-  ]
+  const languages = rawLanguages.map((lang) => ({
+    ...lang,
+    textBy: t(lang.textBy),
+  }))
 
   watchEffect(() => {
     setTheme(store.theme)
@@ -59,7 +54,22 @@
   }
 
   function applyLocale(newLocale: string) {
+    if (newLocale === '_system') {
+      const sysLang = navigator.language
+
+      //valid locale?
+      const isValidLocale = languages.some((language) => language.text === sysLang)
+
+      if (isValidLocale) {
+        newLocale = sysLang
+      } else {
+        console.warn('no translation for system language', sysLang)
+        newLocale = 'gb'
+      }
+    }
+
     console.log('updating locale', newLocale)
     locale.value = newLocale
   }
 </script>
+../../../languages ../../../i18n/languages
