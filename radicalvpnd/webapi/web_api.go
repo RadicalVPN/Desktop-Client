@@ -7,7 +7,7 @@ type Signin struct {
 }
 
 type VpnConnect struct {
-	Node string `json:"node"`
+	NodeLocation string `json:"nodeLocation"`
 	PrivacyFirewall string `json:"privacyFirewall"`
 }
 
@@ -24,6 +24,7 @@ type Server struct {
 	PublicKey string `json:"public_key"`
 	Online    bool   `json:"online"`
 	Latency   int    `json:"latency"`
+	Location string `json:"location"`
 }
 
 type VpnTransfer struct {
@@ -55,6 +56,6 @@ type Vpn struct {
 }
 
 type DynamicVpnCreation struct {
-	Node string `json:"node"`
+	NodeLocation string `json:"nodeLocation"`
 	PrivacyFirewall string `json:"privacyFirewall"`
 }

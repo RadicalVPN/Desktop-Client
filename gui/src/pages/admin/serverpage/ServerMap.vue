@@ -34,7 +34,7 @@
 
         <va-input class="pb-4" placeholder="Server Name" />
         <div
-          v-for="(option, id) in store.serverList"
+          v-for="(option, id) in store.locationList"
           :key="id"
           class="server__item flex flex-1 flex-wrap items-center pt-1 pb-1 mt-2 mb-2"
         >
@@ -66,8 +66,8 @@
   async function fastConnect() {
     isConnectionStateSwitching.value = true
 
-    const fastestServer = store.serverList.sort((a, b) => a.latency - b.latency)[0]
-    mainCity.value = `${fastestServer.country_name} - ${fastestServer.city}`
+    const fastestLocation = store.locationList.sort((a, b) => a.latency - b.latency)[0]
+    mainCity.value = `${fastestLocation.country_name} - ${fastestLocation.city}`
 
     await connect()
   }
@@ -81,14 +81,16 @@
     const cityName = split[1]
 
     //get the server from the store
-    const server = store.serverList.find((server) => server.city === cityName && server.country_name === countryName)
+    const location = store.locationList.find(
+      (server) => server.city === cityName && server.country_name === countryName,
+    )
 
-    if (!server) {
+    if (!location) {
       console.error('server not found')
       return
     }
 
-    const res = await new DaemonHelper().connectToServer(server.id, store.privacyFirewallLevel)
+    const res = await new DaemonHelper().connectToServer(location.id, store.privacyFirewallLevel)
 
     if (res.status === true) {
       store.vpnConnected = true
@@ -146,7 +148,7 @@
   const mainCity = ref('N/A')
   const isConnectionStateSwitching = ref(false)
   const cities = ref(
-    store.serverList.map((server) => ({
+    store.locationList.map((server) => ({
       color: 'info',
       title: `${server.country_name} - ${server.city}`,
       country: server.country,

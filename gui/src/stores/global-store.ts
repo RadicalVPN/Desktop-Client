@@ -17,6 +17,18 @@ export interface Server {
   country_name: string
   latitude: string
   longitude: string
+  location: string
+}
+
+export interface Location {
+  id: string
+  name: string
+  country: string
+  country_name: string
+  city: string
+  latitude: string
+  longitude: string
+  latency: number
 }
 
 export const useGlobalStore = defineStore('global', {
@@ -52,6 +64,7 @@ export const useGlobalStore = defineStore('global', {
       userName: 'Vasili S',
       theme: theme,
       serverList: [] as Server[],
+      locationList: [] as Location[],
       isDaemonConfirmed: false,
       vpnConnected: false,
       animatedMap: useStorage('animatedMap', true),
@@ -64,6 +77,30 @@ export const useGlobalStore = defineStore('global', {
   actions: {
     toggleSidebar() {
       this.isSidebarMinimized = !this.isSidebarMinimized
+    },
+    computeLocationList() {
+      this.locationList = Object.values(
+        this.serverList.reduce((acc: any, server: Server) => {
+          if (!acc[server.location]) {
+            acc[server.location] = {
+              id: server.location,
+              name: server.hostname,
+              country: server.country,
+              country_name: server.country_name,
+              city: server.city,
+              latitude: server.latitude,
+              longitude: server.longitude,
+              latency: server.latency,
+            }
+          }
+
+          return acc
+        }, {}),
+      ).map((location: any) => {
+        return {
+          ...location,
+        }
+      })
     },
     changeUserName(userName: string) {
       this.userName = userName

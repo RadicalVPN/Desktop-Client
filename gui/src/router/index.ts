@@ -23,6 +23,7 @@ const routes: Array<RouteRecordRaw> = [
 
       try {
         store.serverList = (await daemonHelper.getServerList()).filter((server: Server) => server.online)
+        store.computeLocationList()
       } catch (e) {
         console.log('something failed')
       }
@@ -33,8 +34,6 @@ const routes: Array<RouteRecordRaw> = [
       }
 
       next()
-
-      // ;(await daemonHelper.isAuthed()) ? next() : next('/auth/login')
     },
     children: [
       {

@@ -55,14 +55,14 @@ export class DaemonHelper {
     }
   }
 
-  public async connectToServer(nodeId: string, privacyFirewall: string) {
+  public async connectToServer(nodeLocation: string, privacyFirewall: string) {
     const credentials = this.getCredentials()
 
     try {
       const resp = await axios.post(
         `http://localhost:${credentials.port}/local/connect`,
         {
-          node: nodeId,
+          nodeLocation: nodeLocation,
           privacyFirewall,
         },
         {

@@ -144,7 +144,7 @@ func (p *Protocol) LoadRoutes() {
 		}
 
 		wg := wireguard.NewWireguard()
-		err := wg.Connect(internalBody.Node, internalBody.PrivacyFirewall)
+		err := wg.Connect(internalBody.NodeLocation, internalBody.PrivacyFirewall)
 
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{
