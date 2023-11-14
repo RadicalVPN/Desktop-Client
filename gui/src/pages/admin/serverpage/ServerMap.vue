@@ -1,5 +1,5 @@
 <template>
-  <line-map v-model="mainCity" :map-data="cities" />
+  <line-map v-model="store.mainCity" :map-data="cities" />
 
   <div class="absolute top-1/4 ml-4 transform -translate-y-1/4 w-50 h-80 pt-6">
     <va-card>
@@ -14,8 +14,8 @@
           </p>
         </div>
 
-        <div v-if="mainCity != 'N/A'">
-          <p class="pb-4">{{ t('vpn.selectedServer') + mainCity }}</p>
+        <div v-if="store.mainCity != 'N/A'">
+          <p class="pb-4">{{ t('vpn.selectedServer') + store.mainCity }}</p>
 
           <va-button v-if="!store.vpnConnected" :loading="isConnectionStateSwitching" @click="connect()">{{
             t('vpn.connect')
@@ -67,7 +67,7 @@
     isConnectionStateSwitching.value = true
 
     const fastestLocation = store.locationList.sort((a, b) => a.latency - b.latency)[0]
-    mainCity.value = `${fastestLocation.country_name} - ${fastestLocation.city}`
+    store.mainCity = `${fastestLocation.country_name} - ${fastestLocation.city}`
 
     await connect()
   }
@@ -76,7 +76,7 @@
     isConnectionStateSwitching.value = true
 
     //parse the the server from the selection
-    const split = mainCity.value.split(' - ')
+    const split = store.mainCity.split(' - ')
     const countryName = split[0]
     const cityName = split[1]
 
@@ -108,7 +108,7 @@
     } else {
       if (!store.disableNotifications) {
         new Notification('RadicalVPN', {
-          body: `${t('notifications.vpn.connect')} ${mainCity.value}`,
+          body: `${t('notifications.vpn.connect')} ${store.mainCity}`,
         })
       }
     }
@@ -138,14 +138,12 @@
 
     if (res) {
       store.vpnConnected = true
-      mainCity.value = 'Unknown'
     } else {
       store.vpnConnected = false
     }
   }
 
   const store = useGlobalStore()
-  const mainCity = ref('N/A')
   const isConnectionStateSwitching = ref(false)
   const cities = ref(
     store.locationList.map((server) => ({
