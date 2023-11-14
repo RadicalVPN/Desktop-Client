@@ -30,7 +30,7 @@ This repository contains the source code for the official desktop client for Rad
 The project is split into two parts:
 
 - **Daemon** - The Go daemon that handles the VPN connection and the communication with the RadicalVPN API.
-- **GUI** - The Electron/Vue client that handles the UI and the communication with the daemon.
+- **GUI** - The User Interface, built with Vue and Electron.
 
 <a name="requirements"></a>
 
