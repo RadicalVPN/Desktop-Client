@@ -31,7 +31,7 @@
 </template>
 
 <script setup lang="ts">
-  import { computed, onMounted, ref } from 'vue'
+  import { computed, ref } from 'vue'
   import { useRouter } from 'vue-router'
   import { useI18n } from 'vue-i18n'
   import axios from 'axios'
@@ -47,17 +47,11 @@
 
   const formReady = computed(() => !emailErrors.value.length && !passwordErrors.value.length)
 
-  onMounted(async () => {
-    if (await new DaemonHelper().isAuthed()) {
-      router.push({ name: 'dashboard' })
-    }
-  })
-
   async function onsubmit() {
-    if (!formReady.value) return
-
     emailErrors.value = email.value ? [] : ['Email is required']
     passwordErrors.value = password.value ? [] : ['Password is required']
+
+    if (!formReady.value) return
 
     const credentials = new DaemonHelper().getCredentials()
     // await axios.get('https://radicalvpn.com/geoip/current')
@@ -79,6 +73,8 @@
       console.log('logged in')
       router.push({ name: 'dashboard' })
     } else {
+      emailErrors.value = ['Invalid email or password']
+      passwordErrors.value = ['Invalid email or password']
       console.log('failed to login')
     }
   }

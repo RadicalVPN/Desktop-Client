@@ -72,6 +72,9 @@ export const useGlobalStore = defineStore('global', {
       privacyFirewallLevel: useStorage('privacyFirewall', 'basic'),
       language: useStorage('language', 'gb'),
       mainCity: 'N/A',
+      auth: {
+        isAuthChecking: true,
+      },
     }
   },
 

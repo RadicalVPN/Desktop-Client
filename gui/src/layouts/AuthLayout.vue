@@ -9,15 +9,18 @@
         <va-card-content>
           <va-tabs v-model="tabIndex" center>
             <template #tabs>
-              <va-tab name="login">{{ t('auth.login') }}</va-tab>
-              <va-tab name="signup">{{ t('auth.createNewAccount') }}</va-tab>
+              <va-tab name="login" :disabled="store.auth.isAuthChecking">{{ t('auth.login') }}</va-tab>
+              <va-tab name="signup" :disabled="store.auth.isAuthChecking">{{ t('auth.createNewAccount') }}</va-tab>
             </template>
           </va-tabs>
 
           <va-separator />
 
           <div class="p-3">
-            <router-view />
+            <div v-if="store.auth.isAuthChecking" class="flex col-span-12 p-4 justify-center">
+              <spring-spinner :animation-duration="3000" :size="60" />
+            </div>
+            <router-view v-else />
           </div>
         </va-card-content>
       </va-card>
@@ -28,13 +31,19 @@
 <script>
   import RadicalLogo from '../components/RadicalLogo.vue'
   import { useI18n } from 'vue-i18n'
+  import { SpringSpinner } from 'epic-spinners'
+  import { useGlobalStore } from '../stores/global-store'
+  import { DaemonHelper } from '../helper/daemon'
+  import { useRouter } from 'vue-router'
 
   export default {
     name: 'AuthLayout',
-    components: { RadicalLogo },
+    components: { RadicalLogo, SpringSpinner },
     setup() {
       const { t } = useI18n()
-      return { t }
+      const store = useGlobalStore()
+
+      return { t, store }
     },
     data() {
       return {
@@ -50,6 +59,17 @@
           return this.$route.name
         },
       },
+    },
+    async mounted() {
+      const store = useGlobalStore()
+      const router = useRouter()
+
+      if (await new DaemonHelper().isAuthed()) {
+        router.push({ name: 'dashboard' })
+      } else {
+        store.auth.isAuthChecking = false
+        console.log(store)
+      }
     },
   }
 </script>
