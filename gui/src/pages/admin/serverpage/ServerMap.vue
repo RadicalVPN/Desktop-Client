@@ -37,6 +37,7 @@
           v-for="(option, id) in store.locationList"
           :key="id"
           class="server__item flex flex-1 flex-wrap items-center pt-1 pb-1 mt-2 mb-2"
+          @click="selectCity(option)"
         >
           <va-icon :name="`flag-icon-${option.country} small`" />
           <span class="dropdown-item__text pl-4">
@@ -62,6 +63,30 @@
   import { DaemonHelper } from '../../../helper/daemon'
   import { useModal } from 'vuestic-ui'
   import { useI18n } from 'vue-i18n'
+
+  const store = useGlobalStore()
+  const isConnectionStateSwitching = ref(false)
+  const cities = ref(
+    store.locationList.map((server) => ({
+      color: 'info',
+      title: `${server.country_name} - ${server.city}`,
+      country: server.country,
+      latitude: parseInt(server.latitude),
+      longitude: parseInt(server.longitude),
+      svgPath: targetSVG,
+    })),
+  )
+
+  const { confirm } = useModal()
+  const { t } = useI18n()
+
+  onMounted(async () => {
+    await syncConnectionState()
+  })
+
+  function selectCity(location: any) {
+    store.mainCity = `${location.country_name} - ${location.city}`
+  }
 
   async function fastConnect() {
     isConnectionStateSwitching.value = true
@@ -142,26 +167,6 @@
       store.vpnConnected = false
     }
   }
-
-  const store = useGlobalStore()
-  const isConnectionStateSwitching = ref(false)
-  const cities = ref(
-    store.locationList.map((server) => ({
-      color: 'info',
-      title: `${server.country_name} - ${server.city}`,
-      country: server.country,
-      latitude: parseInt(server.latitude),
-      longitude: parseInt(server.longitude),
-      svgPath: targetSVG,
-    })),
-  )
-
-  const { confirm } = useModal()
-  const { t } = useI18n()
-
-  onMounted(async () => {
-    await syncConnectionState()
-  })
 </script>
 
 <style lang="scss" scoped>
