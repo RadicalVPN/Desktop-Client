@@ -68,7 +68,7 @@
   const isConnectionStateSwitching = ref(false)
   const cities = ref(
     store.locationList.map((server) => ({
-      color: 'info',
+      color: 'success',
       title: `${server.country_name} - ${server.city}`,
       country: server.country,
       latitude: parseInt(server.latitude),
