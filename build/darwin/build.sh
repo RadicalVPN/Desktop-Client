@@ -105,11 +105,6 @@ echo "[+] Copying daemon booter binary.."
 #make sure to use the package name for the daemon booter -> https://developer.apple.com/documentation/servicemanagement/1431078-smjobbless
 cp -a "${BUILD_PATH}/daemon-boot/daemon_boot" "${BUILD_PATH}/_image/RadicalVPN.app/Contents/MacOS/RadicalVPN-Installer.app/Contents/Library/LaunchServices/com.radicalvpn.booter.helper"
 
-echo "[+] Copying DMG Background.."
-mkdir -p "${BUILD_PATH}/_image/.background"
-cp -a "${BUILD_PATH}/assets/bg-dmg.png" "${BUILD_PATH}/_image/.background/bg-dmg.png"
-
-
 echo ======================================================
 echo ================= Signing Binaries ===================
 echo ======================================================
@@ -164,11 +159,9 @@ echo '
            set theViewOptions to the icon view options of container window
            set arrangement of theViewOptions to not arranged
            set icon size of theViewOptions to 108
-           set background picture of theViewOptions to file ".background:bg-dmg.png"
            make new alias file at container window to POSIX file "/Applications" with properties {name:"Applications"}
-           set position of item "'${FRONTEND_COMPILED_NAME}'" of container window to {120, 110}
-           set position of item "Applications" of container window to {420, 110}
-           set position of item ".background" of container window to {120, 500}
+           set position of item "'${FRONTEND_COMPILED_NAME}'" of container window to {120, 180}
+           set position of item "Applications" of container window to {420, 180}
            set position of item ".fseventsd" of container window to {420, 500}
            update without registering applications
            delay 3

@@ -4,6 +4,7 @@
 set -e
 
 scriptdir=$(dirname "$0")/../.deps
+CPU_COUNT=$(sysctl -n hw.ncpu)
 
 mkdir -p $scriptdir
 cd $scriptdir
@@ -20,7 +21,7 @@ git clone https://git.zx2c4.com/wireguard-go/
 
 echo "[*] Building wireguard-go.."
 cd wireguard-go
-make
+make -j${CPU_COUNT}
 
 cd ..
 
@@ -37,7 +38,7 @@ cd ../..
 git clone https://git.savannah.gnu.org/git/bash.git --depth 1
 cd bash
 ./configure
-make
+make -j${CPU_COUNT}
 
 cd ../..
 
