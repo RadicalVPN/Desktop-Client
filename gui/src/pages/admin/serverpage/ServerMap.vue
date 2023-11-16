@@ -63,19 +63,21 @@
   import { DaemonHelper } from '../../../helper/daemon'
   import { useModal } from 'vuestic-ui'
   import { useI18n } from 'vue-i18n'
+  import { computed } from 'vue'
 
   const store = useGlobalStore()
   const isConnectionStateSwitching = ref(false)
-  const cities = ref(
-    store.locationList.map((server) => ({
-      color: 'success',
+
+  const cities = computed(() => {
+    return store.locationList.map((server) => ({
+      color: store.vpnConnected ? 'success' : 'info',
       title: `${server.country_name} - ${server.city}`,
       country: server.country,
       latitude: parseInt(server.latitude),
       longitude: parseInt(server.longitude),
       svgPath: targetSVG,
-    })),
-  )
+    }))
+  })
 
   const { confirm } = useModal()
   const { t } = useI18n()

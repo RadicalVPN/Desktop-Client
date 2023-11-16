@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# exit when any command fails
+set -e
+
+
 SIGN_CERT=""
 while getopts ":c:" opt; do
   case $opt in
@@ -76,7 +80,7 @@ if [ ! -d ${FRONTEND_BINARY_PATH} ]; then
   exit 1
 fi
 
-mkdir "${BUILD_PATH}/_image"
+mkdir -p "${BUILD_PATH}/_image"
 
 echo "[+] Copying frontend binary to build folder.."
 cp -a "${FRONTEND_BINARY_PATH}" "${BUILD_PATH}/_image/"
@@ -87,10 +91,10 @@ chmod 0700 "${BUILD_PATH}/_image/RadicalVPN.app/Contents/MacOS/RadicalVPN Daemon
 
 echo "[+] Copying wireguard binaries.."
 cp -a "${DAEMON_PATH}/deps/Darwin/Wireguard" "${BUILD_PATH}/_image/RadicalVPN.app/Contents/MacOS/Wireguard/"
-chmod 0700 "${BUILD_PATH}/_image/RadicalVPN.app/Contents/MacOS/Wireguard/*"
+chmod -R 0700 "${BUILD_PATH}/_image/RadicalVPN.app/Contents/MacOS/Wireguard"
 
 echo "[+] Copying Bash binaries.."
-mkdir "${BUILD_PATH}/_image/RadicalVPN.app/Contents/MacOS/Bash"
+mkdir -p "${BUILD_PATH}/_image/RadicalVPN.app/Contents/MacOS/Bash"
 cp -a "${DAEMON_PATH}/deps/Darwin/Bash/bash" "${BUILD_PATH}/_image/RadicalVPN.app/Contents/MacOS/Bash/bash"
 chmod 0700 "${BUILD_PATH}/_image/RadicalVPN.app/Contents/MacOS/Bash/bash"
 
@@ -100,6 +104,11 @@ cp -a "${BUILD_PATH}/daemon-installer/bin/RadicalVPN-Installer.app" "${BUILD_PAT
 echo "[+] Copying daemon booter binary.."
 #make sure to use the package name for the daemon booter -> https://developer.apple.com/documentation/servicemanagement/1431078-smjobbless
 cp -a "${BUILD_PATH}/daemon-boot/daemon_boot" "${BUILD_PATH}/_image/RadicalVPN.app/Contents/MacOS/RadicalVPN-Installer.app/Contents/Library/LaunchServices/com.radicalvpn.booter.helper"
+
+echo "[+] Copying DMG Background.."
+mkdir -p "${BUILD_PATH}/_image/.background"
+cp -a "${BUILD_PATH}/assets/bg-dmg.png" "${BUILD_PATH}/_image/.background/bg-dmg.png"
+
 
 echo ======================================================
 echo ================= Signing Binaries ===================
@@ -155,9 +164,11 @@ echo '
            set theViewOptions to the icon view options of container window
            set arrangement of theViewOptions to not arranged
            set icon size of theViewOptions to 108
+           set background picture of theViewOptions to file ".background:bg-dmg.png"
            make new alias file at container window to POSIX file "/Applications" with properties {name:"Applications"}
            set position of item "'${FRONTEND_COMPILED_NAME}'" of container window to {120, 110}
            set position of item "Applications" of container window to {420, 110}
+           set position of item ".background" of container window to {120, 500}
            set position of item ".fseventsd" of container window to {420, 500}
            update without registering applications
            delay 3
