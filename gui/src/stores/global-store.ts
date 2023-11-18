@@ -89,9 +89,8 @@ export const useGlobalStore = defineStore('global', {
         this.serverList = (await new DaemonHelper().getServerList()).filter((server: Server) => server.online)
         this.computeLocationList()
       } catch (e) {
-        console.log('something failed')
+        console.log('failed to load server list', e)
       }
-      console.log('a')
     },
     computeLocationList() {
       this.locationList = Object.values(
