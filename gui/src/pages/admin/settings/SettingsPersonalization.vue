@@ -17,7 +17,16 @@
       <va-switch v-model="store.animatedMap" size="small" class="pb-6" :label="t('settings.animatedMap')" />
 
       <div>
-        <va-switch v-model="store.disableNotifications" size="small" :label="t('settings.disableNotifications')" />
+        <va-switch
+          v-model="store.disableNotifications"
+          size="small"
+          class="pb-6"
+          :label="t('settings.disableNotifications')"
+        />
+      </div>
+
+      <div>
+        <va-switch v-model="store.showServerOnMap" size="small" :label="t('settings.showServerTitle')" />
       </div>
     </va-card-content>
   </va-card>

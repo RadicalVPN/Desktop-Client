@@ -26,7 +26,8 @@
     "daemonVersion": "Daemon Version",
     "animatedMap": "Animierte Karte",
     "disableNotifications": "Mitteilungen deaktivieren",
-    "language": "Sprache"
+    "language": "Sprache",
+    "showServerTitle": "Servertitel auf der Karte anzeigen"
   },
   "vpn": {
     "connect": "Verbinden",

@@ -71,6 +71,7 @@ export const useGlobalStore = defineStore('global', {
       disableNotifications: useStorage('disableNotifications', false),
       privacyFirewallLevel: useStorage('privacyFirewall', 'basic'),
       language: useStorage('language', 'gb'),
+      showServerOnMap: useStorage('showCountryOnMap', false),
       mainCity: 'N/A',
       auth: {
         isAuthChecking: true,

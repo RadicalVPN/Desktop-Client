@@ -26,7 +26,8 @@
     "daemonVersion": "Daemon Version",
     "animatedMap": "Animated Map",
     "disableNotifications": "Disable Notifications",
-    "language": "Language"
+    "language": "Language",
+    "showServerTitle": "Show Server Title"
   },
   "vpn": {
     "connect": "Connect",

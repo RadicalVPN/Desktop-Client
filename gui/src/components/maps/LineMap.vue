@@ -92,7 +92,7 @@
     const polygonSeries = chart.series.push(
       am5map.MapPolygonSeries.new(root, {
         geoJSON: am5geodata_worldHigh,
-        exclude: ['AQ'],
+        exclude: ['AQ'], // i think we will never have servers in antarctica :)
       }),
     )
 
@@ -155,29 +155,26 @@
       })
     })
 
+    if (store.showCountryOnMap) {
+      pointSeries.bullets.push((root, series, dataItem) => {
+        const itemData = dataItem.dataContext as CityItem
+        const labelText = itemData.title.split(' - ')[1]
+
+        return am5.Bullet.new(root, {
+          sprite: am5.Label.new(root, {
+            fill: am5.color(colors.textPrimary),
+            text: labelText,
+            populateText: true,
+            fontWeight: 'bold',
+            fontSize: 10,
+            centerY: am5.p100,
+          }),
+        })
+      })
+    }
+
     // set map data
     pointSeries.data.setAll(mapPointSeriesData.value)
-
-    // button 'Show flights from homeCity'
-    const homeCityButton = chart.children.push(
-      am5.Button.new(root, {
-        x: 15,
-        y: 45,
-        label: am5.Label.new(root, {
-          text: generateButtonText(props.homeCity),
-          paddingTop: 0,
-          marginRight: 0,
-          paddingBottom: 0,
-          marginLeft: 0,
-        }),
-        visible: false,
-      }),
-    )
-
-    homeCityButton.events.on('click', () => {
-      mainCity.value = props.homeCity
-      homeCityButton.hide()
-    })
 
     // assign objects to refs
     mapRoot.value = root
@@ -185,7 +182,6 @@
     mapZoomControl.value = zoomControl
     mapPointSeries.value = pointSeries
     mapPolygonSeries.value = polygonSeries
-    mapHomeCityButton.value = homeCityButton
   }
 
   const setPointSeriesData = () => {
