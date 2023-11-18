@@ -19,14 +19,11 @@ const routes: Array<RouteRecordRaw> = [
     component: AppLayout,
     beforeEnter: async (to, from, next) => {
       const store = useGlobalStore()
-      const daemonHelper = new DaemonHelper()
 
-      try {
-        store.serverList = (await daemonHelper.getServerList()).filter((server: Server) => server.online)
-        store.computeLocationList()
-      } catch (e) {
-        console.log('something failed')
-      }
+      await store.loadServerList()
+
+      //reload server list every minute
+      await setInterval(store.loadServerList, 60 * 1000)
 
       if (!store.isDaemonConfirmed) {
         next('/daemon-install')

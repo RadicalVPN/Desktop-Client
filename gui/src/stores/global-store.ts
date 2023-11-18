@@ -3,6 +3,7 @@ import { useColors } from 'vuestic-ui'
 import { useStorage } from '@vueuse/core'
 import { useI18n } from 'vue-i18n'
 import languages from '../i18n/languages'
+import { DaemonHelper } from '../helper/daemon'
 
 export interface Server {
   id: string
@@ -82,6 +83,15 @@ export const useGlobalStore = defineStore('global', {
   actions: {
     toggleSidebar() {
       this.isSidebarMinimized = !this.isSidebarMinimized
+    },
+    async loadServerList() {
+      try {
+        this.serverList = (await new DaemonHelper().getServerList()).filter((server: Server) => server.online)
+        this.computeLocationList()
+      } catch (e) {
+        console.log('something failed')
+      }
+      console.log('a')
     },
     computeLocationList() {
       this.locationList = Object.values(
