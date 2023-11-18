@@ -18,7 +18,7 @@
 
           <div class="p-3">
             <div v-if="store.auth.isAuthChecking" class="flex col-span-12 p-4 justify-center">
-              <spring-spinner :animation-duration="3000" :size="60" />
+              <spring-spinner :color="colors.secondary" :animation-duration="3000" :size="60" />
             </div>
             <router-view v-else />
           </div>
@@ -35,15 +35,17 @@
   import { useGlobalStore } from '../stores/global-store'
   import { DaemonHelper } from '../helper/daemon'
   import { useRouter } from 'vue-router'
+  import { useColors } from 'vuestic-ui'
 
   export default {
     name: 'AuthLayout',
     components: { RadicalLogo, SpringSpinner },
     setup() {
       const { t } = useI18n()
+      const { colors } = useColors()
       const store = useGlobalStore()
 
-      return { t, store }
+      return { t, store, colors }
     },
     data() {
       return {

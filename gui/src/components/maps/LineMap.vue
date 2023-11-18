@@ -155,7 +155,7 @@
       })
     })
 
-    if (store.showCountryOnMap) {
+    if (store.showServerOnMap) {
       pointSeries.bullets.push((root, series, dataItem) => {
         const itemData = dataItem.dataContext as CityItem
         const labelText = itemData.title.split(' - ')[1]

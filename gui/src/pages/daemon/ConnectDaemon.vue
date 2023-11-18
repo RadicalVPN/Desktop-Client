@@ -43,6 +43,7 @@
   import { setTimeout } from 'timers/promises'
   import { DaemonHelper } from '../../helper/daemon'
   import { useRouter } from 'vue-router'
+  import { useColors } from 'vuestic-ui/web-components'
 
   const daemonHelper = new DaemonHelper()
   const router = useRouter()
