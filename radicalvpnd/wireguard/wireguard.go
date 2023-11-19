@@ -80,6 +80,8 @@ func (wg *Wireguard) Connect(nodeLocation string, privacyFirewallLevel string) e
 	log.Info("Connecting to wireguard..")
 	wg.start()
 
+	log.Info("Connected to wireguard!")
+
 	return nil
 }
 

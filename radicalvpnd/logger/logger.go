@@ -2,15 +2,27 @@ package logger
 
 import (
 	"fmt"
+	"os"
 	"path/filepath"
 	"runtime"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/hectane/go-acl"
+)
+
+var (
+	globalFileHandle *os.File
+	filePath 	   string
 )
 
 type Logger struct {
 	prefix string
+}
+
+func Init(logFile string) {
+	filePath = logFile
 }
 
 func NewLogger(prefix string) *Logger {
@@ -89,27 +101,56 @@ func (l *Logger) Error(v ...interface{}) {
 	_error(l.prefix, 0, v...)
 }
 
+func log(data ...interface{}) error {
+
+	//init log file
+	if globalFileHandle == nil {
+		var err error
+		globalFileHandle, err = os.OpenFile(filePath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+		if err != nil {
+			return fmt.Errorf("failed to create log file: %w", err)
+		}
+
+		if runtime.GOOS == "windows" {
+			if err := acl.Chmod(filePath, 0644); err != nil {
+				os.Remove(filePath)
+				return fmt.Errorf("failed to change windows file permissions: %w", err)
+			}
+		}
+	}
+
+	//normal log to stdout
+	fmt.Println(data...)
+
+	//write to file
+	if globalFileHandle != nil {
+		globalFileHandle.WriteString(fmt.Sprintln(data...))
+	}
+
+	return nil
+}
+
 func _info(name string, v ...interface{}) {
 	mes, timeStr, _, _ := getLogPrefixes(fmt.Sprint(v...), 0)
-	fmt.Println(timeStr, name, "INFO", mes)
+	log(timeStr, name, "INFO", mes)
 }
 
 func _debug(name string, v ...interface{}) {
 	mes, timeStr, runtimeInfo, _ := getLogPrefixes(fmt.Sprint(v...), 0)
-	fmt.Println(timeStr, name, "DEBU", runtimeInfo, mes)
+	log(timeStr, name, "DEBU", runtimeInfo, mes)
 }
 
 func _warning(name string, v ...interface{}) {
 	mes, timeStr, runtimeInfo, _ := getLogPrefixes(fmt.Sprint(v...), 0)
-	fmt.Println(timeStr, name, "WARN", runtimeInfo, mes)
+	log(timeStr, name, "WARN", runtimeInfo, mes)
 }
 
 func _trace(name string, v ...interface{}) {
 	mes, timeStr, runtimeInfo, methodInfo := getLogPrefixes(fmt.Sprint(v...), 0)
-	fmt.Println(timeStr, name, "TRAC", runtimeInfo+methodInfo, mes)
+	log(timeStr, name, "TRAC", runtimeInfo+methodInfo, mes)
 }
 
 func _error(name string, callerStackOffset int, v ...interface{}) {
 	mes, timeStr, runtimeInfo, methodInfo := getLogPrefixes(fmt.Sprint(v...), callerStackOffset)
-	fmt.Println(timeStr, name, "ERRO", runtimeInfo+methodInfo, mes)
+	log(timeStr, name, "ERRO", runtimeInfo+methodInfo, mes)
 }

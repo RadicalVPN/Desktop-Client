@@ -16,4 +16,6 @@ func initVariables() {
 	wireguardPath = path.Join("/Applications/RadicalVPN.app/Contents/MacOS/WireGuard/wg")
 	wireguardQuickPath = path.Join("/Applications/RadicalVPN.app/Contents/MacOS/WireGuard/wg-quick.bash")
 	wireguardConfigPath = path.Join(settingsDirectory, "radicalvpn.conf")
+
+	logFilePath = path.Join(settingsDirectory, "radicalvpn.log")
 }

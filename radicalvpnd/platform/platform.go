@@ -8,6 +8,7 @@ import (
 )
 
 var (
+	logFilePath         string
 	serviceFile         string
 	settingsFile        string
 	wireguardPath       string
@@ -60,4 +61,8 @@ func GetWireguardConfPath() string {
 
 func GetWireguardQuickPath() string {
 	return wireguardQuickPath
+}
+
+func GetLogFilePath() string {
+	return logFilePath
 }

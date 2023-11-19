@@ -19,6 +19,8 @@ func init() {
 }
 
 func Launch() {
+	logger.Init(platform.GetLogFilePath())
+
 	log.Info("Starting RadicalVPN Daemon..", fmt.Sprintf(" [%s,%s]", runtime.GOOS, runtime.GOARCH))
 	log.Info(fmt.Sprintf("Args: %s", os.Args))
 	log.Info(fmt.Sprintf("PID : %d PPID: %d", os.Getpid(), os.Getppid()))
