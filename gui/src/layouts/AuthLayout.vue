@@ -70,6 +70,8 @@
         router.push({ name: 'dashboard' })
       } else {
         store.auth.isAuthChecking = false
+
+        await new DaemonHelper().disconnectFromServer()
         console.log(store)
       }
     },
