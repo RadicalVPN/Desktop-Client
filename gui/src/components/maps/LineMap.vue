@@ -13,8 +13,6 @@
 
   import { useMapData, CityItem, getGeoBounds, compareStrings } from '../../data/maps/lineMapData'
 
-  const generateButtonText = (city: string) => `Show flights from ${city}`
-
   const props = withDefaults(
     defineProps<{
       mapData: CityItem[]
@@ -40,7 +38,6 @@
   const mapPointSeries = shallowRef()
   const mapLineSeries = shallowRef()
   const mapZoomControl = shallowRef()
-  const mapHomeCityButton = shallowRef()
 
   const mainCity = computed({
     get() {
@@ -76,6 +73,7 @@
       am5map.MapChart.new(root, {
         minZoomLevel: 1,
         maxZoomLevel: 20,
+        zoomStep: store.animatedMap ? 3 : 2,
       }),
     )
 
