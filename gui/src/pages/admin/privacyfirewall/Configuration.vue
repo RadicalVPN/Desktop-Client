@@ -1,11 +1,11 @@
 <template>
-  <va-card class="mb-8 min-w-full max-w-lg">
+  <va-card>
     <va-card-title style="font-size: 0.875rem">{{ t('privacyFirewall.settings.title') }}</va-card-title>
 
     <va-card-content>
       <va-select
         v-model="store.privacyFirewallLevel"
-        class="mb-6"
+        class="mb-6 max-w-3xl"
         :label="t('privacyFirewall.settings.dropDownLabel')"
         :options="levels"
         text-by="textBy"
