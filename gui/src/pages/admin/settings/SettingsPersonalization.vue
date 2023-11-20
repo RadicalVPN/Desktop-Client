@@ -38,16 +38,19 @@
   import { useColors } from 'vuestic-ui'
   import { useGlobalStore } from '../../../stores/global-store'
   import rawLanguages from '../../../i18n/languages'
+  import { computed } from 'vue'
 
   const { t, locale } = useI18n()
   const { applyPreset } = useColors()
   const store = useGlobalStore()
 
   const themeOptions = ['light', 'dark']
-  const languages = rawLanguages.map((lang) => ({
-    ...lang,
-    textBy: t(lang.textBy),
-  }))
+  const languages = computed(() =>
+    rawLanguages.map((lang) => ({
+      ...lang,
+      textBy: t(lang.textBy),
+    })),
+  )
 
   watchEffect(() => {
     setTheme(store.theme)
@@ -67,7 +70,7 @@
       const sysLang = navigator.language
 
       //valid locale?
-      const isValidLocale = languages.some((language) => language.text === sysLang)
+      const isValidLocale = languages.value.some((language) => language.text === sysLang)
 
       if (isValidLocale) {
         newLocale = sysLang
