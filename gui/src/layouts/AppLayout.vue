@@ -15,7 +15,7 @@
       <div v-if="currentRouteName == 'dashboard'" class="app-layout__page">
         <router-view />
       </div>
-      <div v-else class="p-2 md:px-6 md:py-9">
+      <div v-else class="app-layout__page p-2 md:px-6 md:py-9">
         <router-view />
       </div>
     </div>
