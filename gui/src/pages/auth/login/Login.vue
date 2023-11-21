@@ -23,7 +23,7 @@
       v-model="totp"
       class="mb-4"
       type="text"
-      label="TOTP Code"
+      :label="t('auth.totpCode')"
       :error="!!totpErrors.length"
       :error-messages="totpErrors"
     />
