@@ -18,6 +18,16 @@
       :error-messages="passwordErrors"
     />
 
+    <va-input
+      v-if="showTotp === true"
+      v-model="totp"
+      class="mb-4"
+      type="text"
+      label="TOTP Code"
+      :error="!!totpErrors.length"
+      :error-messages="totpErrors"
+    />
+
     <div class="auth-layout__options flex items-center justify-between">
       <router-link class="ml-1 va-link" :to="{ name: 'recover-password' }">{{
         t('auth.recover_password')
@@ -43,6 +53,11 @@
   const password = ref('')
   const emailErrors = ref<string[]>([])
   const passwordErrors = ref<string[]>([])
+
+  const showTotp = ref<boolean>(false)
+  const totp = ref('')
+  const totpErrors = ref<string[]>([])
+
   const router = useRouter()
 
   const formReady = computed(() => !emailErrors.value.length && !passwordErrors.value.length)
@@ -60,6 +75,9 @@
       {
         email: email.value,
         password: password.value,
+        ...(totp.value && {
+          totpToken: totp.value,
+        }),
       },
       {
         headers: {
@@ -73,8 +91,16 @@
       console.log('logged in')
       router.push({ name: 'dashboard' })
     } else {
-      emailErrors.value = ['Invalid email or password']
-      passwordErrors.value = ['Invalid email or password']
+      if (resp.data == 'totp required') {
+        showTotp.value = true
+        totpErrors.value = ['TOTP is required']
+      } else if (resp.data === 'invalid totp token') {
+        totpErrors.value = ['Invalid TOTP token']
+      } else {
+        emailErrors.value = ['Invalid email or password']
+        passwordErrors.value = ['Invalid email or password']
+      }
+
       console.log('failed to login')
     }
   }

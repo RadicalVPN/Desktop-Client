@@ -3,6 +3,7 @@ package webapi
 type Signin struct {
 	Email      string `json:"email"`
 	Password   string `json:"password"`
+	TotpToken   string `json:"totpToken"`
 	RememberMe bool   `json:"rememberMe"`
 }
 
