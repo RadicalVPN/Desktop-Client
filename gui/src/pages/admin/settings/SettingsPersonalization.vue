@@ -84,4 +84,3 @@
     locale.value = newLocale
   }
 </script>
-../../../languages ../../../i18n/languages

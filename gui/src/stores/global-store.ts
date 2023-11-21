@@ -35,30 +35,10 @@ export interface Location {
 export const useGlobalStore = defineStore('global', {
   state: () => {
     const { applyPreset } = useColors()
-    const { locale } = useI18n()
 
+    //load theme on startup
     const theme = localStorage.getItem('theme') || 'light'
     applyPreset(theme)
-
-    //load i18n on start
-    let i18n = localStorage.getItem('language')
-    if (i18n) {
-      if (i18n === '_system') {
-        const sysLang = navigator.language
-
-        //valid locale?
-        const isValidLocale = languages.some((language) => language.text === sysLang)
-
-        if (isValidLocale) {
-          i18n = sysLang
-        } else {
-          console.warn('no translation for system language', sysLang)
-          i18n = 'gb'
-        }
-      }
-
-      locale.value = i18n
-    }
 
     return {
       isSidebarMinimized: false,
@@ -71,7 +51,7 @@ export const useGlobalStore = defineStore('global', {
       animatedMap: useStorage('animatedMap', true),
       disableNotifications: useStorage('disableNotifications', false),
       privacyFirewallLevel: useStorage('privacyFirewall', 'basic'),
-      language: useStorage('language', 'gb'),
+      language: useStorage('language', '_system'),
       showServerOnMap: useStorage('showCountryOnMap', false),
       mainCity: 'N/A',
       auth: {
@@ -118,6 +98,24 @@ export const useGlobalStore = defineStore('global', {
     },
     changeUserName(userName: string) {
       this.userName = userName
+    },
+    loadSystemLanguage() {
+      const sysLang = navigator.language
+      const { locale } = useI18n()
+
+      if (this.language === '_system') {
+        //valid locale?
+        const isValidLocale = languages.some((language) => language.text === sysLang)
+
+        if (isValidLocale) {
+          locale.value = sysLang
+        } else {
+          console.warn('no translation for system language', sysLang)
+          locale.value = 'gb'
+        }
+      } else {
+        locale.value = this.language
+      }
     },
   },
 })

@@ -76,6 +76,13 @@
   const onCloseSidebarButtonClick = () => {
     isSidebarMinimized.value = true
   }
+
+  onMounted(() => {
+    window.addEventListener('resize', onResize)
+
+    //this is a hack to force the system language to load!
+    console.log(useGlobalStore().loadSystemLanguage())
+  })
 </script>
 
 <style lang="scss">
