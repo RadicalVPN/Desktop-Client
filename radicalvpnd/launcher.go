@@ -50,8 +50,6 @@ func Launch() {
 		secret = util.RandomString(32)
 	}
 
-	log.Debug("Secret: " + secret)
-
 	portChannel := make(chan string, 1)
 	go func() {
 		//this will block until we got a port back from the protocol
