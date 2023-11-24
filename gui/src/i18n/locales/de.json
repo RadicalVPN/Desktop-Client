@@ -28,7 +28,9 @@
     "animatedMap": "Animierte Karte",
     "disableNotifications": "Mitteilungen deaktivieren",
     "language": "Sprache",
-    "showServerTitle": "Servertitel auf der Karte anzeigen"
+    "showServerTitle": "Servertitel auf der Karte anzeigen",
+    "activeLogs": "Aktiviere Logs",
+    "logs": "Logs"
   },
   "vpn": {
     "connect": "Verbinden",

@@ -8,6 +8,8 @@ import (
 )
 
 func PingServers(server []webapi.Server) []webapi.Server {
+	println("pinging", len(server), "servers")
+
 	for i, s := range server {
 		if s.Online {
 			server[i] = pingServer(s)
@@ -35,8 +37,6 @@ func pingServer(s webapi.Server) webapi.Server {
 	stats := pinger.Statistics()
 	if stats.AvgRtt > 0 {
 		latency := int(stats.AvgRtt / time.Millisecond)
-
-		log.Info("Ping", s.Hostname, ": ", latency, "ms")
 
 		s.Latency = latency
 	}

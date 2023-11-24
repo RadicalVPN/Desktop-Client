@@ -212,4 +212,37 @@ export class DaemonHelper {
       return false
     }
   }
+
+  public async getLogs(): Promise<string[]> {
+    let logs: string
+
+    switch (process.platform) {
+      case 'darwin':
+        logs = readFileSync('/Library/Application Support/RadicalVPN/radicalvpn.log', 'utf-8')
+        break
+      default:
+        logs = ''
+    }
+
+    const logsArr = logs.split('\n')
+
+    return logsArr.map((log) => {
+      const logLvl = log.split(' ')[4]?.toLowerCase() || 'info'
+
+      return {
+        level: logLvl,
+        color:
+          logLvl === 'erro'
+            ? 'danger'
+            : logLvl === 'trac'
+            ? 'danger'
+            : logLvl === 'warn'
+            ? 'warning'
+            : logLvl === 'debu'
+            ? 'secondary'
+            : 'primary',
+        message: log,
+      }
+    })
+  }
 }

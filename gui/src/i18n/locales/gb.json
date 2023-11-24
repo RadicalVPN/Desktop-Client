@@ -28,7 +28,9 @@
     "animatedMap": "Animated Map",
     "disableNotifications": "Disable Notifications",
     "language": "Language",
-    "showServerTitle": "Show Server Title"
+    "showServerTitle": "Show Server Title",
+    "activeLogs": "Toggle Logs",
+    "logs": "Logs"
   },
   "vpn": {
     "connect": "Connect",
