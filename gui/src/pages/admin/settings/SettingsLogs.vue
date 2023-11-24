@@ -32,7 +32,6 @@
 
   async function updateLogs() {
     logs.value = await new DaemonHelper().getLogs()
-    console.log(logs.value)
   }
 
   onMounted(async () => {
