@@ -8,7 +8,6 @@
       <va-virtual-scroller
         v-if="logsActivated"
         v-slot="{ item }"
-        v-el:scroller
         :items="logs.reverse()"
         :wrapper-size="200"
         :bench="5"
@@ -23,11 +22,11 @@
   import { onMounted } from 'vue'
   import { ref } from 'vue'
   import { useI18n } from 'vue-i18n'
-  import { DaemonHelper } from '../../../helper/daemon'
+  import { DaemonHelper, ParsedLog } from '../../../helper/daemon'
 
   const { t } = useI18n()
 
-  const logs = ref<any[]>([])
+  const logs = ref<ParsedLog[]>([])
   const logsActivated = ref()
 
   async function updateLogs() {
