@@ -23,6 +23,7 @@
   import { ref } from 'vue'
   import { useI18n } from 'vue-i18n'
   import { DaemonHelper, ParsedLog } from '../../../helper/daemon'
+  import { onBeforeUnmount } from 'vue'
 
   const { t } = useI18n()
 
@@ -33,11 +34,17 @@
     logs.value = await new DaemonHelper().getLogs()
   }
 
+  let refreshTimer: any
   onMounted(async () => {
     await updateLogs()
 
-    setInterval(async () => {
+    refreshTimer = setInterval(async () => {
       await updateLogs()
     }, 10_000)
+  })
+
+  //make sure to clean the interval before unmounting
+  onBeforeUnmount(() => {
+    clearInterval(refreshTimer)
   })
 </script>
