@@ -2,6 +2,12 @@ import axios from 'axios'
 import { readFileSync } from 'node:fs'
 import { spawn } from 'node:child_process'
 
+export interface ParsedLog {
+  level: string
+  color: string
+  message: string
+}
+
 export class DaemonHelper {
   public getCredentials() {
     let rawCredentials: string
@@ -213,7 +219,7 @@ export class DaemonHelper {
     }
   }
 
-  public async getLogs(): Promise<string[]> {
+  public async getLogs(): Promise<ParsedLog[]> {
     let logs: string
 
     switch (process.platform) {
