@@ -16,6 +16,9 @@ export class DaemonHelper {
       case 'darwin':
         rawCredentials = readFileSync('/Library/Application Support/RadicalVPN/service.txt', 'utf-8')
         break
+      case 'win32':
+        rawCredentials = readFileSync('C:\\Program Files\\RadicalVPN\\service.txt', 'utf-8')
+        break
       default:
         rawCredentials = '1234|dummy'
     }
@@ -155,6 +158,11 @@ export class DaemonHelper {
 
   public async isDaemonInstallRequired(): Promise<boolean> {
     return new Promise((resolve, reject) => {
+      if (process.platform != 'darwin') {
+        resolve(false)
+        return
+      }
+
       const cmd = spawn(
         '/Applications/RadicalVPN.app/Contents/MacOS/RadicalVPN-Installer.app/Contents/MacOS/RadicalVPN-Installer',
         ['--install-required'],
@@ -225,6 +233,9 @@ export class DaemonHelper {
     switch (process.platform) {
       case 'darwin':
         logs = readFileSync('/Library/Application Support/RadicalVPN/radicalvpn.log', 'utf-8')
+        break
+      case 'win32':
+        logs = readFileSync('C:\\Program Files\\RadicalVPN\\radicalvpn.log', 'utf-8')
         break
       default:
         logs = ''

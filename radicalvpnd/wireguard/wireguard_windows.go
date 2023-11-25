@@ -39,7 +39,7 @@ func (wg *Wireguard) getServiceStatus(mgr *mgr.Mgr) (bool, svc.State, error) {
 	return true, state.State, nil
 }
 
-func (wg *Wireguard) start(config string) error {
+func (wg *Wireguard) start() error {
 
 	m, err := mgr.Connect()
 	if err != nil {

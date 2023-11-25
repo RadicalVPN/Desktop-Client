@@ -11,4 +11,5 @@ func initVariables() {
 	settingsFile = path.Join("C:\\", "Program Files", "RadicalVPN", "settings.json")
 	wireguardPath = path.Join("C:\\", "Program Files", "RadicalVPN", "wireguard", "wireguard.exe")
 	wireguardConfigPath = path.Join("C:\\", "Program Files", "RadicalVPN", "radicalvpn.conf")
+	logFilePath = path.Join("C:\\", "Program Files", "RadicalVPN", "radicalvpn.log")
 }
