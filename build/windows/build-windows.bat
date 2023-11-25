@@ -13,6 +13,9 @@ if not exist %NSIS% (
 )
 
 call :build_wireguard
+call :build_daemon
+call :build_gui
+
 call :copy_files
 call :build_nsis_installer
 
@@ -49,6 +52,21 @@ goto :success
 :build_wireguard
     call "radicalvpnd\deps\Windows\scripts\build-wireguard.bat"
     echo %SCRIPTDIR%
+
+    goto :eof
+
+:build_daemon
+    call cd radicalvpnd
+    call go build .
+    call cd ..
+
+    goto :eof
+
+:build_gui
+    call cd gui
+    call npm install
+    call npm run build
+    call cd ..
 
     goto :eof
 
