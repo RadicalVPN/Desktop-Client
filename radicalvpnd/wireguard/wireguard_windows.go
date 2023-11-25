@@ -8,9 +8,14 @@ import (
 	"radicalvpnd/cli"
 	"radicalvpnd/platform"
 	"strings"
+	"sync"
 
 	"golang.org/x/sys/windows/svc"
 	"golang.org/x/sys/windows/svc/mgr"
+)
+
+var (
+	connectionMutex sync.Mutex
 )
 
 func (wg *Wireguard) getTunnelName() string {
@@ -40,13 +45,15 @@ func (wg *Wireguard) getServiceStatus(mgr *mgr.Mgr) (bool, svc.State, error) {
 }
 
 func (wg *Wireguard) start() error {
+	connectionMutex.Lock()
+	defer func() {
+		connectionMutex.Unlock()
+	}()
 
 	m, err := mgr.Connect()
 	if err != nil {
 		return fmt.Errorf("could not connect to service manager: %w", err)
 	}
-
-	fmt.Println("executing shit")
 
 	cli.Exec(platform.GetWireguardPath(), "/installtunnelservice", platform.GetWireguardConfPath())
 
@@ -88,5 +95,28 @@ func (wg *Wireguard) start() error {
 }
 
 func (wg *Wireguard) stop() error {
+	connectionMutex.Lock()
+	defer func() {
+		connectionMutex.Unlock()
+	}()
+
+	m, err := mgr.Connect()
+	if err != nil {
+		log.Error("connection to service manager failed")
+		return fmt.Errorf("could not connect to service manager: %w", err)
+	}
+	defer m.Disconnect()
+
+	s, err := m.OpenService(wg.getWireGuardServiceName())
+	if err != nil {
+		log.Warning("stop wireguard shutdown, service not available")
+		return nil // service not available (so, nothing to uninstall)
+	}
+	s.Close()
+
+	res, err := cli.Exec(platform.GetWireguardPath(), "/uninstalltunnelservice", wg.getTunnelName())
+
+	log.Info("wireguard disconnected", res)
+
 	return nil
 }

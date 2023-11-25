@@ -20,8 +20,6 @@ func PingServers(server []webapi.Server) []webapi.Server {
 }
 
 func pingServer(s webapi.Server) webapi.Server {
-	log.Debug("Pinging ", s.ExternaIp)
-
 	pinger, err := probing.NewPinger(s.ExternaIp)
 
 	if err != nil {
