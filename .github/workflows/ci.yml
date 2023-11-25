@@ -11,6 +11,9 @@ jobs:
   windows:
     runs-on: windows-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
       - name: Setup Go 1.20
         uses: actions/setup-go@v4
         with:
