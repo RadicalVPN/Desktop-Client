@@ -54,6 +54,7 @@ func (wg *Wireguard) start() error {
 	if err != nil {
 		return fmt.Errorf("could not connect to service manager: %w", err)
 	}
+	defer m.Disconnect()
 
 	cli.Exec(platform.GetWireguardPath(), "/installtunnelservice", platform.GetWireguardConfPath())
 
@@ -89,8 +90,6 @@ func (wg *Wireguard) start() error {
 
 	fmt.Println(isInstalled, isStarted)
 
-	defer m.Disconnect()
-
 	return nil
 }
 
@@ -119,4 +118,23 @@ func (wg *Wireguard) stop() error {
 	log.Info("wireguard disconnected", res)
 
 	return nil
+}
+
+func (wg *Wireguard) isConnected() bool {
+	m, err := mgr.Connect()
+	if err != nil {
+		return false
+	}
+	defer m.Disconnect()
+
+	_, status, err := wg.getServiceStatus(m)
+	if err != nil {
+		return false
+	}
+
+	if status == svc.Running {
+		return true
+	}
+
+	return false
 }

@@ -37,3 +37,9 @@ func (wg *Wireguard) stop() error {
 
 	return nil
 }
+
+func (wg *Wireguard) isConnected() bool {
+	res, _ := cli.Exec(platform.GetWireguardPath(), "show")
+
+	return res != ""
+}

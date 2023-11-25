@@ -6,7 +6,6 @@ import (
 	"errors"
 	"io"
 	"net/http"
-	"radicalvpnd/cli"
 	"radicalvpnd/logger"
 	"radicalvpnd/platform"
 	"radicalvpnd/settings"
@@ -33,7 +32,7 @@ func init() {
 
 func (wg *Wireguard) downloadConfiguration(nodeLocation string, privacyFirewallLevel string) ([]byte, error) {
 	dynamicvpn := webapi.DynamicVpnCreation{
-		NodeLocation: nodeLocation,
+		NodeLocation:    nodeLocation,
 		PrivacyFirewall: privacyFirewallLevel,
 	}
 	payload, _ := json.Marshal(dynamicvpn)
@@ -93,6 +92,5 @@ func (wg *Wireguard) Disconnect() error {
 }
 
 func (wg *Wireguard) IsConnected() bool {
-	res, _ := cli.Exec(platform.GetWireguardPath(), "show")
-	return res != ""
+	return wg.isConnected()
 }
