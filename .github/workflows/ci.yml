@@ -23,7 +23,7 @@ jobs:
   
       - name: Build Installer
         run: |
-          .\build\windows\build-windows.bat
+          ./build/windows/build-windows.bat
   macos:
     runs-on: macos-latest
     steps:
