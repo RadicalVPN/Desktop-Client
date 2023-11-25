@@ -37,7 +37,7 @@ goto :success
     mkdir %OUT_DIR%
 
     set FILE_OUT="%OUT_DIR%/RadicalVPN-Setup.exe"
-    %NSIS% /DPRODUCT_VERSION="0.0.1" /DOUT_FILE=%FILE_OUT% /DSOURCE_DIR=%TMP_DIR% "installer/windows/RadicalVPN Client.nsi"
+    %NSIS% /DPRODUCT_VERSION="0.0.1" /DOUT_FILE=%FILE_OUT% /DSOURCE_DIR=%TMP_DIR% "build/windows/RadicalVPN Client.nsi"
     IF not ERRORLEVEL 0 (
 		echo [!] Failed to build NSIS installer.
 		exit /b 1
