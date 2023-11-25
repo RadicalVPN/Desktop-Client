@@ -12,6 +12,7 @@ if not exist %NSIS% (
 	goto :error
 )
 
+call :build_wireguard
 call :copy_files
 call :build_nsis_installer
 
@@ -44,6 +45,13 @@ goto :success
 	)
 
     goto :eof
+
+:build_wireguard
+    call "radicalvpnd\deps\Windows\scripts\build-wireguard.bat"
+    echo %SCRIPTDIR%
+
+    goto :eof
+
 
 :success
 	echo [*] Installer created successfully.
