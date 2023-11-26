@@ -53,6 +53,7 @@ async function createWindow() {
     maximizable: false,
     height: 650,
     width: 1100,
+    autoHideMenuBar: true,
   })
 
   if (process.env.VITE_DEV_SERVER_URL) {
