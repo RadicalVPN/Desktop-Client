@@ -3,6 +3,7 @@ package protocol
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"io"
 	"net"
 	"net/http"
@@ -31,7 +32,7 @@ func init() {
 
 func NewProtocol(secret string) *Protocol {
 	gin.SetMode((gin.ReleaseMode))
-	r := gin.Default()
+	r := gin.New()
 
 	return &Protocol{secret: secret, engine: r}
 }
@@ -58,6 +59,23 @@ func (p *Protocol) AuthMiddleware() gin.HandlerFunc {
 		}
 
 		c.Next()
+	}
+}
+
+func (p *Protocol) LogMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		start := time.Now()
+		path := c.Request.URL.Path
+		method := c.Request.Method
+
+		// process the request
+		c.Next()
+
+		end := time.Now()
+		latency := end.Sub(start)
+		status := c.Writer.Status()
+
+		log.Info(fmt.Sprintf("REQUEST -> %s %s %s %d", method, path, latency, status))
 	}
 }
 
@@ -275,6 +293,6 @@ func (p *Protocol) LoadMiddlewaares() {
 	r := p.engine
 
 	r.Use(gin.Recovery())
-	r.Use(gin.Logger())
+	r.Use(p.LogMiddleware())
 	r.Use(p.AuthMiddleware())
 }
