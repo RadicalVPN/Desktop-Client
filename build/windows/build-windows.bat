@@ -25,9 +25,18 @@ goto :success
 :copy_files
     echo [*] Copying files...
 
-    mkdir %TMP_DIR%
+    ::create only if exists
+    IF not exist %TMP_DIR% (
+        echo [*] Creating temp directory [%TMP_DIR%]
+        mkdir %TMP_DIR%
+    ) else (
+        echo [*] Temp directory already exists [%TMP_DIR%]
+        rmdir /s /q %TMP_DIR%
+    )
 
-    xcopy /E /I /Y "radicalvpnd/radicalvpnd.exe" %TMP_DIR%
+    xcopy /e /i "gui\dist\win-unpacked" "%TMP_DIR%\gui"
+    copy /b "radicalvpnd\radicalvpnd.exe" "%TMP_DIR%\radicalvpnd.exe"
+
     IF not ERRORLEVEL 0 (
         echo [!] Failed to copy files.
         exit /b 1
