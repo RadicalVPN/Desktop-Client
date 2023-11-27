@@ -39,7 +39,6 @@ func NewProtocol(secret string) *Protocol {
 
 func (p *Protocol) ensureAuth() bool {
 	sett := settings.NewSettings()
-	sett.LoadSettings()
 
 	if sett.Session.Secret == "" {
 		return false

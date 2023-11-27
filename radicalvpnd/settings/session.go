@@ -5,8 +5,6 @@ type Session struct {
 }
 
 func (s *Settings) SetSession(secret string) {
-	s.LoadSettings()
-
 	s.Session.Secret = secret
 
 	s.SaveSettings()

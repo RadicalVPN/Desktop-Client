@@ -38,3 +38,7 @@ pre {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+::-webkit-scrollbar {
+  display: none; //hide scrollbars
+}

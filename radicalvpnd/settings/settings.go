@@ -16,7 +16,11 @@ type Settings struct {
 var mutx sync.RWMutex
 
 func NewSettings() *Settings {
-	return &Settings{}
+	settings := &Settings{}
+
+	settings.LoadSettings()
+
+	return settings
 }
 
 func (s *Settings) SaveSettings() error {
@@ -56,6 +60,5 @@ func (s *Settings) LoadSettings() error {
 
 func GetSessionCookie() string {
 	sett := NewSettings()
-	sett.LoadSettings()
 	return "RADICAL_SESSION_ID=" + sett.Session.Secret + ";"
 }
