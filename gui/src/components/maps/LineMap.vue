@@ -6,7 +6,7 @@
   import { ref, toRef, computed, onMounted, onBeforeUnmount, watch, shallowRef, onUpdated } from 'vue'
   import * as am5 from '@amcharts/amcharts5'
   import * as am5map from '@amcharts/amcharts5/map'
-  import am5geodata_worldHigh from '@amcharts/amcharts5-geodata/worldHigh'
+  import am5geodata_worldLow from '@amcharts/amcharts5-geodata/worldLow'
   import am5themes_Animated from '@amcharts/amcharts5/themes/Animated'
   import { useColors } from 'vuestic-ui'
   import { useGlobalStore } from '../../stores/global-store'
@@ -89,7 +89,7 @@
     // polygon series
     const polygonSeries = chart.series.push(
       am5map.MapPolygonSeries.new(root, {
-        geoJSON: am5geodata_worldHigh,
+        geoJSON: am5geodata_worldLow,
         exclude: ['AQ'], // i think we will never have servers in antarctica :)
       }),
     )
