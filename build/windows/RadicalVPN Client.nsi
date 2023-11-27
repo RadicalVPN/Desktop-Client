@@ -134,9 +134,17 @@ Section "${NAME}" RadicalVPN
   SetRegView 64
   SetOutPath "$INSTDIR"
 
-  DetailPrint "Installing RadicalVPN Daemon..."
+  DetailPrint "Installing RadicalVPN..."
   File /r "${SOURCE_DIR}\*.*"
 
   CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
-  CreateShortCut "$SMPROGRAMS\$StartMenuFolder\${PRODUCT_NAME}.lnk" "$INSTDIR\ui\RadicalVPN.exe"
+  CreateShortCut "$SMPROGRAMS\$StartMenuFolder\${NAME}.lnk" "$INSTDIR\gui\RadicalVPN.exe"
+
+  DetailPrint "Installing RadicalVPN Daemon Service..."
+  nsExec::ExecToLog '"$SYSDIR\sc.exe" create "RadicalVPN Daemon" binPath= "\"$INSTDIR\radicalvpnd.exe\"" start= auto'
+  nsExec::ExecToLog '"$SYSDIR\sc.exe" sdset "RadicalVPN Daemon" "D:(A;;CCLCSWRPWPDTLOCRRC;;;SY)(A;;CCDCLCSWRPWPDTLOCRSDRCWDWO;;;BA)(A;;CCLCSWLOCRRC;;;IU)(A;;CCLCSWLOCRRC;;;SU)(A;;RPWPDTLO;;;S-1-1-0)"'
+
+  DetailPrint "Starting RadicalVPN Daemon Service..."
+  nsExec::ExecToLog '"$SYSDIR\sc.exe" start "RadicalVPN Daemon"'
+
 SectionEnd
