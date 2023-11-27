@@ -7,7 +7,7 @@ SetCompressor lzma
 !include "WinVer.nsh"
 !include "winmessages.nsh"
 
-!define NAME "RadicalVPN Client"
+!define NAME "RadicalVPN"
 !define MUI_WELCOMEPAGE_TITLE "Welcome to the ${NAME} Setup Wizard!"
 
 !define MUI_HEADERIMAGE
@@ -17,10 +17,9 @@ SetCompressor lzma
 !define MUI_ICON "logo.ico"
 !define MUI_UNICON "logo.ico"
 
+!define APP_RUN_PATH "$INSTDIR\gui\RadicalVPN.exe"
+
 #!define MUI_FINISHPAGE_RUN_FUNCTION ExecAppFile
-
-LicenseForceSelection checkbox "I Agree"
-
 
 !insertmacro MUI_PAGE_WELCOME
 !insertmacro MUI_PAGE_LICENSE License.txt
@@ -32,10 +31,11 @@ LicenseForceSelection checkbox "I Agree"
 !insertmacro MUI_UNPAGE_INSTFILES
 !insertmacro MUI_UNPAGE_FINISH
 
-!insertmacro MUI_LANGUAGE "English"
 
-OutFile "${OUT_FILE}"
 Name "${NAME}"
+OutFile "${OUT_FILE}"
+InstallDir "$PROGRAMFILES64\${NAME}"
+
 RequestExecutionLevel admin
 
 ; variables
@@ -64,15 +64,6 @@ Function un.onInit
   !insertmacro COMMON_INIT
 FunctionEnd
 
-Section "${NAME}" RadicalVPN
-  SetRegView 64
-  SetOutPath "$INSTDIR"
-
-  DetailPrint "Installing RadicalVPN Daemon..."
-  nsExec::ExecToLog '"$SYSDIR\sc.exe" create "RadicalVPN" binPath= "\"$INSTDIR\RadicalVPN.exe\"" start= auto'
-
-SectionEnd
-
 Function IsOSSupported
     ${If} ${AtLeastWin7}
         goto archcheck
@@ -87,3 +78,65 @@ archcheck:
     Quit
 end:
 FunctionEnd
+
+!define MUI_FINISHPAGE_NOAUTOCLOSE
+!define MUI_FINISHPAGE_RUN "$INSTDIR\RadicalVPN.exe"
+!define MUI_FINISHPAGE_RUN_TEXT "Run ${NAME} now"
+!define MUI_FINISHPAGE_RUN_FUNCTION exec_app
+
+; Checkbox on finish page: create shortcut on desktop
+; using unused 'readme' check box for this
+!define MUI_FINISHPAGE_SHOWREADME ""
+!define MUI_FINISHPAGE_SHOWREADME_NOTCHECKED
+!define MUI_FINISHPAGE_SHOWREADME_TEXT "Create a desktop shortcut"
+!define MUI_FINISHPAGE_SHOWREADME_FUNCTION finish_page_creation
+Function finish_page_creation
+CreateShortcut "$DESKTOP\RadicalVPN.lnk" "${APP_RUN_PATH}"
+FunctionEnd
+
+LicenseForceSelection checkbox "I Agree"
+
+!define MUI_STARTMENUPAGE_REGISTRY_ROOT "HKLM"
+!define MUI_STARTMENUPAGE_REGISTRY_KEY "Software\${NAME}"
+!define MUI_STARTMENUPAGE_REGISTRY_VALUENAME "Start Menu Folder"
+
+!define MUI_ABORTWARNING
+
+!insertmacro MUI_PAGE_FINISH
+
+!insertmacro MUI_UNPAGE_WELCOME
+!insertmacro MUI_UNPAGE_CONFIRM
+!insertmacro MUI_UNPAGE_INSTFILES
+!insertmacro MUI_UNPAGE_FINISH
+
+!insertmacro MUI_LANGUAGE "English"
+
+Function exec_app
+    Exec "${APP_RUN_PATH}"
+    Sleep 500
+
+    StrCpy $R1 0
+    ${While} $R1 < 50
+        IntOp $R1 $R1 + 1
+        System::Call user32::GetForegroundWindow()i.r0
+
+        ${If} $0 != $hwndparent
+            Return
+        ${EndIf}
+
+        Sleep 100
+    ${EndWhile}
+
+FunctionEnd
+
+
+Section "${NAME}" RadicalVPN
+  SetRegView 64
+  SetOutPath "$INSTDIR"
+
+  DetailPrint "Installing RadicalVPN Daemon..."
+  File /r "${SOURCE_DIR}\*.*"
+
+  CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
+  CreateShortCut "$SMPROGRAMS\$StartMenuFolder\${PRODUCT_NAME}.lnk" "$INSTDIR\ui\RadicalVPN.exe"
+SectionEnd
