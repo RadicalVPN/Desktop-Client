@@ -252,12 +252,12 @@ export class DaemonHelper {
           logLvl === 'erro'
             ? 'danger'
             : logLvl === 'trac'
-            ? 'danger'
-            : logLvl === 'warn'
-            ? 'warning'
-            : logLvl === 'debu'
-            ? 'secondary'
-            : 'primary',
+              ? 'danger'
+              : logLvl === 'warn'
+                ? 'warning'
+                : logLvl === 'debu'
+                  ? 'secondary'
+                  : 'primary',
         message: log,
       }
     })
