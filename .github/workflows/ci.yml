@@ -27,6 +27,7 @@ jobs:
       - name: Prettier Code Formatting
         run: |
           cd gui
+          npm ci
           npm run format:build
 
       - name: Build App
@@ -83,6 +84,7 @@ jobs:
       - name: Prettier Code Formatting
         run: |
           cd gui
+          npm ci
           npm run format:build
 
       - name: Build App
