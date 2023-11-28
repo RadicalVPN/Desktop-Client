@@ -35,6 +35,8 @@ goto :success
     )
 
     xcopy /e /i "gui\dist\win-unpacked" "%TMP_DIR%\gui"
+    xcopy /e /i "radicalvpnd\deps\Windows\WireGuard\x86_64" "%TMP_DIR%\wireguard"
+
     copy /b "radicalvpnd\radicalvpnd.exe" "%TMP_DIR%\radicalvpnd.exe"
 
     IF not ERRORLEVEL 0 (
