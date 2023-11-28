@@ -4,6 +4,7 @@ package main
 
 import (
 	"fmt"
+	"radicalvpnd/cli"
 
 	"golang.org/x/sys/windows"
 	"golang.org/x/sys/windows/svc"
@@ -115,6 +116,9 @@ loop:
 				if elog != nil {
 					elog.Info(1, fmt.Sprintf("Service Control Request: Received Stop or Shutdown %d", c.Cmd))
 				}
+
+				//kill the gui too
+				cli.Exec("taskkill", "/F", "/IM", "RadicalVPN.exe")
 
 				break loop
 			case svc.PowerEvent:
