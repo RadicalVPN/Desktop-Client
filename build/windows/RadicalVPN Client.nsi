@@ -8,6 +8,7 @@ SetCompressor lzma
 !include "winmessages.nsh"
 
 !define NAME "RadicalVPN"
+!define PUBLISHER "RadicalVPN Development"
 !define MUI_WELCOMEPAGE_TITLE "Welcome to the ${NAME} Setup Wizard!"
 
 !define MUI_HEADERIMAGE
@@ -37,6 +38,12 @@ OutFile "${OUT_FILE}"
 InstallDir "$PROGRAMFILES64\${NAME}"
 
 RequestExecutionLevel admin
+
+; HKLM (all users)
+!define env_hklm 'HKLM "SYSTEM\CurrentControlSet\Control\Session Manager\Environment"'
+; HKCU (current user)
+!define env_hkcu 'HKCU "Environment"'
+
 
 ; variables
 Var HEADLINE_FONT
@@ -137,16 +144,27 @@ Section "${NAME}" RadicalVPN
   DetailPrint "Installing RadicalVPN..."
   File /r "${SOURCE_DIR}\*.*"
 
+  WriteRegStr HKLM "Software\${NAME}" "" $INSTDIR
+  WriteUninstaller "$INSTDIR\Uninstall.exe"
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${NAME}" "DisplayName" "${NAME}"
+  WriteRegExpandStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${NAME}" "UninstallString" "$INSTDIR\Uninstall.exe"
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${NAME}" "DisplayIcon" "$INSTDIR\${MUI_ICON}"
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${NAME}" "DisplayVersion" "0.0.0"
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${NAME}" "Publisher" "${PUBLISHER}"
+
   CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
   CreateShortCut "$SMPROGRAMS\$StartMenuFolder\${NAME}.lnk" "$INSTDIR\gui\RadicalVPN.exe"
+  CreateShortCut "$SMPROGRAMS\$StartMenuFolder\Uninstall ${NAME}.lnk" "$INSTDIR\Uninstall.exe"
 
-  nsExec::ExecToLog '"$SYSDIR\sc.exe" stop "RadicalVPN Daemon"'
+  nsExec::ExecToLog '"$SYSDIR\sc.exe" stop "RadicalVPN-Daemon"'
 
-  DetailPrint "Installing RadicalVPN Daemon Service..."
-  nsExec::ExecToLog '"$SYSDIR\sc.exe" create "RadicalVPN Daemon" binPath= "\"$INSTDIR\radicalvpnd.exe\"" start= auto'
-  nsExec::ExecToLog '"$SYSDIR\sc.exe" sdset "RadicalVPN Daemon" "D:(A;;CCLCSWRPWPDTLOCRRC;;;SY)(A;;CCDCLCSWRPWPDTLOCRSDRCWDWO;;;BA)(A;;CCLCSWLOCRRC;;;IU)(A;;CCLCSWLOCRRC;;;SU)(A;;RPWPDTLO;;;S-1-1-0)"'
+  DetailPrint "Installing RadicalVPN-Daemon Service..."
+  nsExec::ExecToLog '"$SYSDIR\sc.exe" create "RadicalVPN-Daemon" binPath= "\"$INSTDIR\radicalvpnd.exe\"" start= auto'
+  nsExec::ExecToLog '"$SYSDIR\sc.exe" description "RadicalVPN-Daemon" "RadicalVPN Daemon Service"'
+  nsExec::ExecToLog '"$SYSDIR\sc.exe" sdset "RadicalVPN-Daemon" "D:(A;;CCLCSWRPWPDTLOCRRC;;;SY)(A;;CCDCLCSWRPWPDTLOCRSDRCWDWO;;;BA)(A;;CCLCSWLOCRRC;;;IU)(A;;CCLCSWLOCRRC;;;SU)(A;;RPWPDTLO;;;S-1-1-0)"'
 
-  DetailPrint "Starting RadicalVPN Daemon Service..."
-  nsExec::ExecToLog '"$SYSDIR\sc.exe" start "RadicalVPN Daemon"'
+  DetailPrint "Starting RadicalVPN-Daemon Service..."
+  nsExec::ExecToLog '"$SYSDIR\sc.exe" start "RadicalVPN-Daemon"'
 
 SectionEnd
+

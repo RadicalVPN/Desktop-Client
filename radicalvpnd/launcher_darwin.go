@@ -9,3 +9,8 @@ import (
 func IsAdmin() bool {
 	return os.Geteuid() == 0
 }
+
+func PrepareRun() error {
+	//nothing for darwin yet
+	return nil
+}

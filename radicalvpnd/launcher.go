@@ -70,6 +70,11 @@ func Launch() {
 		file.WriteString(fmt.Sprintf("%s|%s", port, secret))
 	}()
 
+	if err := PrepareRun(); err != nil {
+		log.Error("Failed to prepare run: ", err)
+		os.Exit(1)
+	}
+
 	protocol := protocol.NewProtocol(secret)
 	protocol.Start(portChannel)
 }

@@ -59,12 +59,10 @@ func (wg *Wireguard) start() error {
 	cli.Exec(platform.GetWireguardPath(), "/installtunnelservice", platform.GetWireguardConfPath())
 
 	//wait for service until installed
-	isInstalled := false
 	for {
 		service, err := m.OpenService(wg.getWireGuardServiceName())
 		if err == nil {
 			fmt.Println("wireguard service successfully installed")
-			isInstalled = true
 			service.Close()
 			break
 		} else {
@@ -72,7 +70,6 @@ func (wg *Wireguard) start() error {
 		}
 	}
 
-	isStarted := false
 	for {
 		_, status, err := wg.getServiceStatus(m)
 		if err != nil {
@@ -81,7 +78,6 @@ func (wg *Wireguard) start() error {
 
 		if status == svc.Running {
 			fmt.Println("Service is now running")
-			isStarted = true
 			break
 		} else if status == svc.Stopped {
 			fmt.Println("Service is stopped")
