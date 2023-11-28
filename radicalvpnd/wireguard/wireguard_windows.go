@@ -87,9 +87,7 @@ func (wg *Wireguard) start() error {
 			fmt.Println("Service is stopped")
 		}
 	}
-
-	fmt.Println(isInstalled, isStarted)
-
+	
 	return nil
 }
 
