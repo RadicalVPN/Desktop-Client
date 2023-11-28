@@ -26,7 +26,6 @@ jobs:
 
       - name: Build App
         run: |
-          dir
           build\windows\build-windows.bat
 
       - name: Upload Artifact

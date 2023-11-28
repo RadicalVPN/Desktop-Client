@@ -34,7 +34,7 @@ goto :success
         rmdir /s /q %TMP_DIR%
     )
 
-    xcopy /e /i "gui\dist\win-unpacked" "%TMP_DIR%\gui" 
+    xcopy /e /i "gui\dist\win-unpacked" "%TMP_DIR%\gui"
     copy /b "radicalvpnd\radicalvpnd.exe" "%TMP_DIR%\radicalvpnd.exe"
 
     IF not ERRORLEVEL 0 (
@@ -50,7 +50,7 @@ goto :success
     mkdir %OUT_DIR%
 
     set FILE_OUT="%OUT_DIR%/RadicalVPN-Setup.exe"
-    %NSIS% /DPRODUCT_VERSION="0.0.1" /DOUT_FILE=%FILE_OUT% /DSOURCE_DIR=%TMP_DIR% "build/windows/RadicalVPN Client.nsi" || exit /b 1
+    %NSIS% /DPRODUCT_VERSION="0.0.1" /DOUT_FILE=%FILE_OUT% /DSOURCE_DIR=%TMP_DIR% "build/windows/RadicalVPN Client.nsi"
     IF not ERRORLEVEL 0 (
 		echo [!] Failed to build NSIS installer.
 		exit /b 1
@@ -65,17 +65,18 @@ goto :success
     goto :eof
 
 :build_daemon
-    cd radicalvpnd
-    call go build . || exit /b 1
-    cd ..
+    call cd radicalvpnd
+    call go build .
+    call cd ..
 
     goto :eof
 
 :build_gui
-    cd gui
-    call npm install || exit /b 1
-    call npm run build || exit /b 1
-    cd ..
+    call cd gui
+    call pwd
+    call npm install
+    call npm run build
+    call cd ..
 
     goto :eof
 
