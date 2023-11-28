@@ -24,6 +24,11 @@ jobs:
         with:
           node-version: 20.x
 
+      - name: Prettier Code Formatting
+        run: |
+          cd gui
+          npm run format:build
+
       - name: Build App
         run: |
           build\windows\build-windows.bat
@@ -74,6 +79,11 @@ jobs:
           # import certificate to keychain
           security import $CERTIFICATE_PATH -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
           security list-keychain -d user -s $KEYCHAIN_PATH
+
+      - name: Prettier Code Formatting
+        run: |
+          cd gui
+          npm run format:build
 
       - name: Build App
         env:
