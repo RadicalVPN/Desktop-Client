@@ -7,5 +7,5 @@
   "bracketSpacing": true,
   "printWidth": 120,
   "vueIndentScriptAndStyle": true,
-  "endOfLine": "lf"
+  "endOfLine": "auto"
 }
