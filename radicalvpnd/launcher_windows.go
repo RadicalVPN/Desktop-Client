@@ -4,8 +4,6 @@ package main
 
 import (
 	"fmt"
-	"strings"
-	"time"
 
 	"golang.org/x/sys/windows"
 	"golang.org/x/sys/windows/svc"
@@ -78,21 +76,22 @@ func initWindowsService() {
 
 	defer elog.Close()
 
+	log.Info(fmt.Sprintf("Starting %s Service", serviceName))
 	if elog != nil {
-		elog.Info(1, fmt.Sprintf("starting %s service", serviceName))
+		elog.Info(1, fmt.Sprintf("Starting %s Service", serviceName))
 	}
 
 	err = svc.Run(serviceName, &radicalVpnService{})
 	if err != nil {
 		if elog != nil {
-			elog.Error(1, fmt.Sprintf("%s service failed: %v", serviceName, err))
+			elog.Error(1, fmt.Sprintf("%s Service failed: %v", serviceName, err))
 		}
 		return
 	}
 
-	log.Info(fmt.Sprintf("%s service stopped", serviceName))
+	log.Info(fmt.Sprintf("%s radicalvpnd.exe", serviceName))
 	if elog != nil {
-		elog.Info(1, fmt.Sprintf("%s service stopped", serviceName))
+		elog.Info(1, fmt.Sprintf("%s Service stopped", serviceName))
 	}
 }
 
@@ -100,28 +99,33 @@ func (m *radicalVpnService) Execute(args []string, r <-chan svc.ChangeRequest, c
 	const cmdsAccepted = svc.AcceptStop | svc.AcceptShutdown | svc.AcceptPauseAndContinue
 	changes <- svc.Status{State: svc.StartPending}
 	changes <- svc.Status{State: svc.Running, Accepts: cmdsAccepted}
+
+	log.Info(fmt.Sprintf("%s Windows Service successfully started", serviceName))
 loop:
 	for {
 		select {
 		case c := <-r:
 			switch c.Cmd {
 			case svc.Interrogate:
-				changes <- c.CurrentStatus
-				// Testing deadlock from https://code.google.com/p/winsvc/issues/detail?id=4
-				time.Sleep(100 * time.Millisecond)
+				log.Info("Service Control Request: Received Interrogate ", c.Cmd)
 				changes <- c.CurrentStatus
 			case svc.Stop, svc.Shutdown:
-				// golang.org/x/sys/windows/svc.TestExample is verifying this output.
-				testOutput := strings.Join(args, "-")
-				testOutput += fmt.Sprintf("-%d", c.Context)
-				elog.Info(1, testOutput)
+				log.Info("Service Control Request: Received Stop or Shutdown ", c.Cmd)
+
+				if elog != nil {
+					elog.Info(1, fmt.Sprintf("Service Control Request: Received Stop or Shutdown %d", c.Cmd))
+				}
+
 				break loop
+			case svc.PowerEvent:
+				log.Info("Service Control Request: Received PowerEvent ", c.Cmd)
 			case svc.Pause:
-				changes <- svc.Status{State: svc.Paused, Accepts: cmdsAccepted}
-			case svc.Continue:
-				changes <- svc.Status{State: svc.Running, Accepts: cmdsAccepted}
+				log.Info("Service Control Request: Received Pause ", c.Cmd)
 			default:
-				elog.Error(1, fmt.Sprintf("unexpected control request #%d", c))
+				if elog != nil {
+					elog.Error(1, fmt.Sprintf("unexpected control request %d", c))
+				}
+				log.Warning("Service Control Request: Received unexpected control request ", c.Cmd)
 			}
 		}
 	}
