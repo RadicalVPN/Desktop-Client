@@ -38,6 +38,7 @@ goto :success
     xcopy /e /i "radicalvpnd\deps\Windows\WireGuard\x86_64" "%TMP_DIR%\wireguard"
 
     copy /b "radicalvpnd\radicalvpnd.exe" "%TMP_DIR%\radicalvpnd.exe"
+    copy /b "build\windows\logo.ico" "%TMP_DIR%\logo.ico"
 
     IF not ERRORLEVEL 0 (
         echo [!] Failed to copy files.
@@ -75,7 +76,6 @@ goto :success
 
 :build_gui
     call cd gui
-    call pwd
     call npm install
     call npm run build
     call cd ..

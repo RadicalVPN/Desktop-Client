@@ -20,18 +20,6 @@ SetCompressor lzma
 
 !define APP_RUN_PATH "$INSTDIR\gui\RadicalVPN.exe"
 
-#!define MUI_FINISHPAGE_RUN_FUNCTION ExecAppFile
-
-!insertmacro MUI_PAGE_WELCOME
-!insertmacro MUI_PAGE_LICENSE License.txt
-!insertmacro MUI_PAGE_INSTFILES
-
-
-!insertmacro MUI_UNPAGE_WELCOME
-!insertmacro MUI_UNPAGE_CONFIRM
-!insertmacro MUI_UNPAGE_INSTFILES
-!insertmacro MUI_UNPAGE_FINISH
-
 
 Name "${NAME}"
 OutFile "${OUT_FILE}"
@@ -85,6 +73,17 @@ archcheck:
     Quit
 end:
 FunctionEnd
+
+!insertmacro MUI_PAGE_WELCOME
+!insertmacro MUI_PAGE_LICENSE License.txt
+!insertmacro MUI_PAGE_INSTFILES
+
+
+!insertmacro MUI_UNPAGE_WELCOME
+!insertmacro MUI_UNPAGE_CONFIRM
+!insertmacro MUI_UNPAGE_INSTFILES
+!insertmacro MUI_UNPAGE_FINISH
+
 
 !define MUI_FINISHPAGE_NOAUTOCLOSE
 !define MUI_FINISHPAGE_RUN "$INSTDIR\RadicalVPN.exe"
@@ -168,3 +167,28 @@ Section "${NAME}" RadicalVPN
 
 SectionEnd
 
+Section "Uninstall"
+  SetRegView 64
+
+  DetailPrint "Stopping RadicalVPN-Daemon Service..."
+  nsExec::ExecToLog '"$SYSDIR\sc.exe" stop "RadicalVPN-Daemon"'
+
+  Sleep 2000
+
+  DetailPrint "Deleting RadicalVPN-Daemon Service..."
+  nsExec::ExecToLog '"$SYSDIR\sc.exe" delete "RadicalVPN-Daemon"'
+
+  DetailPrint "Deleting RadicalVPN..."
+
+  RMDir /r "$INSTDIR\gui"
+  RMDir /r "$INSTDIR\wireguard"
+
+  Delete "$INSTDIR\*.*"
+
+  Delete "$SMPROGRAMS\RadicalVPN\Uninstall ${NAME}.lnk"
+  Delete "$SMPROGRAMS\RadicalVPN\${NAME}.lnk"
+  RMDir "$SMPROGRAMS\RadicalVPN"
+  DeleteRegKey /ifempty HKLM "Software\${NAME}"
+  DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${NAME}"
+
+SectionEnd
