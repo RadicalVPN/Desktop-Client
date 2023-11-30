@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { readFileSync } from 'node:fs'
 import { spawn } from 'node:child_process'
+import { readFile } from 'node:fs/promises'
 
 export interface ParsedLog {
   level: string
@@ -232,10 +233,10 @@ export class DaemonHelper {
 
     switch (process.platform) {
       case 'darwin':
-        logs = readFileSync('/Library/Application Support/RadicalVPN/radicalvpn.log', 'utf-8')
+        logs = await readFile('/Library/Application Support/RadicalVPN/radicalvpn.log', 'utf-8')
         break
       case 'win32':
-        logs = readFileSync('C:\\Program Files\\RadicalVPN\\radicalvpn.log', 'utf-8')
+        logs = await readFile('C:\\Program Files\\RadicalVPN\\radicalvpn.log', 'utf-8')
         break
       default:
         logs = ''
