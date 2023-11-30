@@ -5,6 +5,7 @@ SetCompressor lzma
 !include "StrFunc.nsh"
 !include "x64.nsh"
 !include "WinVer.nsh"
+!include "FileFunc.nsh"
 !include "winmessages.nsh"
 
 !define NAME "RadicalVPN"
@@ -24,6 +25,7 @@ SetCompressor lzma
 Name "${NAME}"
 OutFile "${OUT_FILE}"
 InstallDir "$PROGRAMFILES64\${NAME}"
+BrandingText "Copyright 2023, RadicalVPN"
 
 RequestExecutionLevel admin
 
