@@ -5,8 +5,7 @@ import AppLayout from '../layouts/AppLayout.vue'
 import UIRoute from '../pages/admin/ui/route'
 import DaemonConnect from '../pages/daemon/ConnectDaemon.vue'
 import DaemonInstall from '../pages/daemon/DaemonInstall.vue'
-import { DaemonHelper } from '../helper/daemon'
-import { Server, useGlobalStore } from '../stores/global-store'
+import { useGlobalStore } from '../stores/global-store'
 
 const routes: Array<RouteRecordRaw> = [
   {
