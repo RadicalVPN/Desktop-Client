@@ -1,13 +1,13 @@
 <template>
   <va-sidebar :width="width" :minimized="minimized" :minimized-width="minimizedWidth" :animated="animated">
-    <template v-for="(route, index) in items" :key="route.title">
+    <template v-for="route in items" :key="route.title">
       <VaSidebarItem :active="route.name === useRoute().name" :to="{ name: route.name }">
         <VaSidebarItemContent>
           <va-icon :name="route.meta.icon" class="va-sidebar-item__icon" />
         </VaSidebarItemContent>
       </VaSidebarItem>
 
-      <va-spacer v-if="route.name === 'privacy-firewall'" />
+      <va-spacer v-if="route.name === items.slice(-2)[0]?.name" />
     </template>
   </va-sidebar>
 </template>
