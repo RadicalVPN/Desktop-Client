@@ -1,13 +1,21 @@
 <template>
   <va-sidebar :width="width" :minimized="minimized" :minimized-width="minimizedWidth" :animated="animated">
-    <menu-minimized v-if="minimized" :items="items" />
+    <template v-for="(route, index) in items" :key="route.title">
+      <VaSidebarItem :active="route.name === useRoute().name" :to="{ name: route.name }">
+        <VaSidebarItemContent>
+          <va-icon :name="route.meta.icon" class="va-sidebar-item__icon" />
+        </VaSidebarItemContent>
+      </VaSidebarItem>
+
+      <va-spacer v-if="route.name === 'privacy-firewall'" />
+    </template>
   </va-sidebar>
 </template>
 
 <script setup lang="ts">
   import { ref } from 'vue'
   import NavigationRoutes from './NavigationRoutes'
-  import MenuMinimized from './menu/MenuMinimized.vue'
+  import { useRoute } from 'vue-router'
 
   withDefaults(
     defineProps<{
@@ -32,10 +40,11 @@
 <style lang="scss">
   .va-sidebar {
     &__menu {
-      padding: 2rem 0;
+      padding: 1rem 0 0 0;
     }
 
     &-item {
+      filter: blur(50);
       &__icon {
         width: 1.5rem;
         height: 1.5rem;
