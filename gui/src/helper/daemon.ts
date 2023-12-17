@@ -244,23 +244,25 @@ export class DaemonHelper {
 
     const logsArr = logs.split('\n')
 
-    return logsArr.map((log) => {
-      const logLvl = log.split(' ')[4]?.toLowerCase() || 'info'
+    return logsArr
+      .map((log) => {
+        const logLvl = log.split(' ')[4]?.toLowerCase() || 'info'
 
-      return {
-        level: logLvl,
-        color:
-          logLvl === 'erro'
-            ? 'danger'
-            : logLvl === 'trac'
+        return {
+          level: logLvl,
+          color:
+            logLvl === 'erro'
               ? 'danger'
-              : logLvl === 'warn'
-                ? 'warning'
-                : logLvl === 'debu'
-                  ? 'secondary'
-                  : 'primary',
-        message: log,
-      }
-    })
+              : logLvl === 'trac'
+                ? 'danger'
+                : logLvl === 'warn'
+                  ? 'warning'
+                  : logLvl === 'debu'
+                    ? 'secondary'
+                    : 'primary',
+          message: log,
+        }
+      })
+      .reverse()
   }
 }
