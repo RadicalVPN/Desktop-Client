@@ -46,8 +46,6 @@
   import { useI18n } from 'vue-i18n'
   import axios from 'axios'
   import { DaemonHelper } from '../../../helper/daemon'
-  import { shell } from 'electron'
-  import { onMounted } from 'vue'
 
   const { t } = useI18n()
 
