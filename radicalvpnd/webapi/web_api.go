@@ -5,6 +5,7 @@ type Signin struct {
 	Password   string `json:"password"`
 	TotpToken   string `json:"totpToken"`
 	RememberMe bool   `json:"rememberMe"`
+	TurnstileChallenge string `json:"turnstileChallenge"`
 }
 
 type VpnConnect struct {

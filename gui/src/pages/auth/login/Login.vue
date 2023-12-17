@@ -28,12 +28,6 @@
       :error-messages="totpErrors"
     />
 
-    <div class="auth-layout__options flex items-center justify-between">
-      <router-link class="ml-1 va-link" :to="{ name: 'recover-password' }">{{
-        t('auth.recover_password')
-      }}</router-link>
-    </div>
-
     <div class="flex justify-center mt-4">
       <va-button class="my-0" @click="onsubmit">{{ t('auth.login') }}</va-button>
     </div>
@@ -75,6 +69,7 @@
       {
         email: email.value,
         password: password.value,
+        turnstileChallenge: '',
         ...(totp.value && {
           totpToken: totp.value,
         }),
@@ -96,6 +91,11 @@
         totpErrors.value = ['TOTP is required']
       } else if (resp.data === 'invalid totp token') {
         totpErrors.value = ['Invalid TOTP token']
+      } else if (resp.data === 'turnstile challenge failed') {
+        const error = ['Captcha (Turnstile) challenge failed']
+
+        emailErrors.value = error
+        passwordErrors.value = error
       } else {
         emailErrors.value = ['Invalid email or password']
         passwordErrors.value = ['Invalid email or password']

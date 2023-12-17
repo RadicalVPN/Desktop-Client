@@ -17,7 +17,7 @@ rm -rf wireguard-tools
 rm -rf bash
 
 echo "[*] Cloning wireguard-go.."
-git clone https://git.zx2c4.com/wireguard-go/
+git clone https://git.zx2c4.com/wireguard-go/ --depth 1
 
 echo "[*] Building wireguard-go.."
 cd wireguard-go
@@ -26,7 +26,7 @@ make -j${CPU_COUNT}
 cd ..
 
 echo "[*] Cloning wireguard-tools.."
-git clone https://git.zx2c4.com/wireguard-tools/
+git clone https://git.zx2c4.com/wireguard-tools/ --depth 1
 
 echo "[*] Building wireguard-tools.."
 

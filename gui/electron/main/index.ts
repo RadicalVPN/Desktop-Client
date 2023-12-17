@@ -56,6 +56,10 @@ async function createWindow() {
     autoHideMenuBar: true,
   })
 
+  if (process.env.NODE_ENV === 'development') {
+    win.webContents.openDevTools()
+  }
+
   if (process.env.VITE_DEV_SERVER_URL) {
     // electron-vite-vue#298
     win.loadURL(url)
