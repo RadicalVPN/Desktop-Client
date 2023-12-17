@@ -34,6 +34,9 @@ const preload = join(__dirname, '../preload/index.js')
 const url = process.env.VITE_DEV_SERVER_URL
 const indexHtml = join(process.env.DIST, 'index.html')
 
+//register custom protocol for oauth2 redirect
+app.setAsDefaultProtocolClient('radicalvpn')
+
 async function createWindow() {
   win = new BrowserWindow({
     title: 'RadicalVPN',

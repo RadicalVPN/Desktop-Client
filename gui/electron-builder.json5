@@ -18,6 +18,10 @@
     // disable code signing, we do this manually
     identity: null,
   },
+  protocols: {
+    name: 'radicalvpn',
+    schemes: ['radicalvpn'],
+  },
   win: {
     target: 'dir',
 
