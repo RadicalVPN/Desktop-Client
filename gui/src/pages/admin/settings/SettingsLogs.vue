@@ -5,7 +5,7 @@
     <va-card-content>
       <va-switch v-model="logsActivated" size="small" :label="t('settings.activeLogs')" />
 
-      <va-virtual-scroller v-if="logsActivated" v-slot="{ item }" :items="logs" :wrapper-size="200" :bench="5">
+      <va-virtual-scroller v-if="logsActivated" v-slot="{ item }" :items="logs" :wrapper-size="300" :bench="5">
         <va-badge class="pb-0.5" :color="item.color" :text="item.message" />
       </va-virtual-scroller>
     </va-card-content>
