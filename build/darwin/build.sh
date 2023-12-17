@@ -135,6 +135,9 @@ IMAGE_TITLE="RadicalVPN"
 IMAGE_SIZE=1009600
 IMAGE_SOURCE="${BUILD_PATH}/_image"
 
+echo "[+] Unmounting old images ..."
+diskutil unmount /Volumes/RadicalVPN || true
+
 echo "[+] Creating a new temp DMG ..."
 hdiutil create -srcfolder "${IMAGE_SOURCE}" -volname "${IMAGE_TITLE}" -fs HFS+ \
       -fsargs "-c c=64,a=16,e=16" -format UDRW -size ${IMAGE_SIZE}k ${PATH_TMP_DMG_FILE}
