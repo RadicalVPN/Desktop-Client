@@ -3,7 +3,7 @@
     <va-card-title style="font-size: 0.875rem">{{ t('settings.logs') }}</va-card-title>
 
     <va-card-content>
-      <va-switch v-model="logsActivated" size="small" :label="t('settings.activeLogs')" />
+      <va-switch v-model="logsActivated" class="mb-4" size="small" :label="t('settings.activeLogs')" />
 
       <va-virtual-scroller v-if="logsActivated" v-slot="{ item }" :items="logs" :wrapper-size="300" :bench="5">
         <va-badge class="pb-0.5" :color="item.color" :text="item.message" />
