@@ -3,30 +3,39 @@
     <va-card-title style="font-size: 0.875rem">{{ t('settings.personalization') }}</va-card-title>
 
     <va-card-content>
-      <va-select v-model="store.theme" :options="themeOptions" class="mb-4" :label="t('settings.theme')" />
-
-      <va-select
-        v-model="store.language"
-        class="mb-6"
-        :label="t('settings.language')"
-        :options="languages"
-        text-by="textBy"
-        value-by="text"
-      />
-
-      <va-switch v-model="store.animatedMap" size="small" class="pb-6" :label="t('settings.animatedMap')" />
-
-      <div>
-        <va-switch
-          v-model="store.disableNotifications"
-          size="small"
-          class="pb-6"
-          :label="t('settings.disableNotifications')"
-        />
+      <div class="flex items-center justify-between">
+        <p>{{ t('settings.language') }}</p>
+        <div class="w-40">
+          <va-select v-model="store.language" :options="languages" text-by="textBy" value-by="text" class="mb-6" />
+        </div>
       </div>
 
-      <div>
-        <va-switch v-model="store.showServerOnMap" size="small" :label="t('settings.showServerTitle')" />
+      <div class="flex items-center justify-between">
+        <p>{{ t('settings.theme') }}</p>
+        <div class="w-40">
+          <va-select v-model="store.theme" :options="themeOptions" class="mb-6" />
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between">
+        <p>{{ t('settings.animatedMap') }}</p>
+        <div class="w-40">
+          <va-switch v-model="store.animatedMap" size="small" class="mb-6" />
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between">
+        <p>{{ t('settings.disableNotifications') }}</p>
+        <div class="w-40">
+          <va-switch v-model="store.disableNotifications" size="small" class="mb-6" />
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between">
+        <p>{{ t('settings.showServerTitle') }}</p>
+        <div class="w-40">
+          <va-switch v-model="store.showServerOnMap" size="small" class="mb-6" />
+        </div>
       </div>
     </va-card-content>
   </va-card>

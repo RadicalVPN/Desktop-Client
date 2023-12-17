@@ -2,16 +2,18 @@
   <va-card class="horizontal-bars">
     <va-card-title style="font-size: 0.875rem">{{ t('settings.versions') }}</va-card-title>
 
-    <va-card-content class="grid grid-cols-12">
-      <div class="col-span-10">
-        <div class="mb-4">
-          <p class="text-sm font-semibold">{{ t('settings.frontendVersion') }}</p>
-          <p class="text-lg">{{ 'v' + frontendVersion }}</p>
+    <va-card-content>
+      <div class="flex items-center justify-between">
+        <p>{{ t('settings.frontendVersion') }}</p>
+        <div class="w-40">
+          <p class="text-lg mb-6">{{ 'v' + frontendVersion }}</p>
         </div>
+      </div>
 
-        <div class="mb-4">
-          <p class="text-sm font-semibold">{{ t('settings.daemonVersion') }}</p>
-          <p class="text-lg">{{ 'v' + daemonVersion }}</p>
+      <div class="flex items-center justify-between">
+        <p>{{ t('settings.daemonVersion') }}</p>
+        <div class="w-40">
+          <p class="text-lg mb-6">{{ 'v' + daemonVersion }}</p>
         </div>
       </div>
     </va-card-content>
