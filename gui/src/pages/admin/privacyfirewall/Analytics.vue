@@ -45,16 +45,18 @@
   ])
 
   async function updateStatistics() {
+    const stats = await new DaemonHelper().getPrivacyFirewallStats()
+    const formatter = new Intl.NumberFormat()
+
     console.log('updating privacy firewall stats')
 
-    const stats = await new DaemonHelper().getPrivacyFirewallStats()
     if (stats.status) {
       const data = stats.data
       const total = data.total
       const blocked = data.blocked
 
-      statistics.value[0].value = total.toString()
-      statistics.value[1].value = blocked.toString()
+      statistics.value[0].value = formatter.format(total)
+      statistics.value[1].value = formatter.format(blocked)
       statistics.value[2].value = `${((blocked / total) * 100).toFixed(2).toString()}%`
     }
   }
