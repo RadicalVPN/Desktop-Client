@@ -1,32 +1,32 @@
 package webapi
 
 type Signin struct {
-	Email      string `json:"email"`
-	Password   string `json:"password"`
-	TotpToken   string `json:"totpToken"`
-	RememberMe bool   `json:"rememberMe"`
+	Email              string `json:"email"`
+	Password           string `json:"password"`
+	TotpToken          string `json:"totpToken"`
+	RememberMe         bool   `json:"rememberMe"`
 	TurnstileChallenge string `json:"turnstileChallenge"`
 }
 
 type VpnConnect struct {
-	NodeLocation string `json:"nodeLocation"`
+	NodeLocation    string `json:"nodeLocation"`
 	PrivacyFirewall string `json:"privacyFirewall"`
 }
 
 type Server struct {
-	Id        string `json:"id"`
-	Hostname  string `json:"hostname"`
-	Country   string `json:"country"`
-	CountryName  string `json:"country_name"`
-	City      string `json:"city"`
-	Latitude string `json:"latitude"`
-	Longitude string `json:"longitude"`
-	Internalp string `json:"internal_ip"`
-	ExternaIp string `json:"external_ip"`
-	PublicKey string `json:"public_key"`
-	Online    bool   `json:"online"`
-	Latency   int    `json:"latency"`
-	Location string `json:"location"`
+	Id          string `json:"id"`
+	Hostname    string `json:"hostname"`
+	Country     string `json:"country"`
+	CountryName string `json:"country_name"`
+	City        string `json:"city"`
+	Latitude    string `json:"latitude"`
+	Longitude   string `json:"longitude"`
+	Internalp   string `json:"internal_ip"`
+	ExternaIp   string `json:"external_ip"`
+	PublicKey   string `json:"public_key"`
+	Online      bool   `json:"online"`
+	Latency     int    `json:"latency"`
+	Location    string `json:"location"`
 }
 
 type VpnTransfer struct {
@@ -58,6 +58,6 @@ type Vpn struct {
 }
 
 type DynamicVpnCreation struct {
-	NodeLocation string `json:"nodeLocation"`
+	NodeLocation    string `json:"nodeLocation"`
 	PrivacyFirewall string `json:"privacyFirewall"`
 }

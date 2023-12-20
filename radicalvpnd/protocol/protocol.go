@@ -105,14 +105,55 @@ func (p *Protocol) getHttpClient() *http.Client {
 	return &http.Client{
 		Transport: &http.Transport{
 			DialContext: (&net.Dialer{
-				Timeout:   5 * time.Second,
+				Timeout: 5 * time.Second,
 			}).DialContext,
 			TLSHandshakeTimeout:   5 * time.Second,
 			ResponseHeaderTimeout: 5 * time.Second,
 			ExpectContinueTimeout: 1 * time.Second,
-			DisableKeepAlives: true,
-			MaxIdleConnsPerHost: -1,
+			DisableKeepAlives:     true,
+			MaxIdleConnsPerHost:   -1,
 		},
+	}
+}
+
+func (p *Protocol) proxyGetRequest(url string, c *gin.Context) {
+	if !p.ensureAuth() {
+		log.Info("401")
+		c.AbortWithStatus(http.StatusUnauthorized)
+		return
+	}
+
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		c.AbortWithStatus(http.StatusInternalServerError)
+		return
+	}
+	req.Header.Set("Cookie", settings.GetSessionCookie())
+
+	resp, err := p.getHttpClient().Do(req)
+
+	if err != nil {
+		c.AbortWithStatus(http.StatusInternalServerError)
+		return
+	}
+
+	defer resp.Body.Close()
+
+	//parse body
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		c.AbortWithStatus(http.StatusInternalServerError)
+		return
+	}
+
+	contentType := resp.Header.Get("Content-Type")
+
+	if resp.StatusCode != http.StatusOK {
+		log.Info("not ok")
+		c.AbortWithStatus(resp.StatusCode)
+		c.Data(http.StatusOK, contentType, body)
+	} else {
+		c.Data(http.StatusOK, contentType, body)
 	}
 }
 
@@ -134,7 +175,6 @@ func (p *Protocol) LoadRoutes() {
 			"version": version.VERSION,
 		})
 	})
-
 
 	r.GET("/local/connected", func(c *gin.Context) {
 		if !p.ensureAuth() {
@@ -216,39 +256,7 @@ func (p *Protocol) LoadRoutes() {
 	})
 
 	r.GET("/", func(c *gin.Context) {
-		if !p.ensureAuth() {
-			c.AbortWithStatus(http.StatusUnauthorized)
-			return
-		}
-
-		req, err := http.NewRequest("GET", "https://radicalvpn.com/api/1.0/auth", nil)
-		if err != nil {
-			c.AbortWithStatus(http.StatusInternalServerError)
-			return
-		}
-		req.Header.Set("Cookie", settings.GetSessionCookie())
-
-		resp, err := p.getHttpClient().Do(req)
-
-		if err != nil {
-			c.AbortWithStatus(http.StatusInternalServerError)
-			return
-		}
-
-		defer resp.Body.Close()
-
-		//parse body
-		body, err := io.ReadAll(resp.Body)
-		if err != nil {
-			c.AbortWithStatus(http.StatusInternalServerError)
-			return
-		}
-
-		if resp.StatusCode != http.StatusOK {
-			c.AbortWithStatus(http.StatusUnauthorized)
-		} else {
-			c.Data(http.StatusOK, "application/json; charset=utf-8", body)
-		}
+		p.proxyGetRequest("https://radicalvpn.com/api/1.0/auth", c)
 	})
 
 	r.POST("/login", func(c *gin.Context) {
@@ -285,6 +293,10 @@ func (p *Protocol) LoadRoutes() {
 
 			c.Status(http.StatusOK)
 		}
+	})
+
+	r.GET("/privacy_firewall", func(c *gin.Context) {
+		p.proxyGetRequest("https://radicalvpn.com/api/1.0/internal/privacy_firewall", c)
 	})
 }
 

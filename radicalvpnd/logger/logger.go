@@ -14,7 +14,7 @@ import (
 
 var (
 	globalFileHandle *os.File
-	filePath 	   string
+	filePath         string
 )
 
 type Logger struct {

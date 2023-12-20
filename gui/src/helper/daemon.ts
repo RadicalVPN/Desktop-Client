@@ -265,4 +265,27 @@ export class DaemonHelper {
       })
       .reverse()
   }
+
+  public async getPrivacyFirewallStats() {
+    const credentials = this.getCredentials()
+
+    try {
+      const resp = await axios.get(`http://localhost:${credentials.port}/privacy_firewall`, {
+        headers: {
+          'x-radical-daemon-secret': credentials.secret,
+        },
+        validateStatus: () => true,
+      })
+
+      return {
+        status: resp.status === 200,
+        data: resp.data,
+      }
+    } catch {
+      return {
+        status: false,
+        data: {},
+      }
+    }
+  }
 }
