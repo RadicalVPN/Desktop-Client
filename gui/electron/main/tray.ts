@@ -23,7 +23,7 @@ export class Tray {
   private getTrayTemplate() {
     return Menu.buildFromTemplate([
       {
-        label: 'Show App',
+        label: 'Show RadicalVPN',
         click: () => {
           this.win.show()
         },
