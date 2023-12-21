@@ -40,7 +40,7 @@
     "vue-i18n": "^9.6.5",
     "vue-router": "^4.2.5",
     "vue-turnstile": "^1.0.6",
-    "vuestic-ui": "^1.8.5"
+    "vuestic-ui": "^1.8.7"
   },
   "devDependencies": {
     "@intlify/unplugin-vue-i18n": "^0.12.2",
