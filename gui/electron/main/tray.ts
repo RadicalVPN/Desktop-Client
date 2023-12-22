@@ -1,6 +1,5 @@
 import { BrowserWindow, Menu, Tray as ElectronTray, app, Notification } from 'electron'
 import { join } from 'path'
-import { DaemonHelper } from '../../src/helper/daemon'
 
 export class Tray {
   private win: BrowserWindow
@@ -31,7 +30,7 @@ export class Tray {
       {
         label: 'Quit',
         click: async () => {
-          await new DaemonHelper().disconnectFromServer()
+          //await new DaemonHelper().disconnectFromServer()
 
           this.win.destroy()
           app.quit()
