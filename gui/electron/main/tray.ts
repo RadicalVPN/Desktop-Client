@@ -1,4 +1,4 @@
-import { BrowserWindow, Menu, Tray as ElectronTray, app, Notification } from 'electron'
+import { BrowserWindow, Menu, Tray as ElectronTray, app, Notification, nativeImage } from 'electron'
 import { join } from 'path'
 
 export class Tray {
@@ -9,7 +9,7 @@ export class Tray {
   }
 
   loadTray() {
-    new ElectronTray(join(process.env.VITE_PUBLIC, 'logo.ico')).setContextMenu(this.getTrayTemplate())
+    new ElectronTray(this.getTrayIcon()).setContextMenu(this.getTrayTemplate())
   }
 
   static showTrayNotification() {
@@ -17,6 +17,21 @@ export class Tray {
       title: 'RadicalVPN',
       body: 'RadicalVPN is running in the background',
     }).show()
+  }
+
+  private getTrayIcon() {
+    let path: string
+
+    switch (process.platform) {
+      case 'win32':
+        path = 'tray/windows/logo.ico'
+        break
+      case 'darwin':
+        path = 'tray/darwin/logo2Template.png'
+        break
+    }
+
+    return nativeImage.createFromPath(join(process.env.VITE_PUBLIC, path))
   }
 
   private getTrayTemplate() {
