@@ -50,7 +50,11 @@ export class Tray {
       {
         label: 'Quit',
         click: async () => {
-          await this.disconnectFromServer()
+          try {
+            await this.disconnectFromServer()
+          } catch (e) {
+            console.error('failed to disconnect from vpn', e)
+          }
 
           this.win.destroy()
           app.quit()
@@ -79,13 +83,11 @@ export class Tray {
         })
 
         req.on('response', (resp) => {
-          console.log(resp)
-          resolve(null)
+          resolve(resp)
         })
 
         req.end()
       } catch (e) {
-        console.error('failed to disconnect from vpn', e)
         reject(e)
       }
     })
