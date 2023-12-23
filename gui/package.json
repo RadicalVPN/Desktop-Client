@@ -52,7 +52,7 @@
     "@vue/eslint-config-prettier": "^8.0.0",
     "@vue/eslint-config-typescript": "^10.0.0",
     "autoprefixer": "^10.4.16",
-    "electron": "^27.1.2",
+    "electron": "^28.1.0",
     "electron-builder": "^24.6.4",
     "eslint": "^8.13.0",
     "eslint-plugin-prettier": "^5.0.1",
