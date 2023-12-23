@@ -63,6 +63,10 @@ async function createWindow() {
 
     Tray.showTrayNotification()
 
+    if (process.platform === 'darwin') {
+      app.dock.hide()
+    }
+
     win?.hide()
 
     return false

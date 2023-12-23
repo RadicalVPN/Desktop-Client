@@ -39,6 +39,10 @@ export class Tray {
       {
         label: 'Show RadicalVPN',
         click: () => {
+          if (process.platform === 'darwin') {
+            app.dock.show()
+          }
+
           this.win.show()
         },
       },
