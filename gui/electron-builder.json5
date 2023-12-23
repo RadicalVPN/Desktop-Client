@@ -6,7 +6,15 @@
   appId: 'com.radicalvpn.desktop',
   asar: true,
   productName: 'RadicalVPN',
-  files: ['dist/assets', 'dist/index.html', 'dist/vendor', '!node_modules', 'dist/vendor', 'dist-electron'],
+  files: [
+    'dist/assets',
+    'dist/index.html',
+    'dist/vendor',
+    'dist/public',
+    'dist/tray',
+    '!node_modules',
+    'dist-electron',
+  ],
   mac: {
     // do not build DMG. We do not need it
     target: 'dir',

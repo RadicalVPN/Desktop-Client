@@ -1,6 +1,7 @@
 import { app, BrowserWindow, shell, ipcMain, Menu } from 'electron'
 import { release } from 'node:os'
 import { join } from 'node:path'
+import { Tray } from './tray'
 
 // The built directory structure
 //
@@ -37,7 +38,7 @@ const indexHtml = join(process.env.DIST, 'index.html')
 async function createWindow() {
   win = new BrowserWindow({
     title: 'RadicalVPN',
-    icon: join(process.env.VITE_PUBLIC, 'favicon.ico'),
+    icon: join(process.env.VITE_PUBLIC, 'icon.ico'),
     webPreferences: {
       preload,
       nodeIntegration: true,
@@ -54,6 +55,21 @@ async function createWindow() {
     height: 650,
     width: 1100,
     autoHideMenuBar: true,
+  })
+
+  //important event for tray
+  win.on('close', (event) => {
+    event.preventDefault()
+
+    Tray.showTrayNotification()
+
+    if (process.platform === 'darwin') {
+      app.dock.hide()
+    }
+
+    win?.hide()
+
+    return false
   })
 
   if (process.env.NODE_ENV === 'development') {
@@ -78,6 +94,9 @@ async function createWindow() {
     return { action: 'deny' }
   })
   // win.webContents.on('will-navigate', (event, url) => { }) #344
+
+  const tray = new Tray(win)
+  tray.loadTray()
 }
 
 app.whenReady().then(createWindow)
