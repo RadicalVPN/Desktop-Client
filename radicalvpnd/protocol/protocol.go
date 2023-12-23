@@ -51,13 +51,25 @@ func (p *Protocol) AuthMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		secret := c.Request.Header.Get("x-radical-daemon-secret")
 
-		c.Header("Access-Control-Allow-Origin", "*")
-
 		if secret != p.secret && c.Request.Method != "OPTIONS" {
 			c.AbortWithStatus(http.StatusUnauthorized)
 		}
 
 		c.Next()
+	}
+}
+
+func (p *Protocol) CorsMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+		c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
+		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, accept, origin, Cache-Control, X-Requested-With, X-Radical-Daemon-Secret")
+		c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT")
+
+		if c.Request.Method == "OPTIONS" {
+			c.AbortWithStatus(204)
+			return
+		}
 	}
 }
 
@@ -306,4 +318,5 @@ func (p *Protocol) LoadMiddlewaares() {
 	r.Use(gin.Recovery())
 	r.Use(p.LogMiddleware())
 	r.Use(p.AuthMiddleware())
+	r.Use(p.CorsMiddleware())
 }

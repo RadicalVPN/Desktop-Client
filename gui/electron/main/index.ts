@@ -43,9 +43,6 @@ async function createWindow() {
       preload,
       nodeIntegration: true,
       contextIsolation: false,
-
-      //TODO: FIX THIS IN PRODUCTION
-      webSecurity: false,
     },
 
     center: true,
@@ -134,7 +131,6 @@ ipcMain.handle('open-win', (_, arg) => {
     webPreferences: {
       preload,
       contextIsolation: true,
-      webSecurity: false,
     },
   })
 
