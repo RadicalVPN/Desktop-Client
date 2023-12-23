@@ -39,7 +39,7 @@
   import { useRouter } from 'vue-router'
   import { useI18n } from 'vue-i18n'
   import axios from 'axios'
-  import { DaemonHelper } from '../../../helper/daemon'
+  import { DaemonCredentials } from '../../../helper/credentials'
 
   const { t } = useI18n()
 
@@ -62,7 +62,7 @@
 
     if (!formReady.value) return
 
-    const credentials = new DaemonHelper().getCredentials()
+    const credentials = DaemonCredentials.getCredentials()
     // await axios.get('https://radicalvpn.com/geoip/current')
     const resp = await axios.post(
       `http://localhost:${credentials.port}/login`,

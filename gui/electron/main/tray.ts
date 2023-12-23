@@ -1,5 +1,6 @@
-import { BrowserWindow, Menu, Tray as ElectronTray, app, Notification, nativeImage } from 'electron'
+import { BrowserWindow, Menu, Tray as ElectronTray, app, Notification, nativeImage, net } from 'electron'
 import { join } from 'path'
+import { DaemonCredentials } from '../../src/helper/credentials'
 
 export class Tray {
   private win: BrowserWindow
@@ -49,12 +50,44 @@ export class Tray {
       {
         label: 'Quit',
         click: async () => {
-          //await new DaemonHelper().disconnectFromServer()
+          await this.disconnectFromServer()
 
           this.win.destroy()
           app.quit()
         },
       },
     ])
+  }
+
+  /**
+   * Special implementation of DaemonHelper().disconnectFromServer()
+   * Uses the electron main process to send a request to the daemon
+   */
+  private async disconnectFromServer() {
+    return new Promise((resolve, reject) => {
+      const credentials = DaemonCredentials.getCredentials()
+
+      try {
+        const req = net.request({
+          method: 'POST',
+          url: `http://localhost:${credentials.port}/local/disconnect`,
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          headers: {
+            'x-radical-daemon-secret': credentials.secret,
+          },
+        })
+
+        req.on('response', (resp) => {
+          console.log(resp)
+          resolve(null)
+        })
+
+        req.end()
+      } catch (e) {
+        console.error('failed to disconnect from vpn', e)
+        reject(e)
+      }
+    })
   }
 }

@@ -1,7 +1,7 @@
 import axios from 'axios'
-import { readFileSync } from 'node:fs'
 import { spawn } from 'node:child_process'
 import { readFile } from 'node:fs/promises'
+import { DaemonCredentials } from './credentials'
 
 export interface ParsedLog {
   level: string
@@ -10,29 +10,8 @@ export interface ParsedLog {
 }
 
 export class DaemonHelper {
-  public getCredentials() {
-    let rawCredentials: string
-
-    switch (process.platform) {
-      case 'darwin':
-        rawCredentials = readFileSync('/Library/Application Support/RadicalVPN/service.txt', 'utf-8')
-        break
-      case 'win32':
-        rawCredentials = readFileSync('C:\\Program Files\\RadicalVPN\\service.txt', 'utf-8')
-        break
-      default:
-        rawCredentials = '1234|dummy'
-    }
-
-    const credentials = rawCredentials.split('|')
-    return {
-      port: parseInt(credentials[0]),
-      secret: credentials[1],
-    }
-  }
-
   public async isAuthed() {
-    const credentials = this.getCredentials()
+    const credentials = DaemonCredentials.getCredentials()
 
     try {
       const resp = await axios.get(`http://localhost:${credentials.port}/`, {
@@ -49,7 +28,7 @@ export class DaemonHelper {
   }
 
   public async getServerList() {
-    const credentials = this.getCredentials()
+    const credentials = DaemonCredentials.getCredentials()
 
     try {
       const resp = await axios.get(`http://localhost:${credentials.port}/server`, {
@@ -66,7 +45,7 @@ export class DaemonHelper {
   }
 
   public async connectToServer(nodeLocation: string, privacyFirewall: string) {
-    const credentials = this.getCredentials()
+    const credentials = DaemonCredentials.getCredentials()
 
     try {
       const resp = await axios.post(
@@ -96,7 +75,7 @@ export class DaemonHelper {
   }
 
   public async disconnectFromServer() {
-    const credentials = this.getCredentials()
+    const credentials = DaemonCredentials.getCredentials()
 
     try {
       const resp = await axios.post(
@@ -123,7 +102,7 @@ export class DaemonHelper {
    * @returns {Promise<boolean>}
    */
   public async getConnectionState(): Promise<boolean> {
-    const credentials = this.getCredentials()
+    const credentials = DaemonCredentials.getCredentials()
 
     try {
       const resp = await axios.get(`http://localhost:${credentials.port}/local/connected`, {
@@ -140,7 +119,7 @@ export class DaemonHelper {
   }
 
   public async getDaemonVersion(): Promise<string> {
-    const credentials = this.getCredentials()
+    const credentials = DaemonCredentials.getCredentials()
 
     try {
       const resp = await axios.get(`http://localhost:${credentials.port}/version`, {
@@ -212,7 +191,7 @@ export class DaemonHelper {
   }
 
   public async daemonIsStarted(): Promise<boolean> {
-    const credentials = this.getCredentials()
+    const credentials = DaemonCredentials.getCredentials()
 
     try {
       const resp = await axios.get(`http://localhost:${credentials.port}/ping`, {
@@ -267,7 +246,7 @@ export class DaemonHelper {
   }
 
   public async getPrivacyFirewallStats() {
-    const credentials = this.getCredentials()
+    const credentials = DaemonCredentials.getCredentials()
 
     try {
       const resp = await axios.get(`http://localhost:${credentials.port}/privacy_firewall`, {
