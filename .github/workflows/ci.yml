@@ -9,7 +9,7 @@ on:
       - master
 
 jobs:
-  example_matrix:
+  ci:
     strategy:
       matrix:
         os: [windows-latest, macos-latest]
