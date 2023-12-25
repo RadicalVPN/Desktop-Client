@@ -28,7 +28,7 @@
     "@amcharts/amcharts5": "^5.5.6",
     "@amcharts/amcharts5-geodata": "^5.1.1",
     "@fortawesome/fontawesome-free": "^6.4.2",
-    "@vueuse/core": "^10.6.1",
+    "@vueuse/core": "^10.7.0",
     "axios": "^1.6.1",
     "chart.js": "^3.8.0",
     "epic-spinners": "^2.0.0",
