@@ -8,7 +8,7 @@
     >
       <va-card-content class="flex items-center">
         <div class="flex-1">
-          <p class="text-white pb-2">{{ statistic.title }}</p>
+          <p class="text-white pb-2">{{ t(statistic.title) }}</p>
           <h2 class="va-h2 m-0 text-white">{{ statistic.value }}</h2>
         </div>
         <div class="absolute top-10 right-3">
@@ -22,22 +22,26 @@
   import { onMounted, ref } from 'vue'
   import { DaemonHelper } from '../../../helper/daemon'
   import { onBeforeUnmount } from 'vue'
+  import { useI18n } from 'vue-i18n'
+
   let refreshTimer: any
+  const { t } = useI18n()
+
   const statistics = ref([
     {
-      title: 'Total queries',
+      title: 'privacyFirewall.analytics.totalQueries',
       value: 'N/A',
       icon: 'fa-globe',
       color: '#33a65a',
     },
     {
-      title: 'Queries Blocked',
+      title: 'privacyFirewall.analytics.blockedQueries',
       value: 'N/A',
       icon: 'fa-hand',
       color: '#41c0ef',
     },
     {
-      title: 'Percent Blocked',
+      title: 'privacyFirewall.analytics.percentBlocked',
       value: 'N/A',
       icon: 'fa-chart-pie',
       color: '#f39c12',

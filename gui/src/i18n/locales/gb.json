@@ -69,6 +69,11 @@
       "recommended": "Recommended",
       "comprehensive": "Comprehensive",
       "aggresive": "Aggressive"
+    },
+    "analytics": {
+      "totalQueries": "Total queries",
+      "blockedQueries": "Queries Blocked",
+      "percentBlocked": "Percent Blocked"
     }
   },
   "errors": {
