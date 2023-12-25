@@ -26,7 +26,7 @@
   },
   "dependencies": {
     "@amcharts/amcharts5": "^5.5.6",
-    "@amcharts/amcharts5-geodata": "^5.1.1",
+    "@amcharts/amcharts5-geodata": "^5.1.2",
     "@fortawesome/fontawesome-free": "^6.4.2",
     "@vueuse/core": "^10.6.1",
     "axios": "^1.6.1",
