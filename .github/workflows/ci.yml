@@ -57,7 +57,7 @@ jobs:
         run: |
           cd radicalvpnd
           gofmt -s -w .
-          git diff --exit-code
+          git diff . --relative --exit-code
 
       - name: Daemon - Build
         run: |
