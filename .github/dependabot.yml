@@ -1,6 +1,12 @@
 version: 2
 updates:
-  - package-ecosystem: github-actions
-    directory: "/"
-    schedule:
-      interval: daily
+    - package-ecosystem: "npm"
+      directory: "/gui"
+      target-branch: "master"
+      schedule:
+          interval: "daily"
+    - package-ecosystem: "gomod"
+      directory: "/radicalvpnd"
+      target-branch: "master"
+      schedule:
+          interval: "daily"
