@@ -61,7 +61,7 @@
 
       statistics.value[0].value = formatter.format(total)
       statistics.value[1].value = formatter.format(blocked)
-      statistics.value[2].value = `${((blocked / total) * 100).toFixed(2).toString()}%`
+      statistics.value[2].value = `${((blocked / total) * 100 || 0).toFixed(2).toString()}%`
     }
   }
 
