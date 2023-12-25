@@ -4910,10 +4910,10 @@ vite-plugin-electron-renderer@^0.14.5:
   resolved "https://registry.npmjs.org/vite-plugin-electron-renderer/-/vite-plugin-electron-renderer-0.14.5.tgz"
   integrity sha512-EQ7ORuPp8vFPCqfuGnVo7d36fXS0IFH4/RUlKb1drseix3TQEPcgwEuFADdXBxRgqMp70njz/1m0kdf5lEsm8w==
 
-vite-plugin-electron@^0.15.4:
-  version "0.15.4"
-  resolved "https://registry.npmjs.org/vite-plugin-electron/-/vite-plugin-electron-0.15.4.tgz"
-  integrity sha512-aXGDjTXebJxNX+cf+KSZEsa9BcMrTbNhjZJaUhU5999/ATYZq4PlZpebfyeslyuYpjk6OdyA/pNC+fTeDYK5Kw==
+vite-plugin-electron@^0.15.5:
+  version "0.15.5"
+  resolved "https://registry.yarnpkg.com/vite-plugin-electron/-/vite-plugin-electron-0.15.5.tgz#d4a5496dff86c9ef9a6cc17ce782a4dcf71de318"
+  integrity sha512-GD2JkJJSsP3kyJlyCH4ep3spelkyzOVSWHswv5nwYhS8GfsojPxUjhs9U4tuDb5mZ2XDYyTN+nBSB/abRnTmYQ==
 
 vite@^4.5.0:
   version "4.5.1"
