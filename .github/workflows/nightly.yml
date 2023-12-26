@@ -12,3 +12,16 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Update nightly tag
+        uses: EndBug/latest-tag@84c87607fcb948bcef069c9a27445e653113979f
+        with:
+          ref: nightly
+          description: Nightly build of RadicalVPN Desktop - $(date +%Y-%m-%d)
+
+      - name: Nightly Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: nightly
+          draft: false
+          prerelease: true
