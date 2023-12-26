@@ -23,5 +23,4 @@ jobs:
         with:
           name: Nightly
           tag_name: nightly
-          draft: false
           prerelease: true
