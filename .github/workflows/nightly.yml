@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  windows:
+  build_nightly:
     runs-on: windows-latest
     steps:
       - name: Checkout
@@ -22,6 +22,7 @@ jobs:
       - name: Nightly Release
         uses: softprops/action-gh-release@v1
         with:
+          name: Nightly
           tag_name: nightly
           draft: false
           prerelease: true
