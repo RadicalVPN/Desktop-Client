@@ -1,4 +1,4 @@
-name: RadicalVPN Desktop Build
+name: Nightly Build
 
 on:
   schedule:
