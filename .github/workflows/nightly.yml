@@ -1,0 +1,14 @@
+name: RadicalVPN Desktop Build
+
+on:
+  schedule:
+    # triggers every day at 2PM UTC
+    - cron: "0 14 * * *"
+  workflow_dispatch:
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
