@@ -30,7 +30,7 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: radicalvpn-win-0.0.1.exe
+          name: build
           path: build/windows/bin/RadicalVPN-Setup.exe
 
   build_nightly_macos:
@@ -84,7 +84,7 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: radicalvpn-darwin-0.0.1.dmg
+          name: build
           path: build/darwin/_compiled/RadicalVPN.dmg
 
   publish_nightly:
@@ -92,7 +92,9 @@ jobs:
     needs: [build_nightly_windows, build_nightly_macos]
     steps:
       - name: Download all workflow artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
+        with:
+          name: build
 
       - name: Update nightly tag
         uses: EndBug/latest-tag@9071b46e28bb944c47293dcefa47fab3c5469314
