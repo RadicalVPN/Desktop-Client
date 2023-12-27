@@ -29,11 +29,16 @@ jobs:
         run: |
           build\windows\build-windows.bat
 
+      - name: Rename artifact
+        working-directory: build/windows/bin/
+        run: |
+          ren RadicalVPN-Setup.exe radicalvpn-win.exe
+
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: build_windows
-          path: build/windows/bin/RadicalVPN-Setup.exe
+          path: build/windows/bin/radicalvpn-win.exe
 
   build_nightly_macos:
     runs-on: macos-latest
@@ -85,6 +90,11 @@ jobs:
           chmod +x ./build/darwin/build.sh
           ./build/darwin/build.sh -c $TEAM_ID
 
+      - name: Rename artifact
+        working-directory: build/darwin/_compiled/
+        run: |
+          mv RadicalVPN.dmg radicalvpn-darwin.dmg
+
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
@@ -119,3 +129,6 @@ jobs:
           name: Nightly
           tag_name: nightly
           prerelease: true
+          files: |
+            build_darwin/*
+            build_windows/*
