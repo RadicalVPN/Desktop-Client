@@ -179,7 +179,7 @@ sync
 sync
 
 echo "[+] detaching tmp DMG image ${IMAGE_DEVICE} ..."
-hdiutil detach ${IMAGE_DEVICE}
+hdiutil detach ${IMAGE_DEVICE} -force
 
 echo "[+] coverting tmp DMG Image to Final DMG Image ..."
 hdiutil convert ${PATH_TMP_DMG_FILE} -format UDZO -imagekey zlib-level=9 -o "${PATH_DMG_FILE}"
