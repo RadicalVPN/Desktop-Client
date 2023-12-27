@@ -119,9 +119,10 @@ jobs:
       - name: Download all workflow artifacts
         uses: actions/download-artifact@v4
 
-      - name: Test
+      - name: Generate Build Info
+        id: var
         run: |
-          ls
+          echo "full_sha=$(git rev-parse HEAD)" >> $env:GITHUB_OUTPUT
 
       - name: Nightly Release
         uses: softprops/action-gh-release@v1
@@ -129,6 +130,29 @@ jobs:
           name: Nightly
           tag_name: nightly
           prerelease: true
+          body: |
+            **This release has been built by Github Actions**
+            [Link to build](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+
+            Build Hashes (SHA-256):
+            ```
+            ```
+
+            Important: This is not a stable release.
+            We do not recommend using this in a production environment.
+
+            No warranty is provided for this type of release.
+            Please report any issues you find to our issue tracker.
+
+            These releases should be used for the following purposes:
+            - Testing new features
+            - Testing bug fixes
+            - Other testing or development purposes
+
+            Full Commit Hash:
+            ```
+            ${{ steps.var.outputs.full_sha }}
+            ```
           files: |
             build_darwin/*
             build_windows/*
