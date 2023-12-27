@@ -1,5 +1,8 @@
 # RadicalVPN Desktop Client (Windows/MacOS)
+
 [![RadicalVPN Desktop Build](https://github.com/RadicalVPN/Desktop-Client/actions/workflows/ci.yml/badge.svg)](https://github.com/RadicalVPN/Desktop-Client/actions/workflows/ci.yml)
+[![Nightly Build](https://github.com/RadicalVPN/Desktop-Client/actions/workflows/nightly.yml/badge.svg)](https://github.com/RadicalVPN/Desktop-Client/actions/workflows/nightly.yml)
+[![RadicalVPN Desktop Build](https://github.com/RadicalVPN/Desktop-Client/actions/workflows/release.yml/badge.svg)](https://github.com/RadicalVPN/Desktop-Client/actions/workflows/release.yml)
 
 **Official desktop client for RadicalVPN.**
 

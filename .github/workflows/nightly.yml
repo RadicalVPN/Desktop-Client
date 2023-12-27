@@ -29,7 +29,7 @@ jobs:
         run: |
           build\windows\build-windows.bat
 
-      - name: Rename artifact
+      - name: Rename Artifact
         working-directory: build/windows/bin/
         run: |
           ren RadicalVPN-Setup.exe radicalvpn-win.exe
@@ -90,7 +90,7 @@ jobs:
           chmod +x ./build/darwin/build.sh
           ./build/darwin/build.sh -c $TEAM_ID
 
-      - name: Rename artifact
+      - name: Rename Artifact
         working-directory: build/darwin/_compiled/
         run: |
           mv RadicalVPN.dmg radicalvpn-darwin.dmg
