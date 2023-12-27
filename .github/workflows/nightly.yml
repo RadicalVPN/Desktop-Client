@@ -17,6 +17,8 @@ jobs:
         uses: actions/setup-go@v5
         with:
           go-version: "1.21"
+          cache-dependency-path: |
+            radicalvpnd/go.sum
 
       - name: Setup Node.JS 20.x
         uses: actions/setup-node@v4
@@ -43,6 +45,8 @@ jobs:
         uses: actions/setup-go@v5
         with:
           go-version: "1.21"
+          cache-dependency-path: |
+            radicalvpnd/go.sum
 
       - name: Setup Node.JS 20.x
         uses: actions/setup-node@v4
