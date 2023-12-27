@@ -95,7 +95,7 @@ jobs:
         uses: actions/download-artifact@v3
 
       - name: Update nightly tag
-        uses: EndBug/latest-tag
+        uses: EndBug/latest-tag@9071b46e28bb944c47293dcefa47fab3c5469314
         with:
           ref: nightly
 
