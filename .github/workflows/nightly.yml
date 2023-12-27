@@ -99,7 +99,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: build_darwin
-          path: build/darwin/_compiled/RadicalVPN.dmg
+          path: build/darwin/_compiled/radicalvpn-darwin.dmg
 
   update_nightly_tag:
     runs-on: ubuntu-latest
