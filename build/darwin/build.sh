@@ -178,6 +178,8 @@ chmod -Rf go-w "/Volumes/${IMAGE_TITLE}"
 sync
 sync
 
+sleep 5
+
 echo "[+] detaching tmp DMG image ${IMAGE_DEVICE} ..."
 hdiutil detach ${IMAGE_DEVICE} -force
 
