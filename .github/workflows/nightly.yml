@@ -153,11 +153,6 @@ jobs:
             **This Pre-release has been built by Github Actions**
             [Link to build](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
 
-            Build Hashes (SHA-256):
-            ```
-            ${{ steps.get_artifact_checksums.outputs.artifact_checksums }}
-            ```
-
             Important: This is not a stable release.
             We do not recommend using this in a production environment.
 
@@ -169,9 +164,16 @@ jobs:
             - Testing bug fixes
             - Other testing or development purposes
 
+            ---
+
             Full Commit Hash:
             ```
             ${{ needs.prepare_nightly.outputs.full_sha }}
+            ```
+
+            Build Hashes (SHA-256):
+            ```
+            ${{ steps.get_artifact_checksums.outputs.artifact_checksums }}
             ```
           files: |
             *
