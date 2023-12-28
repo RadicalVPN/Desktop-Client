@@ -134,9 +134,9 @@ jobs:
       - name: Get Artifact Checksums
         id: get_artifact_checksums
         run: |
-          echo "artifact_checksums<<EOF" >> $GITHUB_ENV
-          sha256sum build_darwin/* build_windows/* >> "$GITHUB_OUTPUT"
-          echo "EOF" >> $GITHUB_ENV
+          echo "artifact_checksums<<EOF" >> $GITHUB_OUTPUT
+          sha256sum build_darwin/* build_windows/* >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Nightly Release
         uses: softprops/action-gh-release@v1
