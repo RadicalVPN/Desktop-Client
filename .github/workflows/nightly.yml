@@ -108,6 +108,7 @@ jobs:
     name: Prepare Nightly
     outputs:
       full_sha: ${{ steps.var.outputs.full_sha }}
+      artifact_checksums: ${{ steps.var.outputs.artifact_checksums }}
     needs: [build_nightly_windows, build_nightly_macos]
     steps:
       - name: Checkout
@@ -121,8 +122,8 @@ jobs:
       - name: Generate Build Info
         id: var
         run: |
-          echo "full_sha=$(git rev-parse HEAD)"
           echo "full_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+          echo "artifact_checksums=$(sha256sum build_darwin/* build_windows/*)" >> "$GITHUB_OUTPUT"
 
   publish_nightly:
     runs-on: ubuntu-latest
@@ -144,6 +145,7 @@ jobs:
 
             Build Hashes (SHA-256):
             ```
+            ${{ needs.prepare_nightly.outputs.artifact_checksums }}
             ```
 
             Important: This is not a stable release.
