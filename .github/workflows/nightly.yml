@@ -118,7 +118,7 @@ jobs:
         with:
           ref: nightly
 
-      - name: Generate Build Info
+      - name: Generate Commit Hash
         id: var
         run: |
           echo "full_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
