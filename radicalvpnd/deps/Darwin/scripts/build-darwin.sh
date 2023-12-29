@@ -14,7 +14,6 @@ echo "### Start compiling Wireguard  ###"
 echo "[*] Build cleanup.."
 rm -rf wireguard-go
 rm -rf wireguard-tools
-rm -rf bash
 
 echo "[*] Cloning wireguard-go.."
 git clone https://git.zx2c4.com/wireguard-go/ --depth 1
@@ -35,12 +34,25 @@ make
 
 cd ../..
 
-git clone https://git.savannah.gnu.org/git/bash.git --depth 1
-cd bash
-./configure
-make -j${CPU_COUNT}
+if [ ! -f "../Bash/bash" ]; then
+    echo "[*] Building Bash.."
 
-cd ../..
+    if [ -d "bash" ]; then
+        rm -rf bash
+    fi
+
+    git clone https://git.savannah.gnu.org/git/bash.git --depth 1
+    cd bash
+    ./configure
+    make -j${CPU_COUNT}
+
+    cd ..
+
+    mkdir -p ../Bash
+    mv bash/bash ../Bash/bash
+fi
+
+cd ..
 
 echo "[*] Moving binaries.."
 
@@ -49,9 +61,6 @@ mkdir -p Wireguard
 mv ./.deps/wireguard-go/wireguard-go ./Wireguard/
 mv ./.deps/wireguard-tools/src/wg ./Wireguard/
 mv ./.deps/wireguard-tools/src/wg-quick/darwin.bash ./Wireguard/wg-quick.bash
-
-mkdir -p Bash
-mv ./.deps/bash/bash ./Bash
 
 echo "[*] Build succeeded!"
 
