@@ -4,16 +4,9 @@
 
     <va-card-content>
       <div class="flex items-center justify-between">
-        <p>{{ t('settings.frontendVersion') }}</p>
+        <p>{{ t('settings.version') }}</p>
         <div class="w-40">
-          <p class="text-lg mb-6">{{ 'v' + frontendVersion }}</p>
-        </div>
-      </div>
-
-      <div class="flex items-center justify-between">
-        <p>{{ t('settings.daemonVersion') }}</p>
-        <div class="w-40">
-          <p class="text-lg mb-6">{{ 'v' + daemonVersion }}</p>
+          <p class="text-lg mb-6">{{ 'v' + version }}</p>
         </div>
       </div>
     </va-card-content>
@@ -22,18 +15,17 @@
 
 <script lang="ts" setup>
   import { useI18n } from 'vue-i18n'
-  import { version as frontendVersion } from '../../../../package.json'
   import { DaemonHelper } from '../../../helper/daemon'
   import { onMounted, ref } from 'vue'
 
   const { t } = useI18n()
-  const daemonVersion = ref('Unknown')
+  const version = ref('unk')
 
   onMounted(async () => {
     await loadDaemonVersion()
   })
 
   async function loadDaemonVersion() {
-    daemonVersion.value = await new DaemonHelper().getDaemonVersion()
+    version.value = await new DaemonHelper().getDaemonVersion()
   }
 </script>

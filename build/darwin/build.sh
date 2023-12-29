@@ -5,10 +5,12 @@ set -e
 
 
 SIGN_CERT=""
-while getopts ":c:" opt; do
+VERSION="<unknown>"
+while getopts ":c:v:" opt; do
   case $opt in
     c) SIGN_CERT="$OPTARG"
     ;;
+    v) VERSION="$OPTARG"
   esac
 done
 
@@ -38,7 +40,7 @@ echo "[+] Build RadicalVPN Desktop for Darwin (MacOS).."
 
 echo "[+] Build Daemon.."
 cd ${DAEMON_PATH}
-go build .
+go build -ldflags "-X radicalvpnd/version.version=${VERSION}""  .
 
 echo "[+] Build Daemon Dependencies.."
 cd deps/Darwin/scripts

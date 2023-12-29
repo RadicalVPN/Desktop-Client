@@ -1,7 +1,7 @@
 {
   "name": "radicalvpn-desktop",
   "description": "Radical VPN Desktop Client",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "author": "RadicalVPN",
   "main": "dist-electron/main/index.js",
   "scripts": {

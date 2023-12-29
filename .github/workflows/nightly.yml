@@ -85,11 +85,6 @@ jobs:
           security import $CERTIFICATE_PATH -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
           security list-keychain -d user -s $KEYCHAIN_PATH
 
-      - name: Update Gui version to nightly
-        working-directory: gui/
-        run: |
-          npm version "$(jq -r '.version' package.json)-$(git rev-parse --short HEAD)"
-
       - name: Build App
         env:
           TEAM_ID: ${{ secrets.APPLE_DEVELOPER_TEAM_ID }}
