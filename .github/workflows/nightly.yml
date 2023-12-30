@@ -39,7 +39,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: build_windows
-          path: build/windows/bin/radicalvpn-win.exe
+          path: build/windows/bin/radicalvpn-win-*.exe
 
   build_nightly_macos:
     strategy:
