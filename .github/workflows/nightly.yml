@@ -108,7 +108,7 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: build_darwin
+          name: build_darwin-${{ matrix.os }}
           path: build/darwin/_compiled/radicalvpn-darwin-*.dmg
 
   prepare_nightly:
