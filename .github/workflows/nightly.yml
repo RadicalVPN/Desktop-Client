@@ -42,7 +42,10 @@ jobs:
           path: build/windows/bin/radicalvpn-win.exe
 
   build_nightly_macos:
-    runs-on: macos-latest
+    strategy:
+      matrix:
+        os: [self-hosted, macos-latest]
+    runs-on: ${{ matrix.os }}
     name: Build MacOS
     steps:
       - name: Checkout
