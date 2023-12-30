@@ -103,13 +103,13 @@ jobs:
       - name: Rename Artifact
         working-directory: build/darwin/_compiled/
         run: |
-          mv RadicalVPN.dmg radicalvpn-darwin.dmg
+          mv RadicalVPN.dmg radicalvpn-darwin-$(uname -p).dmg
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: build_darwin
-          path: build/darwin/_compiled/radicalvpn-darwin.dmg
+          path: build/darwin/_compiled/radicalvpn-darwin-*.dmg
 
   prepare_nightly:
     runs-on: ubuntu-latest
