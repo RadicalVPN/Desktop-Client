@@ -103,7 +103,7 @@ jobs:
       - name: Rename Artifact
         working-directory: build/darwin/_compiled/
         run: |
-          mv RadicalVPN.dmg radicalvpn-darwin-$(uname -p).dmg
+          mv RadicalVPN.dmg radicalvpn-darwin-$(uname -m).dmg
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
