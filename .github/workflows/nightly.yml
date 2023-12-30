@@ -33,7 +33,7 @@ jobs:
       - name: Rename Artifact
         working-directory: build/windows/bin/
         run: |
-          ren RadicalVPN-Setup.exe radicalvpn-win.exe
+          ren RadicalVPN-Setup.exe radicalvpn-win-${{ runner.arch }}.exe
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
@@ -103,12 +103,12 @@ jobs:
       - name: Rename Artifact
         working-directory: build/darwin/_compiled/
         run: |
-          mv RadicalVPN.dmg radicalvpn-darwin-$(uname -m).dmg
+          mv RadicalVPN.dmg radicalvpn-darwin-${{ runner.arch }}.dmg
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: build_darwin-${{ matrix.os }}
+          name: build_darwin-${{ runner.arch }}
           path: build/darwin/_compiled/radicalvpn-darwin-*.dmg
 
   prepare_nightly:
