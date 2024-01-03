@@ -24,6 +24,12 @@ func Launch() {
 
 	log.Info("Starting RadicalVPN Daemon..", fmt.Sprintf(" [%s,%s]", runtime.GOOS, runtime.GOARCH))
 	log.Info("Version: ", version.GetVersion())
+	log.Info("Commit Hash: ", version.GetCommitHash())
+
+	if version.IsNightly() && version.IsNightlyOutdated() {
+		log.Warning("Nightly Build of Daemon is outdated!")
+	}
+
 	log.Info(fmt.Sprintf("Args: %s", os.Args))
 	log.Info(fmt.Sprintf("PID : %d PPID: %d", os.Getpid(), os.Getppid()))
 	log.Info(fmt.Sprintf("Arch: %d bit", strconv.IntSize))

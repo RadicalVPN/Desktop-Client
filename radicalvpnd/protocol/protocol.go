@@ -185,6 +185,10 @@ func (p *Protocol) LoadRoutes() {
 	r.GET("/version", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
 			"version": version.GetVersion(),
+			"nightly": gin.H{
+				"isNightly":  version.IsNightly(),
+				"isOutdated": version.IsNightlyOutdated(),
+			},
 		})
 	})
 

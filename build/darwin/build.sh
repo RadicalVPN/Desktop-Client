@@ -40,8 +40,10 @@ fi
 echo "[+] Build RadicalVPN Desktop for Darwin (MacOS).."
 
 echo "[+] Build Daemon.."
+COMMIT_HASH="$( git rev-parse HEAD )"
+
 cd ${DAEMON_PATH}
-go build -ldflags "-X radicalvpnd/version.version=${VERSION}"  .
+go build -ldflags "-X 'radicalvpnd/version.version=${VERSION}' -X 'radicalvpnd/version.commitHash=${COMMIT_HASH}'"  .
 
 echo "[+] Build Daemon Dependencies.."
 cd deps/Darwin/scripts
