@@ -6,7 +6,14 @@
       <div class="flex items-center justify-between">
         <p>{{ t('settings.version') }}</p>
         <div class="w-40">
-          <p class="text-lg mb-6">{{ 'v' + version }}</p>
+          <p class="text-lg mb-6">{{ version }}</p>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between">
+        <p>{{ t('settings.appType') }}</p>
+        <div class="w-40">
+          <p class="text-lg mb-6">{{ appType }}</p>
         </div>
       </div>
     </va-card-content>
@@ -19,13 +26,23 @@
   import { onMounted, ref } from 'vue'
 
   const { t } = useI18n()
-  const version = ref('unk')
+
+  const version = ref('N/A')
+  const appType = ref<'Production' | 'Nightly' | 'Unknown'>('Unknown')
 
   onMounted(async () => {
-    await loadDaemonVersion()
+    await loadDaemonVersionInfo()
   })
 
-  async function loadDaemonVersion() {
-    version.value = await new DaemonHelper().getDaemonVersion()
+  async function loadDaemonVersionInfo() {
+    const versionInfo = await new DaemonHelper().getDaemonVersionInfo()
+
+    version.value = versionInfo.version
+
+    if (versionInfo.nightly.isNightly) {
+      appType.value = 'Nightly'
+    } else if (versionInfo.release.isRelease) {
+      appType.value = 'Production'
+    }
   }
 </script>

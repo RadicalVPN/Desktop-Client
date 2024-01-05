@@ -24,6 +24,7 @@
     "theme": "Theme",
     "versions": "Version information",
     "version": "Version",
+    "appType": "App Type",
     "animatedMap": "Animated Map",
     "disableNotifications": "Disable Notifications",
     "language": "Language",

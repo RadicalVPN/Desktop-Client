@@ -118,7 +118,7 @@ export class DaemonHelper {
     }
   }
 
-  public async getDaemonVersion(): Promise<string> {
+  public async getDaemonVersionInfo(): Promise<IDaemonVersionInfo> {
     const credentials = DaemonCredentials.getCredentials()
 
     try {
@@ -129,10 +129,19 @@ export class DaemonHelper {
         validateStatus: () => true,
       })
 
-      return resp.data.version || 'Unknown'
+      return resp.data || 'N/A'
     } catch (e) {
-      console.error(e)
-      return 'Unknown'
+      return {
+        version: 'N/A',
+        nightly: {
+          isNightly: 'N/A',
+          isOutdated: 'N/A',
+        },
+        release: {
+          isRelease: 'N/A',
+          isOutdated: 'N/A',
+        },
+      }
     }
   }
 
