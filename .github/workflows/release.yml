@@ -141,22 +141,13 @@ jobs:
           sha256sum * >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
+      - name: Write artifact checksums to file
+        run: |
+          echo "${{ steps.get_artifact_checksums.outputs.artifact_checksums }}" > checksums.txt
+
       - name: Release Version ${{github.ref_name }}
-        uses: RadicalVPN/action-gh-release@v0.1.16
+        uses: softprops/action-gh-release@v1
         with:
           generate_release_notes: true
-          append_body: true
-          body: |
-            ---
-
-            Full Commit Hash:
-            ```
-            ${{ needs.prepare_release.outputs.full_sha }}
-            ```
-
-            Build Hashes (SHA-256):
-            ```
-            ${{ steps.get_artifact_checksums.outputs.artifact_checksums }}
-            ```
           files: |
             *
