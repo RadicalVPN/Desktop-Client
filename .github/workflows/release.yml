@@ -2,11 +2,13 @@ name: Release Build
 
 on:
   push:
-    branches:
-      - master
+    tags:
+      - "v[0-9]+.[0-9]+.[0-9]+"
+
 jobs:
-  windows:
+  build_nightly_windows:
     runs-on: windows-latest
+    name: Build Windows
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -15,6 +17,8 @@ jobs:
         uses: actions/setup-go@v5
         with:
           go-version: "1.21"
+          cache-dependency-path: |
+            radicalvpnd/go.sum
 
       - name: Setup Node.JS 20.x
         uses: actions/setup-node@v4
@@ -25,14 +29,24 @@ jobs:
         run: |
           build\windows\build-windows.bat
 
+      - name: Rename Artifact
+        working-directory: build/windows/bin/
+        run: |
+          ren RadicalVPN-Setup.exe radicalvpn-win-${{ runner.arch }}.exe
+
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: radicalvpn-win-0.0.1.exe
-          path: build/windows/bin/RadicalVPN-Setup.exe
+          name: build_windows
+          path: build/windows/bin/radicalvpn-win-*.exe
 
-  macos:
-    runs-on: macos-latest
+  build_nightly_macos:
+    strategy:
+      matrix:
+        # os: [self-hosted, macos-latest]
+        os: [macos-latest]
+    runs-on: ${{ matrix.os }}
+    name: Build MacOS
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -41,6 +55,8 @@ jobs:
         uses: actions/setup-go@v5
         with:
           go-version: "1.21"
+          cache-dependency-path: |
+            radicalvpnd/go.sum
 
       - name: Setup Node.JS 20.x
         uses: actions/setup-node@v4
@@ -72,15 +88,80 @@ jobs:
           security import $CERTIFICATE_PATH -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
           security list-keychain -d user -s $KEYCHAIN_PATH
 
+      - name: Compute Version ID
+        id: version
+        run: |
+          echo "version=nightly-$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
+
       - name: Build App
         env:
           TEAM_ID: ${{ secrets.APPLE_DEVELOPER_TEAM_ID }}
         run: |
           chmod +x ./build/darwin/build.sh
-          ./build/darwin/build.sh -c $TEAM_ID
+          ./build/darwin/build.sh -c $TEAM_ID -v ${{ steps.version.outputs.version }}
+
+      - name: Rename Artifact
+        working-directory: build/darwin/_compiled/
+        run: |
+          mv RadicalVPN.dmg radicalvpn-darwin-${{ runner.arch }}.dmg
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: radicalvpn-darwin-0.0.1.dmg
-          path: build/darwin/_compiled/RadicalVPN.dmg
+          name: build_darwin-${{ runner.arch }}
+          path: build/darwin/_compiled/radicalvpn-darwin-*.dmg
+
+  prepare_nightly:
+    runs-on: ubuntu-latest
+    name: Prepare Nightly
+    outputs:
+      full_sha: ${{ steps.var.outputs.full_sha }}
+    needs: [build_nightly_windows, build_nightly_macos]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Generate Commit Hash
+        id: var
+        run: |
+          echo "full_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+  publish_nightly:
+    runs-on: ubuntu-latest
+    name: Publish Nightly
+    needs: [prepare_nightly]
+    steps:
+      - name: Download all workflow artifacts
+        uses: actions/download-artifact@v4
+
+      - name: Copy artifacts
+        run: |
+          cp -r build_*/* .
+          rm -rf build_*
+
+      - name: Get artifact checksums
+        id: get_artifact_checksums
+        run: |
+          echo "artifact_checksums<<EOF" >> $GITHUB_OUTPUT
+          sha256sum * >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          generate_release_notes: true
+          append_body: true
+          body: |
+            ---
+
+            Full Commit Hash:
+            ```
+            ${{ needs.prepare_nightly.outputs.full_sha }}
+            ```
+
+            Build Hashes (SHA-256):
+            ```
+            ${{ steps.get_artifact_checksums.outputs.artifact_checksums }}
+            ```
+          files: |
+            *
