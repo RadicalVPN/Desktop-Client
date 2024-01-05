@@ -30,6 +30,10 @@ func Launch() {
 		log.Warning("Nightly Build of Daemon is outdated!")
 	}
 
+	if version.IsRelease() && version.IsReleaseOutdated() {
+		log.Warning("Production Build of Daemon is outdated!")
+	}
+
 	log.Info(fmt.Sprintf("Args: %s", os.Args))
 	log.Info(fmt.Sprintf("PID : %d PPID: %d", os.Getpid(), os.Getppid()))
 	log.Info(fmt.Sprintf("Arch: %d bit", strconv.IntSize))

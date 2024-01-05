@@ -189,6 +189,10 @@ func (p *Protocol) LoadRoutes() {
 				"isNightly":  version.IsNightly(),
 				"isOutdated": version.IsNightlyOutdated(),
 			},
+			"release": gin.H{
+				"isRelease":  version.IsRelease(),
+				"isOutdated": version.IsReleaseOutdated(),
+			},
 		})
 	})
 
