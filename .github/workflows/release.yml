@@ -6,7 +6,7 @@ on:
       - "v[0-9]+.[0-9]+.[0-9]+"
 
 jobs:
-  build_nightly_windows:
+  build_release_windows:
     runs-on: windows-latest
     name: Build Windows
     steps:
@@ -40,7 +40,7 @@ jobs:
           name: build_windows
           path: build/windows/bin/radicalvpn-win-*.exe
 
-  build_nightly_macos:
+  build_release_macos:
     strategy:
       matrix:
         # os: [self-hosted, macos-latest]
@@ -88,17 +88,12 @@ jobs:
           security import $CERTIFICATE_PATH -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
           security list-keychain -d user -s $KEYCHAIN_PATH
 
-      - name: Compute Version ID
-        id: version
-        run: |
-          echo "version=nightly-$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
-
       - name: Build App
         env:
           TEAM_ID: ${{ secrets.APPLE_DEVELOPER_TEAM_ID }}
         run: |
           chmod +x ./build/darwin/build.sh
-          ./build/darwin/build.sh -c $TEAM_ID -v ${{ steps.version.outputs.version }}
+          ./build/darwin/build.sh -c $TEAM_ID -v ${{github.ref_name }}
 
       - name: Rename Artifact
         working-directory: build/darwin/_compiled/
@@ -111,12 +106,12 @@ jobs:
           name: build_darwin-${{ runner.arch }}
           path: build/darwin/_compiled/radicalvpn-darwin-*.dmg
 
-  prepare_nightly:
+  prepare_release:
     runs-on: ubuntu-latest
-    name: Prepare Nightly
+    name: Prepare Release
     outputs:
       full_sha: ${{ steps.var.outputs.full_sha }}
-    needs: [build_nightly_windows, build_nightly_macos]
+    needs: [build_release_windows, build_release_macos]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -126,10 +121,10 @@ jobs:
         run: |
           echo "full_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 
-  publish_nightly:
+  publish_release:
     runs-on: ubuntu-latest
-    name: Publish Release ${{ github.ref_name }}
-    needs: [prepare_nightly]
+    name: Publish Release
+    needs: [prepare_release]
     steps:
       - name: Download all workflow artifacts
         uses: actions/download-artifact@v4
@@ -147,17 +142,16 @@ jobs:
           echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Release Version ${{github.ref_name }}
-        uses: softprops/action-gh-release@v1
+        uses: RadicalVPN/action-gh-release@v0.1.16
         with:
           generate_release_notes: true
           append_body: true
-          discussion_category_name: 🚀 Releases
           body: |
             ---
 
             Full Commit Hash:
             ```
-            ${{ needs.prepare_nightly.outputs.full_sha }}
+            ${{ needs.prepare_release.outputs.full_sha }}
             ```
 
             Build Hashes (SHA-256):
