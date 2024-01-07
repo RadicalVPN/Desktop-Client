@@ -5,10 +5,8 @@
 #include <syslog.h>
 
 #define RADICAL_PACKAGE_NAME "com.radicalvpn.booter.helper"
-#define INSTALLED_HELPER_BINARY \
-	"/Library/PrivilegedHelperTools/com.radicalvpn.booter.helper"
-#define BUNDLE_HELPER_BINARY \
-	"/Applications/RadicalVPN.app/Contents/MacOS/RadicalVPN-Installer.app/Contents/Library/LaunchServices/com.radicalvpn.booter.helper"
+#define INSTALLED_HELPER_BINARY "/Library/PrivilegedHelperTools/com.radicalvpn.booter.helper"
+#define BUNDLE_HELPER_BINARY "/Applications/RadicalVPN.app/Contents/MacOS/RadicalVPN-Installer.app/Contents/Library/LaunchServices/com.radicalvpn.booter.helper"
 
 
 void log_error_ref(CFErrorRef err) {
@@ -110,12 +108,9 @@ int get_bundle_version(const char* bundle_path, char* ret_buf, int buf_size) {
 	} else
 		ret = 4;
 
+
 	if (key != NULL) {
 		CFRelease(key);
-	}
-
-	if (dict != NULL) {
-		CFRelease(dict);
 	}
 
 	return ret;

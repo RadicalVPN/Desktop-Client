@@ -7,6 +7,7 @@ while getopts ":c:v:" opt; do
     c) SIGN_CERT="$OPTARG"
     ;;
 	v) VERSION="$OPTARG"
+	;;
   esac
 done
 

@@ -2,9 +2,11 @@
 
 VERSION="0.0.1"
 SIGN_CERT=""
-while getopts ":c:" opt; do
+while getopts ":c:v:" opt; do
   case $opt in
     c) SIGN_CERT="$OPTARG"
+    ;;
+    v) VERSION="$OPTARG"
     ;;
   esac
 done

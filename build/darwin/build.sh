@@ -61,7 +61,7 @@ bash build.sh -c ${SIGN_CERT} -v ${VERSION}
 
 echo "[+] Build Daemon Booter.."
 cd ${BUILD_PATH}/daemon-boot
-bash build.sh -c ${SIGN_CERT}
+bash build.sh -c ${SIGN_CERT} -v ${VERSION}
 cd ${SCRIPT_DIR}
 
 echo ======================================================
@@ -108,7 +108,7 @@ cp -a "${BUILD_PATH}/daemon-installer/bin/RadicalVPN-Installer.app" "${BUILD_PAT
 
 echo "[+] Copying daemon booter binary.."
 #make sure to use the package name for the daemon booter -> https://developer.apple.com/documentation/servicemanagement/1431078-smjobbless
-cp -a "${BUILD_PATH}/daemon-boot/daemon_boot" "${BUILD_PATH}/_image/RadicalVPN.app/Contents/MacOS/RadicalVPN-Installer.app/Contents/Library/LaunchServices/com.radicalvpn.booter.helper"
+mv "${BUILD_PATH}/daemon-boot/daemon_boot" "${BUILD_PATH}/_image/RadicalVPN.app/Contents/MacOS/RadicalVPN-Installer.app/Contents/Library/LaunchServices/com.radicalvpn.booter.helper"
 
 echo ======================================================
 echo ================= Signing Binaries ===================
