@@ -132,7 +132,7 @@ export class DaemonHelper {
       return resp.data || 'N/A'
     } catch (e) {
       return {
-        version: 'N/A',
+        currentVersion: 'N/A',
         nightly: false,
         release: false,
         outdated: false,

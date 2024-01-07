@@ -37,7 +37,7 @@
   async function loadDaemonVersionInfo() {
     const versionInfo = await new DaemonHelper().getDaemonVersionInfo()
 
-    version.value = versionInfo.version
+    version.value = versionInfo.currentVersion
 
     if (versionInfo.nightly) {
       appType.value = 'Nightly'
