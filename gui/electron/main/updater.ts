@@ -13,7 +13,7 @@ export class Updater {
     let message = 'A new version of RadicalVPN is available.\n'
 
     if (info.nightly) {
-      message += `\nYou are running a nightly versions.\n`
+      message += `\nYou are running a nightly version.\n`
     }
 
     message += `\nWould you like to download it?`
