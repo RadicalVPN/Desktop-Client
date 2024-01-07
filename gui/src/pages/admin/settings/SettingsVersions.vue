@@ -39,9 +39,9 @@
 
     version.value = versionInfo.version
 
-    if (versionInfo.nightly.isNightly) {
+    if (versionInfo.nightly) {
       appType.value = 'Nightly'
-    } else if (versionInfo.release.isRelease) {
+    } else if (versionInfo.release) {
       appType.value = 'Production'
     }
   }

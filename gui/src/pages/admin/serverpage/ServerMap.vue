@@ -64,7 +64,6 @@
   import { useModal } from 'vuestic-ui'
   import { useI18n } from 'vue-i18n'
   import { computed } from 'vue'
-  import { DaemonCredentials } from '../../../helper/credentials'
 
   const store = useGlobalStore()
   const isConnectionStateSwitching = ref(false)
