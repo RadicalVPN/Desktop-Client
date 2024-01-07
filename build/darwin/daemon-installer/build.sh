@@ -1,10 +1,12 @@
 #!/bin/bash
 
 SIGN_CERT=""
-while getopts ":c:" opt; do
+VERSION="0.0.0"
+while getopts ":c:v:" opt; do
   case $opt in
     c) SIGN_CERT="$OPTARG"
     ;;
+	v) VERSION="$OPTARG"
   esac
 done
 
@@ -16,6 +18,9 @@ plutil -replace SMPrivilegedExecutables -xml \
       		<key>com.radicalvpn.booter.helper</key> \
       		<string>identifier com.radicalvpn.booter.helper and certificate leaf[subject.OU] = ${SIGN_CERT}</string> \
       	</dict>" "RadicalVPN-Installer.plist"
+
+plutil -replace CFBundleShortVersionString -xml "<string>${VERSION}</string>" "RadicalVPN-Installer.plist"
+plutil -replace CFBundleVersion -xml "<string>${VERSION}</string>" "RadicalVPN-Installer.plist"
 
 cc -m64 -framework Foundation \
 		-mmacosx-version-min=10.6 \

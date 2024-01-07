@@ -57,7 +57,7 @@ npm run build
 
 echo "[+] Build Daemon Installer.."
 cd ${BUILD_PATH}/daemon-installer
-bash build.sh -c ${SIGN_CERT}
+bash build.sh -c ${SIGN_CERT} -v ${VERSION}
 
 echo "[+] Build Daemon Booter.."
 cd ${BUILD_PATH}/daemon-boot
