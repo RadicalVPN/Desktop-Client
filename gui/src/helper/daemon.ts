@@ -118,33 +118,6 @@ export class DaemonHelper {
     }
   }
 
-  public async getDaemonVersionInfo(): Promise<IDaemonVersionInfo> {
-    const credentials = DaemonCredentials.getCredentials()
-
-    try {
-      const resp = await axios.get(`http://localhost:${credentials.port}/version`, {
-        headers: {
-          'x-radical-daemon-secret': credentials.secret,
-        },
-        validateStatus: () => true,
-      })
-
-      return resp.data || 'N/A'
-    } catch (e) {
-      return {
-        version: 'N/A',
-        nightly: {
-          isNightly: 'N/A',
-          isOutdated: 'N/A',
-        },
-        release: {
-          isRelease: 'N/A',
-          isOutdated: 'N/A',
-        },
-      }
-    }
-  }
-
   public async isDaemonInstallRequired(): Promise<boolean> {
     return new Promise((resolve, reject) => {
       if (process.platform != 'darwin') {

@@ -183,16 +183,19 @@ func (p *Protocol) LoadRoutes() {
 	})
 
 	r.GET("/version", func(c *gin.Context) {
+		var outdated bool
+
+		if version.IsRelease() {
+			outdated = version.IsReleaseOutdated()
+		} else {
+			outdated = version.IsNightlyOutdated()
+		}
+
 		c.JSON(http.StatusOK, gin.H{
-			"version": version.GetVersion(),
-			"nightly": gin.H{
-				"isNightly":  version.IsNightly(),
-				"isOutdated": version.IsNightlyOutdated(),
-			},
-			"release": gin.H{
-				"isRelease":  version.IsRelease(),
-				"isOutdated": version.IsReleaseOutdated(),
-			},
+			"currentVersion": version.GetVersion(),
+			"nightly":        version.IsNightly(),
+			"release":        version.IsRelease(),
+			"outdated":       outdated,
 		})
 	})
 

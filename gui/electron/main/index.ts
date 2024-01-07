@@ -1,7 +1,8 @@
-import { app, BrowserWindow, shell, ipcMain, Menu } from 'electron'
+import { app, BrowserWindow, shell, ipcMain, Menu, dialog } from 'electron'
 import { release } from 'node:os'
 import { join } from 'node:path'
 import { Tray } from './tray'
+import { Updater } from './updater'
 
 // The built directory structure
 //
@@ -90,10 +91,9 @@ async function createWindow() {
     if (url.startsWith('https:')) shell.openExternal(url)
     return { action: 'deny' }
   })
-  // win.webContents.on('will-navigate', (event, url) => { }) #344
 
-  const tray = new Tray(win)
-  tray.loadTray()
+  new Tray(win).loadTray()
+  await new Updater(win).checkForUpdates()
 }
 
 app.whenReady().then(createWindow)
