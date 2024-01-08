@@ -43,8 +43,7 @@ jobs:
   build_release_macos:
     strategy:
       matrix:
-        # os: [self-hosted, macos-latest]
-        os: [macos-latest]
+        os: [self-hosted, macos-latest]
     runs-on: ${{ matrix.os }}
     name: Build MacOS
     steps:
