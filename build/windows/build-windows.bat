@@ -1,10 +1,14 @@
 @echo off
 
 SET NSIS="C:\Program Files (x86)\NSIS\makensis.exe"
+set VERSION=%1
 
 set SCRIPTDIR=%~dp0
 SET OUT_DIR=%SCRIPTDIR%bin
 set TMP_DIR=%OUT_DIR%\temp
+
+:: this is a hack to get the commit hash on windows
+for /f %%i in ('git rev-parse HEAD') do set COMMIT_HASH=%%i
 
 if not exist %NSIS% (
     echo [!] NSIS not found [%NSIS%]
@@ -69,7 +73,7 @@ goto :success
 
 :build_daemon
     call cd radicalvpnd
-    call go build .
+    call go build -ldflags "-X 'radicalvpnd/version.version=%VERSION%' -X 'radicalvpnd/version.commitHash=%COMMIT_HASH%'"  .
     call cd ..
 
     goto :eof

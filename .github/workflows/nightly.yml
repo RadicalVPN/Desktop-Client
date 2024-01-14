@@ -7,9 +7,24 @@ on:
   workflow_dispatch:
 
 jobs:
+  compute_nightly_version:
+    runs-on: ubuntu-latest
+    name: Compute Nightly Version
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Compute Version ID
+        id: version
+        run: |
+          echo "version=nightly-$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
+
   build_nightly_windows:
     runs-on: windows-latest
     name: Build Windows
+    needs: [compute_nightly_version]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -28,7 +43,7 @@ jobs:
 
       - name: Build App
         run: |
-          build\windows\build-windows.bat
+          build\windows\build-windows.bat ${{ needs.compute_nightly_version.outputs.version }}
 
       - name: Rename Artifact
         working-directory: build/windows/bin/
@@ -47,6 +62,7 @@ jobs:
         os: [self-hosted, macos-latest]
     runs-on: ${{ matrix.os }}
     name: Build MacOS
+    needs: [compute_nightly_version]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -88,17 +104,12 @@ jobs:
           security import $CERTIFICATE_PATH -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
           security list-keychain -d user -s $KEYCHAIN_PATH
 
-      - name: Compute Version ID
-        id: version
-        run: |
-          echo "version=nightly-$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
-
       - name: Build App
         env:
           TEAM_ID: ${{ secrets.APPLE_DEVELOPER_TEAM_ID }}
         run: |
           chmod +x ./build/darwin/build.sh
-          ./build/darwin/build.sh -c $TEAM_ID -v ${{ steps.version.outputs.version }}
+          ./build/darwin/build.sh -c $TEAM_ID -v ${{ needs.compute_nightly_version.outputs.version }}
 
       - name: Rename Artifact
         working-directory: build/darwin/_compiled/

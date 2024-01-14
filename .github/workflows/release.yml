@@ -27,7 +27,7 @@ jobs:
 
       - name: Build App
         run: |
-          build\windows\build-windows.bat
+          build\windows\build-windows.bat ${{github.ref_name }}
 
       - name: Rename Artifact
         working-directory: build/windows/bin/
