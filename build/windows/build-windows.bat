@@ -16,12 +16,12 @@ if not exist %NSIS% (
 	goto :error
 )
 
-call :build_wireguard
-call :build_daemon
-call :build_gui
+call :build_wireguard || goto :error
+call :build_daemon || goto :error
+call :build_gui || goto :error
 
-call :copy_files
-call :build_nsis_installer
+call :copy_files || goto :error
+call :build_nsis_installer || goto :error
 
 goto :success
 
@@ -93,5 +93,5 @@ goto :success
 
 
 :error
-	echo [!] Installation failed: #%errorlevel%.
+	echo [!] Build failed: #%errorlevel%.
 	exit /b %errorlevel%
