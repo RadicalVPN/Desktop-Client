@@ -30,7 +30,10 @@ func pingServer(s webapi.Server) webapi.Server {
 	pinger.SetPrivileged(true)
 	pinger.Count = 1
 	pinger.Timeout = time.Millisecond * 400
-	pinger.Run()
+
+	if err := pinger.Run(); err != nil {
+		return s
+	}
 
 	stats := pinger.Statistics()
 	if stats.AvgRtt > 0 {

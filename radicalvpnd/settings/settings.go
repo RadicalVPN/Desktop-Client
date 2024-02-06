@@ -18,7 +18,7 @@ var mutx sync.RWMutex
 func NewSettings() *Settings {
 	settings := &Settings{}
 
-	settings.LoadSettings()
+	settings.LoadSettings() // #nosec G104
 
 	return settings
 }
@@ -45,7 +45,6 @@ func (s *Settings) LoadSettings() error {
 	defer mutx.RUnlock()
 
 	data, err := os.ReadFile(platform.GetSettingsFile())
-
 	if err != nil {
 		return fmt.Errorf("unable to read settings: %w", err)
 	}

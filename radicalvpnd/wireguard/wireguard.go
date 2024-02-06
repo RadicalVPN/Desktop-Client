@@ -74,10 +74,17 @@ func (wg *Wireguard) Connect(nodeLocation string, privacyFirewallLevel string) e
 		return err
 	}
 
-	util.WriteFile(platform.GetWireguardConfPath(), conf, 0600)
+	writeErr := util.WriteFile(platform.GetWireguardConfPath(), conf, 0600)
+	if writeErr != nil {
+		return writeErr
+	}
 
 	log.Info("Connecting to wireguard..")
-	wg.start()
+
+	startErr := wg.start()
+	if startErr != nil {
+		return startErr
+	}
 
 	log.Info("Connected to wireguard!")
 
@@ -86,7 +93,11 @@ func (wg *Wireguard) Connect(nodeLocation string, privacyFirewallLevel string) e
 
 func (wg *Wireguard) Disconnect() error {
 	log.Info("Disconnecting from wireguard..")
-	wg.stop()
+
+	err := wg.stop()
+	if err != nil {
+		return err
+	}
 
 	return nil
 }

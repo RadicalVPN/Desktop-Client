@@ -27,13 +27,11 @@ func (wg *Wireguard) start() error {
 }
 
 func (wg *Wireguard) stop() error {
-	out, err := cli.Exec(basePath, platform.GetWireguardQuickPath(), "down", platform.GetWireguardConfPath())
+	_, err := cli.Exec(basePath, platform.GetWireguardQuickPath(), "down", platform.GetWireguardConfPath())
 
 	if err != nil {
-		fmt.Println("err", err)
+		return err
 	}
-
-	fmt.Println(out)
 
 	return nil
 }

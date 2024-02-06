@@ -113,7 +113,7 @@ func log(data ...interface{}) error {
 
 		if runtime.GOOS == "windows" {
 			if err := acl.Chmod(filePath, 0644); err != nil {
-				os.Remove(filePath)
+				os.Remove(filePath) // #nosec G104
 				return fmt.Errorf("failed to change windows file permissions: %w", err)
 			}
 		}
@@ -124,7 +124,7 @@ func log(data ...interface{}) error {
 
 	//write to file
 	if globalFileHandle != nil {
-		globalFileHandle.WriteString(fmt.Sprintln(data...))
+		globalFileHandle.WriteString(fmt.Sprintln(data...)) // #nosec G104
 	}
 
 	return nil
@@ -132,25 +132,25 @@ func log(data ...interface{}) error {
 
 func _info(name string, v ...interface{}) {
 	mes, timeStr, _, _ := getLogPrefixes(fmt.Sprint(v...), 0)
-	log(timeStr, name, "INFO", mes)
+	log(timeStr, name, "INFO", mes) // #nosec G104
 }
 
 func _debug(name string, v ...interface{}) {
 	mes, timeStr, runtimeInfo, _ := getLogPrefixes(fmt.Sprint(v...), 0)
-	log(timeStr, name, "DEBU", runtimeInfo, mes)
+	log(timeStr, name, "DEBU", runtimeInfo, mes) // #nosec G104
 }
 
 func _warning(name string, v ...interface{}) {
 	mes, timeStr, runtimeInfo, _ := getLogPrefixes(fmt.Sprint(v...), 0)
-	log(timeStr, name, "WARN", runtimeInfo, mes)
+	log(timeStr, name, "WARN", runtimeInfo, mes) // #nosec G104
 }
 
 func _trace(name string, v ...interface{}) {
 	mes, timeStr, runtimeInfo, methodInfo := getLogPrefixes(fmt.Sprint(v...), 0)
-	log(timeStr, name, "TRAC", runtimeInfo+methodInfo, mes)
+	log(timeStr, name, "TRAC", runtimeInfo+methodInfo, mes) // #nosec G104
 }
 
 func _error(name string, callerStackOffset int, v ...interface{}) {
 	mes, timeStr, runtimeInfo, methodInfo := getLogPrefixes(fmt.Sprint(v...), callerStackOffset)
-	log(timeStr, name, "ERRO", runtimeInfo+methodInfo, mes)
+	log(timeStr, name, "ERRO", runtimeInfo+methodInfo, mes) // #nosec G104
 }

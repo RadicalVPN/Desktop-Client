@@ -109,8 +109,13 @@ func (p *Protocol) Start(startedPortChannel chan<- string) {
 
 	startedPortChannel <- port
 
+	err := http.Serve(listener, p.engine)
+	if err != nil {
+		log.Error("Failed to start Daemon Protocol: ", err)
+		return
+	}
+
 	log.Info("Daemon Protocol listening on 127.0.0.1:", port)
-	http.Serve(listener, p.engine)
 }
 
 func (p *Protocol) getHttpClient() *http.Client {
@@ -230,6 +235,7 @@ func (p *Protocol) LoadRoutes() {
 			c.JSON(http.StatusInternalServerError, gin.H{
 				"error": err.Error(),
 			})
+			return
 		}
 
 		c.Status(http.StatusOK)
@@ -243,7 +249,12 @@ func (p *Protocol) LoadRoutes() {
 
 		wg := wireguard.NewWireguard()
 
-		wg.Disconnect()
+		if err := wg.Disconnect(); err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"error": err.Error(),
+			})
+			return
+		}
 
 		c.Status(http.StatusOK)
 	})

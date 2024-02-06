@@ -85,7 +85,11 @@ func Launch() {
 		defer file.Close()
 
 		log.Info("Writing port and secret to service file..")
-		file.WriteString(fmt.Sprintf("%s|%s", port, secret))
+
+		if _, err := file.WriteString(fmt.Sprintf("%s|%s", port, secret)); err != nil {
+			log.Error("Failed to write to service file: ", err)
+			os.Exit(1)
+		}
 	}()
 
 	if err := PrepareRun(); err != nil {
