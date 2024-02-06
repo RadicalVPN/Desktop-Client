@@ -59,7 +59,13 @@ func Launch() {
 	if envSecretPresent {
 		secret = envSecret
 	} else {
-		secret = util.RandomString(32)
+		generatedSecret, err := util.RandomString(32)
+		if err != nil {
+			log.Error("Failed to generate random string: ", err)
+			os.Exit(1)
+		}
+
+		secret = generatedSecret
 	}
 
 	portChannel := make(chan string, 1)
