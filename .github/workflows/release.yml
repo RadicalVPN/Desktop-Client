@@ -6,9 +6,26 @@ on:
       - "v[0-9]+.[0-9]+.[0-9]+"
 
 jobs:
+  gosec:
+    name: GoSec Security Scanner
+    runs-on: macos-latest
+    steps:
+      - name: Checkout Source
+        uses: actions/checkout@v3
+
+      - name: Install GoSec 2.18.2
+        run: |
+          curl -sfL https://raw.githubusercontent.com/securego/gosec/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v2.18.2
+
+      - name: Run Gosec Security Scanner
+        run: |
+          cd radicalvpnd
+          $(go env GOPATH)/bin/gosec -exclude=G114,G304,G302 ./...
+
   build_release_windows:
     runs-on: windows-latest
     name: Build Windows
+    needs: [gosec]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -46,6 +63,7 @@ jobs:
         os: [self-hosted, macos-latest]
     runs-on: ${{ matrix.os }}
     name: Build MacOS
+    needs: [gosec]
     steps:
       - name: Checkout
         uses: actions/checkout@v4

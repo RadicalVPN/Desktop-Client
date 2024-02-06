@@ -7,9 +7,26 @@ on:
   workflow_dispatch:
 
 jobs:
+  gosec:
+    name: GoSec Security Scanner
+    runs-on: macos-latest
+    steps:
+      - name: Checkout Source
+        uses: actions/checkout@v3
+
+      - name: Install GoSec 2.18.2
+        run: |
+          curl -sfL https://raw.githubusercontent.com/securego/gosec/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v2.18.2
+
+      - name: Run Gosec Security Scanner
+        run: |
+          cd radicalvpnd
+          $(go env GOPATH)/bin/gosec -exclude=G114,G304,G302 ./...
+
   compute_nightly_version:
     runs-on: ubuntu-latest
     name: Compute Nightly Version
+    needs: [gosec]
     outputs:
       version: ${{ steps.version.outputs.version }}
     steps:
