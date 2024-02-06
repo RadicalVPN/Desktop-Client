@@ -10,7 +10,7 @@ on:
 jobs:
   gosec:
     name: GoSec Security Scanner
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
       - name: Checkout Source
         uses: actions/checkout@v3
