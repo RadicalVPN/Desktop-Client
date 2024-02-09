@@ -19,6 +19,7 @@ export interface Server {
   latitude: string
   longitude: string
   location: string
+  load: number
 }
 
 export interface Location {
@@ -30,6 +31,8 @@ export interface Location {
   latitude: string
   longitude: string
   latency: number
+  load: number
+  loadColor: 'success' | 'danger'
 }
 
 export const useGlobalStore = defineStore('global', {
@@ -75,6 +78,17 @@ export const useGlobalStore = defineStore('global', {
     computeLocationList() {
       this.locationList = Object.values(
         this.serverList.reduce((acc: any, server: Server) => {
+          const { load } = server
+          let loadColor: string
+
+          if (load <= 50) {
+            loadColor = 'success'
+          } else if (load > 50 && load <= 70) {
+            loadColor = 'warning'
+          } else {
+            loadColor = 'danger'
+          }
+
           if (!acc[server.location]) {
             acc[server.location] = {
               id: server.location,
@@ -85,6 +99,8 @@ export const useGlobalStore = defineStore('global', {
               latitude: server.latitude,
               longitude: server.longitude,
               latency: server.latency,
+              load,
+              loadColor,
             }
           }
 

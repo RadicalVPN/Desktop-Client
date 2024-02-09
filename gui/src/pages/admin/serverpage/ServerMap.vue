@@ -48,6 +48,11 @@
             <a class="ml-4">{{ option.latency + ' ms' }}</a>
           </div>
 
+          <div class="ml-auto text-sm flex items-center">
+            <VaProgressCircle :model-value="option.load" :color="option.loadColor" :thickness="0.1">
+              {{ option.load + '%' }}
+            </VaProgressCircle>
+          </div>
           <va-divider />
         </div>
       </va-card-content>
@@ -64,9 +69,11 @@
   import { useModal } from 'vuestic-ui'
   import { useI18n } from 'vue-i18n'
   import { computed } from 'vue'
+  import { onBeforeUnmount } from 'vue'
 
   const store = useGlobalStore()
   const isConnectionStateSwitching = ref(false)
+  let refreshTimer: any
 
   const cities = computed(() => {
     return store.locationList.map((server) => ({
@@ -83,7 +90,16 @@
   const { t } = useI18n()
 
   onMounted(async () => {
+    await store.loadServerList()
     await syncConnectionState()
+
+    refreshTimer = setInterval(async () => {
+      await store.loadServerList()
+    }, 15_000)
+  })
+
+  onBeforeUnmount(() => {
+    clearInterval(refreshTimer)
   })
 
   function selectCity(location: any) {

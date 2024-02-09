@@ -14,19 +14,20 @@ type VpnConnect struct {
 }
 
 type Server struct {
-	Id          string `json:"id"`
-	Hostname    string `json:"hostname"`
-	Country     string `json:"country"`
-	CountryName string `json:"country_name"`
-	City        string `json:"city"`
-	Latitude    string `json:"latitude"`
-	Longitude   string `json:"longitude"`
-	Internalp   string `json:"internal_ip"`
-	ExternaIp   string `json:"external_ip"`
-	PublicKey   string `json:"public_key"`
-	Online      bool   `json:"online"`
-	Latency     int    `json:"latency"`
-	Location    string `json:"location"`
+	Id          string  `json:"id"`
+	Hostname    string  `json:"hostname"`
+	Country     string  `json:"country"`
+	CountryName string  `json:"country_name"`
+	City        string  `json:"city"`
+	Latitude    string  `json:"latitude"`
+	Longitude   string  `json:"longitude"`
+	Internalp   string  `json:"internal_ip"`
+	ExternaIp   string  `json:"external_ip"`
+	PublicKey   string  `json:"public_key"`
+	Online      bool    `json:"online"`
+	Latency     int     `json:"latency"`
+	Load        float64 `json:"load"`
+	Location    string  `json:"location"`
 }
 
 type VpnTransfer struct {
